@@ -1,0 +1,362 @@
+﻿@page "/productlist"
+@inject Interfaces.IProductService productService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@inject IJSRuntime JSRuntime
+@inject DialogService DialogService
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0
+/css/font-awesome.min.css" rel="stylesheet">
+
+<style>
+    
+    .Add-New-Product {
+        margin-left: 45%;
+    }
+    .custom-card {
+        padding: 0.5rem;
+        border-radius: 5px;
+        display:flex;
+        align-items:baseline;
+    }
+    .custom-numeric {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid ;
+        border-radius: 5px;
+    }
+
+        .custom-card h3 {
+            font-size: 1rem;
+            margin: 0;
+        }
+    .custom-button-group {
+        padding-top:1.3rem;
+        display: flex;
+        justify-content:right;
+        gap:1em;
+
+    }
+    .custom-switch-container {
+        border-radius: 5px;
+        margin: 0.5rem 0;
+        display: flex;
+        align-items:baseline;
+    }
+
+    .custom-switch-label {
+        
+        color: #333;
+        margin: 0;
+        
+        font-size: 1rem;
+        
+        padding-right: 4em;
+    }
+
+    .block h3{
+        margin-bottom:15px;
+
+    }
+    .block{
+        gap:0em;
+    }
+    .Available-custom-box{
+        display:flex;
+        padding-top:1.5em;
+        gap:2em;
+        margin-left:2em;
+    }
+    .Available-custom-box p{
+        padding-top:3px;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-6 d-flex align-items-end justify-content-start">
+    <h3> Number of Products: @totalRecords </h3>
+    </div>
+    <div class="col-md-6 d-flex align-items-end justify-content-end">
+    <RadzenButton class="Add-New-Product" Click="@(args=>ShowInlineDialog("Add New Product"))"  Text="Add New Product" Icon="add_circle_outline" Style="background-color:	#FF9900; "></RadzenButton>
+    </div>
+</div>
+
+
+@code {
+    List<Entities.Product> products;
+
+    async Task ShowInlineDialog(string text)
+    { 
+        var result = await DialogService.OpenAsync(text,ds =>
+    @<RadzenStack Gap="1rem" Style="height:50%;">
+        <EditForm Model="@product">
+            <div class="block">
+                <div class="custom-card">
+                    <RadzenFormField Style="margin-left:5%;width:90%; margin:auto" Text="Product Name ..">
+                        <RadzenTextBox Placeholder="Product Name.." @bind-Value=@product.ProductName style="margin-left: 10px;" />
+                    </RadzenFormField>
+                </div>
+                <div class="custom-card">
+                    <RadzenFormField Style="margin-left:5%; width:90%; margin:auto" Text="Unit Price..">
+                        <RadzenNumeric Placeholder="Unit Price.." Class="custom-numeric" ShowUpDown="true" @bind-Value=@product.UnitPrice />
+                    </RadzenFormField>
+                </div>
+                <div class="custom-switch-container">
+                    <RadzenFieldset Style="margin-left:2em; width:87.42857142857143%;height:80px; margin:auto">
+                    <div class="Available-custom-box">
+                        <p>Availability: </p>
+                        <RadzenFormField Style="margin-left:5%; ">
+                            <RadzenSwitch @bind-Value=@isAvailable />
+                        </RadzenFormField>
+                    </div>
+                    </RadzenFieldset>
+                </div>
+                <div class="custom-card">
+                    <RadzenFormField Style="margin-left:5%; width:90%; margin:auto" Text="Description..">
+                        <RadzenTextArea Placeholder="Description.." @bind-Value=@product.Description />
+                    </RadzenFormField>
+                </div>
+            </div>
+            <div class="custom-button-group">
+                <RadzenButton Text="Save" Click="@((args) => SaveProduct(product))" Style="width: 80px;" ButtonStyle="ButtonStyle.Success" />
+                <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Danger" />
+            </div>
+        </EditForm>
+        </RadzenStack>
+    );
+    }
+
+
+
+    async Task ShowInlineDialog1(Product product)
+    {
+        var result = await DialogService.OpenAsync("Edit Product", ds =>
+    @<RadzenStack Gap="1rem" Style="height:50%;">
+        <EditForm Model="@product">
+            <div class="block">
+                <div class="custom-card">
+                    <RadzenFormField Style="margin-left:5%;width:90%; margin:auto" Text="Product Name ..">
+                        <RadzenTextBox Placeholder="Product Name.." @bind-Value=@product.ProductName style="margin-left: 10px;" />
+                    </RadzenFormField>
+                </div>
+                <div class="custom-card">
+                    <RadzenFormField Style="margin-left:5%; width:90%; margin:auto" Text="Unit Price..">
+                        <RadzenNumeric Placeholder="Unit Price.." Class="custom-numeric" ShowUpDown="true" @bind-Value=@product.UnitPrice />
+                    </RadzenFormField>
+                </div>
+                
+                <div class="custom-switch-container">
+                    <RadzenFieldset Style="margin-left:2em; width:87.42857142857143%;height:80px; margin:auto">
+                        <div class="Available-custom-box">
+                            <p>Availability: </p>
+                            <RadzenFormField Style="margin-left:5%; ">
+                                @{
+                                    bool switchValue = product.Available == 1;
+                                }
+                                <RadzenSwitch @bind-Value="switchValue" />
+                            </RadzenFormField>
+                        </div>
+                    </RadzenFieldset>
+                </div>
+                <div class="custom-card">
+                    <RadzenFormField Style="margin-left:5%; width:90%; margin:auto" Text="Description..">
+                        <RadzenTextArea Placeholder="Description.." @bind-Value=@product.Description />
+                    </RadzenFormField>
+                </div>
+            </div>
+            <div class="custom-button-group">
+                <RadzenButton Text="Save" Click="@((args) => SaveProduct1(product))" Style="width: 80px;" ButtonStyle="ButtonStyle.Success" />
+                <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Danger" />
+            </div>
+        </EditForm>
+        </RadzenStack>
+    );
+    }
+
+    string text;
+    public bool isAvailable = true;
+    public Product product = new Product();
+    void warningMessage(string message)
+    {
+        ShowNotification(new NotificationMessage { Summary = message, Duration = 4000 });
+    }
+    async Task SaveProduct(Product product)
+    {
+        product.Available = isAvailable ? (byte)1 : (byte)0;
+
+        if (string.IsNullOrEmpty(product.ProductName))
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Product Name is Required", Duration = 4000 });
+            return;
+        }
+        if (products.FirstOrDefault(p => p.ProductName == product.ProductName && p.ProductId != product.ProductId) != null)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Product name already exists", Duration = 4000 });
+            return;
+        }
+        if (product.UnitPrice < 0)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Unit Price must be positive", Duration = 4000 });
+            return;
+        }
+        productService.Create(product);
+        OnInitializedAsync();
+        DialogService.Close(true);
+        
+    }
+    async Task SaveProduct1(Product product)
+    {
+        product.Available = isAvailable ? (byte)1 : (byte)0;
+
+        if (string.IsNullOrEmpty(product.ProductName))
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Product Name is Required", Duration = 4000 });
+            return;
+        }
+        if (products.FirstOrDefault(p => p.ProductName == product.ProductName && p.ProductId != product.ProductId) != null)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Product name already exists", Duration = 4000 });
+            return;
+        }
+        if (product.UnitPrice < 0)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Unit Price must be positive", Duration = 4000 });
+            return;
+        }
+        productService.Update(product);
+        OnInitializedAsync();
+        DialogService.Close(true);
+
+    }
+}
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <RadzenDataGrid @ref="productGrid" Density="Density.Compact" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="20" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@products" TItem="Product" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" Style="margin-top:20px">
+        <Columns>
+            <RadzenDataGridColumn TItem="Product" Property="ProductName" Title="Product Name"  Width="160px">
+                <EditTemplate Context="product">
+                    <RadzenCard>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3"></RadzenText>
+                        <RadzenTextBox  @bind-Value="@product.ProductName" class="w-100" />
+                    </RadzenCard>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Product" Property="UnitPrice" Title="UnitPrice" Frozen="true" Width="200px">
+                <EditTemplate Context="product">
+                    <RadzenCard>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3"></RadzenText>
+                        <RadzenNumeric  ShowUpDown="true" @bind-Value="@product.UnitPrice" Format="N2" />
+
+                    </RadzenCard>
+                   
+                </EditTemplate>
+
+            </RadzenDataGridColumn>
+            
+            
+            <RadzenDataGridColumn TItem="Product" Property="Available" Title="Available" Frozen="true" Width="200px">
+                <EditTemplate Context="product">
+                    <RadzenCard>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3"></RadzenText>
+                        <RadzenNumeric ShowUpDown="false" Min="0" Max="1" @bind-Value="@product.Available" Format="N2" />
+      
+                    </RadzenCard>
+                </EditTemplate>
+                <Template Context="product">
+                    @if (product.Available == 1)
+                    {
+                        <div><RadzenIcon Icon="done" /></div>
+
+                    }
+                    else
+                    {
+                        <div></div>
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+            
+            <RadzenDataGridColumn TItem="Product" Property="Description" Title="Description" Frozen="true" Width="160px">
+                <EditTemplate Context="product">
+                    <RadzenCard>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3"></RadzenText>
+                        <RadzenTextBox  @bind-Value="@product.Description" class="w-100" />
+                    </RadzenCard>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Product" Title="Actions" Width="100px">
+                <Template Context="product">
+                    <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.ExtraSmall" Click="@(args =>ShowInlineDialog1(product))" @onclick:stopPropagation="true">
+                    </RadzenButton>
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.ExtraSmall" class="my-1 ms-1" Click="@(args => ShowConfirmationDialog(product))">
+                    </RadzenButton>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+    
+    
+
+    @code {
+
+    RadzenDataGrid<Product> productGrid;
+    private string searchTerm;
+    private string SearchTerm
+    {
+        get { return searchTerm; }
+        set { searchTerm = value; }
+    }
+    void OnCreateRow(Product product)
+    {
+        productService.Create(product);
+    }
+    void OnUpdateRow(Product product)
+    {
+        productService.Update(product);
+        
+    }
+
+    #region Pagination
+    int totalPages;
+    int totalRecords;
+    int curPage;
+    int pagerSize;
+    int pageSize;
+    int startPage;
+    int endPage;
+    string sortColumnName = "ProductId";
+    string sortDir = "DESC";
+    #endregion
+    protected override async Task OnInitializedAsync()
+    {
+        totalRecords = await productService.Count();
+        products = await productService.ListAll(sortColumnName, sortDir, searchTerm);
+               
+    }
+        bool? isConfirmed;
+        async Task ShowConfirmationDialog(Product product)
+
+        {
+
+            isConfirmed = await DialogService.Confirm($"Are you sure to delete {product.ProductName} from your list? ", "Confirmation", new ConfirmOptions() { OkButtonText = "Yes", CancelButtonText = "No" });
+
+            if (isConfirmed == true)
+            {
+                productService.Delete(product.ProductId);
+                OnInitializedAsync();
+
+            }
+
+        }
+        void ShowNotification(NotificationMessage message)
+        {
+            NotificationService.Notify(message);
+
+        }
+    }
+}
