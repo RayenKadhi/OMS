@@ -39,6 +39,8 @@ builder.Services.AddScoped<IOrderDetails, OMS.Data.OrderDetailsService>();
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<Exemple>();
+builder.Services.AddScoped<IPriceFormattingService, OMS.Data.PriceFormattingService>();
+
 
 
 

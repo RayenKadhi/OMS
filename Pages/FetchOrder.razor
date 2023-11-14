@@ -1,5 +1,7 @@
 ﻿@page "/orderlist"
-
+@using System;
+@using System.Globalization;
+@inject Interfaces.IPriceFormattingService priceFormattingService
 
 @if (Orders == null)
 {
@@ -32,21 +34,27 @@ else
             ShowPagingSummary="true" Data="@(orderDetails)" TItem="OrderDetails" LogicalFilterOperator="LogicalFilterOperator.Or" Style="margin-top:20px" ColumnWidth="150px">
                      <Columns>
         <RadzenDataGridColumn TItem="OrderDetails" Property="ProductName" Title="Product Name" Width="180px"> </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="OrderDetails" Property="UnitPrice" Title="Unit Price" Width="140px"> </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="OrderDetails" Property="Quantity" Title="Quantity" Width="140px"> </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="OrderDetails" Property="UnitPrice" Title="Unit Price" Width="140px">
+                            <Template Context="orderDetails">
+                                @priceFormattingService.FormatPrice(orderDetails.UnitPrice, "tnd")
+                            </Template>
+                        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="OrderDetails" Property="Quantity" Title="Quantity" Width="140px">
+                            
+        </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="OrderDetails" Property="TotalPrice" Title="Total Price" Width="140px">
+                            <Template Context="orderDetails">
+                                @priceFormattingService.FormatPrice(orderDetails.TotalPrice, "tnd")
+                            </Template>
                             <FooterTemplate>
-                                Total: <b>@orderDetails.Sum(o => o.TotalPrice)</b>
+                                Total: @priceFormattingService.FormatPrice(orderDetails.Sum(o => o.TotalPrice), "tnd")
                             </FooterTemplate>
                         </RadzenDataGridColumn>
                     </Columns>
                 </RadzenDataGrid>
             </div>
             }
-    </div>
-            
-
-      
+    </div>      
 }
 
 @code {
@@ -58,6 +66,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        
         Orders = await orderService.ListAll();
         if (Orders.Count > 0)
         {
@@ -80,7 +89,8 @@ else
         if (orderCustomer != null)
         {
             orderDetails = await orderService.ListOrderDetailsPerCus(orderCustomer.OrderId);
-            
+
+
         }
     }
     

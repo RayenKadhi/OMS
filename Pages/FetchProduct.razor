@@ -3,6 +3,8 @@
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 @inject IJSRuntime JSRuntime
 @inject DialogService DialogService
+@inject Interfaces.IPriceFormattingService priceFormattingService
+
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0
 /css/font-awesome.min.css" rel="stylesheet">
 
@@ -235,22 +237,13 @@ else
                     Data="@products" TItem="Product" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" Style="margin-top:20px">
         <Columns>
             <RadzenDataGridColumn TItem="Product" Property="ProductName" Title="Product Name"  Width="160px">
-                <EditTemplate Context="product">
-                    <RadzenCard>
-                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3"></RadzenText>
-                        <RadzenTextBox  @bind-Value="@product.ProductName" class="w-100" />
-                    </RadzenCard>
-                </EditTemplate>
+
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="Product" Property="UnitPrice" Title="UnitPrice" Frozen="true" Width="200px">
-                <EditTemplate Context="product">
-                    <RadzenCard>
-                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3"></RadzenText>
-                        <RadzenNumeric  ShowUpDown="true" @bind-Value="@product.UnitPrice" Format="N2" />
 
-                    </RadzenCard>
-                   
-                </EditTemplate>
+                <Template Context="products">
+                    @priceFormattingService.FormatPrice(products.UnitPrice, "tnd")
+                </Template>
 
             </RadzenDataGridColumn>
             
@@ -277,12 +270,7 @@ else
             </RadzenDataGridColumn>
             
             <RadzenDataGridColumn TItem="Product" Property="Description" Title="Description" Frozen="true" Width="160px">
-                <EditTemplate Context="product">
-                    <RadzenCard>
-                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3"></RadzenText>
-                        <RadzenTextBox  @bind-Value="@product.Description" class="w-100" />
-                    </RadzenCard>
-                </EditTemplate>
+
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="Product" Title="Actions" Width="100px">
                 <Template Context="product">
