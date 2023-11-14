@@ -11,5 +11,7 @@ namespace OMS.Interfaces
         Task<List<Customer>> ListAll(
           string orderBy, string direction, string search);
         Task<List<Customer>> FetchAll();
-    }
+		Task<Customer> GetByIdDetail(int CustomerId);
+		
+	}
 }

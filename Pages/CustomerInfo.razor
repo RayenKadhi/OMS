@@ -1,0 +1,57 @@
+﻿@page "/CustomerInfo/{id:int}"
+
+<style>
+  
+
+    .page-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top:30%;
+    }
+
+    .customer-details {
+        max-width: 400px;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .customer-name {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .customer-email, .customer-mobile, .customer-address {
+        margin-top: 10px;
+        font-size: 1em;
+        color: #555;
+    }
+</style>
+
+<div class="page-container">  
+<div class="customer-details">
+	<p class="customer-name"> Name: @customer.CustomerName</p>
+	@if (!string.IsNullOrEmpty(customer.Email))
+	{
+		<p class="customer-email">Email: @customer.Email</p>
+	}
+	<p class="customer-mobile">Mobile: @customer.Mobile</p>
+	<p class="customer-address">Address: @customer.Address</p>
+</div>
+</div>
+@code {
+	[Parameter]
+	public int id { get; set; }
+
+	Customer customer = new Customer();
+
+	
+
+	protected override async Task OnInitializedAsync()
+	{
+		customer = await customerService.GetByIdDetail(id);
+	}
+}

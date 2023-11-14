@@ -168,7 +168,7 @@
                 <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Danger" />
             </div>
         </EditForm>
-        </RadzenStack>
+            </RadzenStack>
     );
     }
 
@@ -185,23 +185,23 @@
 
         if (string.IsNullOrEmpty(product.ProductName))
         {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Product Name is Required", Duration = 4000 });
+            WarningMessage("Product Name is Required");
             return;
         }
         if (products.FirstOrDefault(p => p.ProductName == product.ProductName && p.ProductId != product.ProductId) != null)
         {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Product name already exists", Duration = 4000 });
+            WarningMessage("Product Name is Required");
             return;
         }
         if (product.UnitPrice < 0)
         {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Unit Price must be positive", Duration = 4000 });
+            WarningMessage("Unit Price Must Be Positive");
             return;
         }
         productService.Create(product);
         OnInitializedAsync();
         DialogService.Close(true);
-        
+
     }
     async Task SaveProduct1(Product product)
     {
@@ -209,23 +209,18 @@
 
         if (string.IsNullOrEmpty(product.ProductName))
         {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Product Name is Required", Duration = 4000 });
-            return;
-        }
-        if (products.FirstOrDefault(p => p.ProductName == product.ProductName && p.ProductId != product.ProductId) != null)
-        {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Product name already exists", Duration = 4000 });
-            return;
-        }
-        if (product.UnitPrice < 0)
-        {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Unit Price must be positive", Duration = 4000 });
-            return;
-        }
-        productService.Update(product);
-        OnInitializedAsync();
-        DialogService.Close(true);
+            WarningMessage("Product Name is Required");
 
+        }else if (products.FirstOrDefault(p => p.ProductName == product.ProductName && p.ProductId != product.ProductId) != null)
+        {
+            WarningMessage("Product Name is Required");
+        }else if (product.UnitPrice < 0)
+        {
+            WarningMessage("Unit Price Must Be Positive");
+        }else
+            productService.Update(product);
+            OnInitializedAsync();
+            DialogService.Close(false);
     }
 }
 
@@ -304,7 +299,7 @@ else
 
     @code {
 
-    RadzenDataGrid<Product> productGrid;
+    RadzenDataGrid <Product> productGrid;
     private string searchTerm;
     private string SearchTerm
     {
@@ -318,32 +313,27 @@ else
     void OnUpdateRow(Product product)
     {
         productService.Update(product);
-        
+
     }
 
-    #region Pagination
-    int totalPages;
     int totalRecords;
-    int curPage;
-    int pagerSize;
-    int pageSize;
-    int startPage;
-    int endPage;
     string sortColumnName = "ProductId";
     string sortDir = "DESC";
-    #endregion
     protected override async Task OnInitializedAsync()
     {
         totalRecords = await productService.Count();
         products = await productService.ListAll(sortColumnName, sortDir, searchTerm);
-               
-    }
-        bool? isConfirmed;
-        async Task ShowConfirmationDialog(Product product)
 
+    }
+    bool? isConfirmed;
+    async Task ShowConfirmationDialog(Product product)
+
+    {
+
+        isConfirmed = await DialogService.Confirm($"Are you sure to delete {product.ProductName} from your list? ", "Confirmation", new ConfirmOptions() { OkButtonText = "Yes", CancelButtonText = "No" });
+        try
         {
 
-            isConfirmed = await DialogService.Confirm($"Are you sure to delete {product.ProductName} from your list? ", "Confirmation", new ConfirmOptions() { OkButtonText = "Yes", CancelButtonText = "No" });
 
             if (isConfirmed == true)
             {
@@ -351,6 +341,14 @@ else
                 OnInitializedAsync();
 
             }
+        }
+        catch (SqlException ex)
+        {
+            if(ex.Number == 547)
+            {
+                WarningMessage($"Product {product.ProductName} has associated orders. You cannot delete this product.");
+            }
+        }
 
         }
         void ShowNotification(NotificationMessage message)
@@ -358,5 +356,9 @@ else
             NotificationService.Notify(message);
 
         }
+    void WarningMessage(string messsage)
+    {
+        ShowNotification(new NotificationMessage { Summary = messsage, Duration = 4000 });
+    }
     }
 }

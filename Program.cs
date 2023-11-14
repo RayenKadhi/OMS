@@ -8,13 +8,14 @@ using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Radzen;
+using OMS.Entities;
 
 
-    // ...
+// ...
 
-    // Add any other Radzen services as needed
+// Add any other Radzen services as needed
 
-    // ...
+// ...
 
 
 
@@ -37,6 +38,7 @@ builder.Services.AddScoped<IProductService, OMS.Data.ProductService>();
 builder.Services.AddScoped<IOrderDetails, OMS.Data.OrderDetailsService>();
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<Exemple>();
 
 
 

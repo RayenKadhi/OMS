@@ -1,11 +1,14 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@inject Exemple Exemple
+
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">OMS</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+    <button class="navbar-toggler" @onclick="Exemple.ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+<div class="@Exemple.NavMenuCssClass" @onclick="Exemple.ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href=""
@@ -36,13 +39,3 @@
     </ul>
 </div>
 
-@code {
-    bool collapseNavMenu = true;
-
-    string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}

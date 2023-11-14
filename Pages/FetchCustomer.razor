@@ -3,6 +3,7 @@
 /css/font-awesome.min.css" rel="stylesheet">
 
 
+
 <style>
     .Add-New-Customer{
         margin-left:45%; 
@@ -38,7 +39,7 @@ else
     else
     {
         <RadzenDataGrid Density="Density.Compact" @ref="customerGrid" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="20" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
-                        Data="@customers" TItem="Customer" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" Style="margin-top:20px">
+                        Data="@customers" TItem="Customer" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" EditMode="DataGridEditMode.Single" Style="margin-top:20px">
                     <Columns>
                         
                         <RadzenDataGridColumn TItem="Customer" Property="CustomerName" Title="Customer Name"  Width="180px">
@@ -70,7 +71,9 @@ else
 
                         <RadzenDataGridColumn TItem="Customer" Title="Actions" Width="100px">
                     <Template Context="customer">
-                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.ExtraSmall" Click="@(args => EditRow(customer))" Disabled="@OnEditing" @onclick:stopPropagation="true">
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.ExtraSmall" Click="@(args => EditRow(customer))"  @onclick:stopPropagation="true">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="info" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.ExtraSmall" class="my-0 ms-1" Click="@((args) => Navigation(customer))">
                         </RadzenButton>
                         <RadzenButton  ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.ExtraSmall" class="my-0 ms-1" Click="@(args => ShowConfirmationDialog(customer))">
                         </RadzenButton>
@@ -101,17 +104,9 @@ else
     }
     
 
-    #region Pagination
-    int totalPages;
     int totalRecords;
-    int curPage;
-    int pagerSize;
-    int pageSize;
-    int startPage;
-    int endPage;
     string sortColumnName = "CustomerId";
     string sortDir = "DESC";
-    #endregion
 
 
     protected override async Task OnInitializedAsync()
@@ -137,7 +132,6 @@ else
             await customerGrid.InsertRow(customerToInsert);
             isButtonDisabled = true;
         }
-        bool OnClickUpdateRow = false;
         bool OnEditing = false;
         async Task EditRow(Customer customer)
         {
@@ -176,6 +170,7 @@ else
                 return;
             }  
             customerGrid.UpdateRow(customer);
+            OnInitializedAsync();
             isButtonDisabled = false;
             OnEditing = false;
 
@@ -198,23 +193,44 @@ else
         }
         bool? isConfirmed;
 
-        async Task ShowConfirmationDialog(Customer customer)
-        
-        {
-            
-            isConfirmed = await DialogService.Confirm($"Are you sure to delete {customer.CustomerName} from your list? ", "Confirmation", new ConfirmOptions() { OkButtonText = "Yes", CancelButtonText = "No" });
 
-            if (isConfirmed == true)
+
+        async Task ShowConfirmationDialog(Customer customer)
+        {
+            if (customer == null)
             {
-                customerService.Delete(customer.CustomerId);
-                OnInitializedAsync();
-                
+                return;
+            }
+
+
+            isConfirmed = await DialogService.Confirm($"Are you sure to delete {customer.CustomerName} from your list? ", "Confirmation", new ConfirmOptions() { OkButtonText = "Yes", CancelButtonText = "No" });
+            try
+            {
+                if (isConfirmed == true)
+                {
+
+                    customerService.Delete(customer.CustomerId);
+                    OnInitializedAsync();
+                }
             } 
+            catch (SqlException ex)
+            {
+                if (ex.Number == 547)
+                {
+                    WarningMessage($"Customer {customer.CustomerName} has associated orders. You cannot delete this customer.");
+                }
+            }
         }
         void ShowNotification(NotificationMessage message)
         {
             NotificationService.Notify(message);
+            OnInitializedAsync();
 
+        } 
+
+        public void Navigation(Customer customer)
+        {
+            navigationManager.NavigateTo($"/CustomerInfo/{customer.CustomerId}");
         }
     }
 }

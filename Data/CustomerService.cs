@@ -78,5 +78,14 @@ namespace OMS.Data
                 null, commandType: CommandType.Text));
             return customers;
         }
-    }
+	
+		public Task<Customer> GetByIdDetail(int id)
+		{
+			var customer = Task.FromResult
+			   (_dapperService.Get<Customer>
+			   ($"SELECT * FROM CustomerDetails WHERE CustomerId = {id}", null,
+			   commandType: CommandType.Text));
+			return customer;
+		}
+	}
 }
