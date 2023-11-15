@@ -1,0 +1,183 @@
+﻿@page "/AddProduct"
+@inject Interfaces.IProductService productService
+<p>Add new product </p>
+<style>
+
+
+    .Add-New-Product {
+        margin-left: 45%;
+    }
+
+    .custom-card {
+        padding: 0.5rem;
+        border-radius: 5px;
+        display: flex;
+        align-items: baseline;
+    }
+
+    .custom-numeric {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid;
+        border-radius: 5px;
+    }
+
+    .custom-card h3 {
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .custom-button-group {
+        padding-top: 1.3rem;
+        display: flex;
+        justify-content: right;
+        gap: 1em;
+    }
+
+    .custom-switch-container {
+        border-radius: 5px;
+        margin: 0.5rem 0;
+        display: flex;
+        align-items: baseline;
+    }
+
+    .custom-switch-label {
+        color: #333;
+        margin: 0;
+        font-size: 1rem;
+        padding-right: 4em;
+    }
+
+    .block h3 {
+        margin-bottom: 15px;
+    }
+
+    .block {
+        gap: 0em;
+    }
+
+    .Available-custom-box {
+        display: flex;
+        padding-top: 1.5em;
+        gap: 2em;
+        margin-left: 2em;
+    }
+
+        .Available-custom-box p {
+            padding-top: 3px;
+        }
+
+    .Picture {
+        height: 1px;
+        width: 1px;
+    }
+
+</style>
+
+
+
+<div class="rz-m-12">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumbItem Path="/productlist" Text="Products" />
+        <RadzenBreadCrumbItem Path="/AddProduct" Text="Add New Product" />
+        <RadzenBreadCrumbItem Icon="add" Text="Add" />
+    </RadzenBreadCrumb>
+</div>
+
+
+
+<div class="block">
+    <div class="custom-card">
+        <RadzenFormField Style="margin-left:5%;width:90%; margin:auto" Text="Product Name ..">
+            <RadzenTextBox Placeholder="Product Name.." @bind-Value=@product.ProductName style="margin-left: 10px;" />
+        </RadzenFormField>
+    </div>
+    <div class="custom-card">
+        <RadzenFormField Style="margin-left:5%; width:90%; margin:auto" Text="Unit Price..">
+            <RadzenNumeric Placeholder="Unit Price.." Class="custom-numeric" ShowUpDown="true" @bind-Value=@product.UnitPrice />
+        </RadzenFormField>
+    </div>
+
+    <div class="custom-switch-container">
+        <RadzenFieldset Style="margin-left:2em; width:87.42857142857143%;height:80px; margin:auto">
+            <div class="Available-custom-box">
+                <p>Availability: </p>
+                <RadzenFormField Style="margin-left:5%; ">
+                    @{
+                        bool switchValue = product.Available == 1;
+                    }
+                    <RadzenSwitch @bind-Value="switchValue" />
+                </RadzenFormField>
+            </div>
+        </RadzenFieldset>
+    </div>
+    <div class="custom-card">
+        <RadzenFormField Style="margin-left:5%; width:90%; margin:auto" Text="Description..">
+            <RadzenTextArea Placeholder="Description.." @bind-Value=@product.Description />
+        </RadzenFormField>
+    </div>
+</div>
+<div class="custom-button-group">
+    <RadzenButton Text="Save" Click="@((args) => SaveProduct1(product))" Style="width: 80px;" ButtonStyle="ButtonStyle.Success" />
+    <RadzenButton Text="Cancel"  ButtonStyle="ButtonStyle.Danger" />
+</div>
+
+
+
+
+
+@code {
+    public bool isAvailable = true;
+    private string searchTerm;
+    private string SearchTerm
+    {
+        get { return searchTerm; }
+        set { searchTerm = value; }
+    }
+    int totalRecords;
+    string sortColumnName = "ProductId";
+    string sortDir = "DESC";
+    protected override async Task OnInitializedAsync()
+    {
+        totalRecords = await productService.Count();
+        products = await productService.ListAll(sortColumnName, sortDir, searchTerm);
+
+    }
+
+    Product product = new Product();
+    List<Product> products;
+
+    async Task SaveProduct1(Product product)
+    {
+        product.Available = isAvailable ? (byte)1 : (byte)0;
+
+        if (string.IsNullOrEmpty(product.ProductName))
+        {
+            WarningMessage("Product Name is Required");
+
+        }
+        else if (products.FirstOrDefault(p => p.ProductName == product.ProductName && p.ProductId != product.ProductId) != null)
+        {
+            WarningMessage("Product Name is Required");
+        }
+        else if (product.UnitPrice < 0)
+        {
+            WarningMessage("Unit Price Must Be Positive");
+        }
+        else
+            productService.Update(product);
+        OnInitializedAsync();
+        DialogService.Close(false);
+    }
+
+    void WarningMessage(string messsage)
+    {
+        ShowNotification(new NotificationMessage { Summary = messsage, Duration = 4000 });
+    }
+
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+
+    }
+}

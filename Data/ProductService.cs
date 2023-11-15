@@ -53,7 +53,7 @@ namespace OMS.Data
         {
             var products = Task.FromResult
                (_dapperService.GetAll<Product>
-               ($"SELECT * FROM [Product] WHERE ProductName like'%{search}%' ORDER BY {orderBy} {direction};", null, commandType: CommandType.Text));
+               ($"SELECT * \r\nFROM PRODUCT p LEFT JOIN Brand b\r\nON p.BrandId = b.BrandId LEFT JOIN Category c ON p.CategoryId = c.CategoryId WHERE ProductName like'%{search}%' ORDER BY {orderBy} {direction};", null, commandType: CommandType.Text));
             return products;
         }
         public Task<int> Update(Product product)

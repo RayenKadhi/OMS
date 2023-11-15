@@ -9,5 +9,10 @@ namespace OMS.Entities
         public string Description { get; set; }
         public byte Available { get; set; }
         public decimal UnitPrice { get; set; }
+        public string BrandName { get; set; }
+        public string CategoryName { get; set; }
+        public int Threshold { get; set; }
+        public string Picture { get; set; }
     }
-}
+} 
+

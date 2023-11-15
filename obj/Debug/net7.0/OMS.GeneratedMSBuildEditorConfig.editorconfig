@@ -20,8 +20,16 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/AddProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkUHJvZHVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/CustomerInfo.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJJbmZvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/EditProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFByb2R1Y3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/FetchCustomer.razor]
@@ -40,6 +48,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Shared/ExampleNav.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEV4YW1wbGVOYXYucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -47,10 +59,6 @@ build_metadata.AdditionalFiles.CssScope =
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-4vyuk25foi
-
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Shared/NavMenu.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = b-a0aax17r5b
 
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s

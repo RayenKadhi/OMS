@@ -21,7 +21,6 @@ C:\Users\Dell-Dev02\source\repos\OMS\OMS\obj\Debug\net7.0\staticwebassets.pack.j
 C:\Users\Dell-Dev02\source\repos\OMS\OMS\obj\Debug\net7.0\staticwebassets.build.json
 C:\Users\Dell-Dev02\source\repos\OMS\OMS\obj\Debug\net7.0\staticwebassets.development.json
 C:\Users\Dell-Dev02\source\repos\OMS\OMS\obj\Debug\net7.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
-C:\Users\Dell-Dev02\source\repos\OMS\OMS\obj\Debug\net7.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
 C:\Users\Dell-Dev02\source\repos\OMS\OMS\obj\Debug\net7.0\scopedcss\bundle\OMS.styles.css
 C:\Users\Dell-Dev02\source\repos\OMS\OMS\obj\Debug\net7.0\scopedcss\projectbundle\OMS.bundle.scp.css
 C:\Users\Dell-Dev02\source\repos\OMS\OMS\obj\Debug\net7.0\OMS.dll

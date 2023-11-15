@@ -10,6 +10,7 @@
 
 <style>
     
+    
     .Add-New-Product {
         margin-left: 45%;
     }
@@ -70,6 +71,12 @@
     .Available-custom-box p{
         padding-top:3px;
     }
+
+    .Picture {
+        height:1px;
+        width:1px;
+    }
+
 </style>
 
 
@@ -237,7 +244,14 @@ else
                     Data="@products" TItem="Product" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" Style="margin-top:20px">
         <Columns>
             <RadzenDataGridColumn TItem="Product" Property="ProductName" Title="Product Name"  Width="160px">
-
+                <Template Context="products">
+                        <RadzenImage Path="@($"data:image/jpeg;base64,{products.Picture}")" style="width: 30px; height: 30px; margin-right: 6px;" />
+                        @products.ProductName
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Product" Property="BrandName" Title="Brand Name" Width="160px">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Product" Property="CategoryName" Title="Category Name" Width="160px">
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="Product" Property="UnitPrice" Title="UnitPrice" Frozen="true" Width="200px">
 
@@ -248,7 +262,7 @@ else
             </RadzenDataGridColumn>
             
             
-            <RadzenDataGridColumn TItem="Product" Property="Available" Title="Available" Frozen="true" Width="200px">
+            @* <RadzenDataGridColumn TItem="Product" Property="Available" Title="Available" Frozen="true" Width="200px">
                 <EditTemplate Context="product">
                     <RadzenCard>
                         <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3"></RadzenText>
@@ -267,9 +281,11 @@ else
                         <div></div>
                     }
                 </Template>
+            </RadzenDataGridColumn> *@
+            <RadzenDataGridColumn TItem="Product" Property="Threshold" Title="Threshold" Width="130px">
             </RadzenDataGridColumn>
             
-            <RadzenDataGridColumn TItem="Product" Property="Description" Title="Description" Frozen="true" Width="160px">
+            <RadzenDataGridColumn TItem="Product" Property="Description" Title="Description" Frozen="true" Width="130px">
 
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="Product" Title="Actions" Width="100px">

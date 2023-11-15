@@ -78,8 +78,6 @@ namespace OMS.Data
             var orderDetails = Task.FromResult(_dapperService
     .GetAll<OrderDetails>($"SELECT ProductName, UnitPrice, Quantity, Quantity * UnitPrice AS TotalPrice FROM OrderDetails LEFT JOIN Product ON Product.ProductId = OrderDetails.ProductId WHERE OrderId = {OrderId};", null, commandType: CommandType.Text));
             return orderDetails;
-
-
         }
         
 
