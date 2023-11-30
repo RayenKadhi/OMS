@@ -20,6 +20,10 @@ namespace OMS.Data
             dbPara.Add("Description", product.Description, DbType.String);
             dbPara.Add("Available", product.Available, DbType.Byte);
             dbPara.Add("UnitPrice", product.UnitPrice, DbType.Decimal);
+            dbPara.Add("CategoryId", product.CategoryId, DbType.Int64);
+            dbPara.Add("BrandId", product.BrandId, DbType.Int64);
+            dbPara.Add("Threshold", product.Threshold, DbType.Int64);
+            dbPara.Add("Picture", product.Picture, DbType.String);
             var ProductId = Task.FromResult
                (_dapperService.Insert<int>("[dbo].[spAddProduct]",
                dbPara, commandType: CommandType.StoredProcedure));
@@ -64,10 +68,32 @@ namespace OMS.Data
             dbPara.Add("Description", product.Description, DbType.String);
             dbPara.Add("Available", product.Available, DbType.Byte);
             dbPara.Add("UnitPrice", product.UnitPrice, DbType.Decimal);
+            dbPara.Add("CategoryId", product.CategoryId, DbType.Int64);
+            dbPara.Add("BrandId", product.BrandId, DbType.Int64);
+            dbPara.Add("Threshold", product.Threshold, DbType.Int64);
+            dbPara.Add("Picture", product.Picture, DbType.String);
             var updateProduct = Task.FromResult
                (_dapperService.Update<int>("[dbo].[spUpdateProduct]",
                dbPara, commandType: CommandType.StoredProcedure));
             return updateProduct;
         }
+        public Task<Product> GetByIdDetail(int id)
+        {
+            var product = Task.FromResult
+               (_dapperService.Get<Product>
+               ($"SELECT * FROM Product WHERE ProductId = {id}", null,
+               commandType: CommandType.Text));
+            return product;
+        }
+        public Task<Product> GetCategoryByName(string CategorytName)
+        {
+            var product = Task.FromResult
+               (_dapperService.Get<Product>
+               ($"select CategoryId from [Category] where CategoryName = '%{CategorytName}'%", null,
+               commandType: CommandType.Text));
+            return product;
+        }
+        
     }
+       
 }

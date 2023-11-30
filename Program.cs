@@ -2,13 +2,15 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using OMS.Interfaces;
-
+using OMS.Data;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Radzen;
 using OMS.Entities;
+using Radzen.Blazor;
+
 
 
 // ...
@@ -28,21 +30,33 @@ builder.Services.AddServerSideBlazor();
 
 
 //Customer service
-builder.Services.AddScoped<ICustomerService, OMS.Data.CustomerService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+//User service
+builder.Services.AddScoped<IUserService, UserService>();
 //Register dapper in scope
-builder.Services.AddScoped<IDapperService, OMS.Data.DapperService>();
+builder.Services.AddScoped<IDapperService, DapperService>();
 //Order service
-builder.Services.AddScoped<IOrderService, OMS.Data.OrderService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 //Product service
-builder.Services.AddScoped<IProductService, OMS.Data.ProductService>();
-builder.Services.AddScoped<IOrderDetails, OMS.Data.OrderDetailsService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderDetails, OrderDetailsService>();
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 
-builder.Services.AddScoped<IPriceFormattingService, OMS.Data.PriceFormattingService>();
+builder.Services.AddScoped<IPriceFormattingService,PriceFormattingService>();
 builder.Services.AddScoped<ExampleService>();
+builder.Services.AddScoped<ThemeService>();
+builder.Services.AddScoped<ContextMenuService>();
+builder.Services.AddScoped<TooltipService>();
+builder.Services.AddScoped<DownloadController>();
+builder.Services.AddScoped<RevenueDataService>();
 
 
+
+
+builder.Services.AddSignalR(e => e.MaximumReceiveMessageSize = 102400000);
+builder.Services.AddScoped<ICategoryService,CategoryService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
 
 var app = builder.Build();
 
@@ -59,6 +73,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.MapControllers();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

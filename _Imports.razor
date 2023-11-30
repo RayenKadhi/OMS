@@ -14,14 +14,31 @@
 @using Radzen
 @using Radzen.Blazor
 @inject NotificationService NotificationService
-@inject Interfaces.IOrderService orderService
+@inject IOrderService orderService
 @using System.ComponentModel.DataAnnotations;
 @using Microsoft.EntityFrameworkCore
 @using System.Text.Json
 @using System.Text.RegularExpressions
-@inject Interfaces.ICustomerService customerService
+@inject ICustomerService customerService
+@inject IUserService userService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
-@inject DialogService DialogService
+@inject DialogService dialogService
 @using Microsoft.Data.SqlClient;
 @using System;
 @using System.Globalization;
+@inject ICategoryService categoryService
+@inject IBrandService brandService
+@inject IPriceFormattingService priceFormattingService
+@using Microsoft.AspNetCore.Components
+@inject IProductService productService
+@inject IDapperService dapperService
+
+
+@using Microsoft.AspNetCore.Mvc;
+@using OfficeOpenXml;
+@using System.Collections.Generic;
+@using System.IO;
+@using System.Linq;
+@using System.Threading.Tasks;
+@using Microsoft.JSInterop
+@using Dapper;

@@ -4,23 +4,17 @@
 
 
 
-<style>
-    .Add-New-Customer{
-        margin-left:45%; 
-    }
-</style>
-
-
-
 
 <div class="row">
     <div class="col-md-6 d-flex align-items-end justify-content-start">
-        <h3> Number of Customers: @totalRecords </h3>
+        <h3> Customers: @totalRecords </h3>
     </div>
     <div class="col-md-6 d-flex align-items-end justify-content-end">
-        <RadzenButton class="Add-New-Customer" Icon="add_circle_outline" Style="background-color:	#FF9900;" Text="Add New Customer" Click="@InsertRow" Disabled="@isButtonDisabled"></RadzenButton>
+        <RadzenButton class="button-Add-New" Icon="add_circle_outline" Style="background-color:	#FF9900;" Text="Add New Customer" Click="@InsertRow" Disabled="@isButtonDisabled"></RadzenButton>
     </div>
 </div>
+
+
 
 
 
@@ -71,18 +65,19 @@ else
 
                         <RadzenDataGridColumn TItem="Customer" Title="Actions" Width="100px">
                     <Template Context="customer">
-                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.ExtraSmall" Click="@(args => EditRow(customer))"  @onclick:stopPropagation="true">
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.ExtraSmall" class="button" Click="@(args => EditRow(customer))"  @onclick:stopPropagation="true">
                         </RadzenButton>
-                        <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="info" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.ExtraSmall" class="my-0 ms-1" Click="@((args) => Navigation(customer))">
+                        <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="info" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.ExtraSmall" class="button-grid" Click="@((args) => Navigation(customer))">
                         </RadzenButton>
-                        <RadzenButton  ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.ExtraSmall" class="my-0 ms-1" Click="@(args => ShowConfirmationDialog(customer))">
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.ExtraSmall" class="button-grid" Click="@((args) => ShowInlineDialog(customer))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="customer">
-                        
-                            <RadzenButton Icon="check" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.ExtraSmall" Click="@((args) => SaveRow(customer))">
+
+                        <RadzenButton Icon="check" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.ExtraSmall" class="button-grid" Click="@((args) => SaveRow(customer))">
                             </RadzenButton>
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="cancel" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.ExtraSmall" class="my-1 ms-1" Click="@(args => CancelEdit(customer))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="cancel" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.ExtraSmall" class="button-grid" Click="@(args => CancelEdit(customer))">
                             </RadzenButton>
                         
                     </EditTemplate>
@@ -91,7 +86,7 @@ else
                 </RadzenDataGrid>
          } 
 }
-
+@implements IDisposable
    
 @code {
  
@@ -114,14 +109,21 @@ else
         totalRecords = await customerService.Count();
         customers = await customerService.ListAll( sortColumnName, sortDir, searchTerm);
     }
+    public void Dispose()
+    {
+        if (dialogService != null && dialogService.Close != null)
+        {
+            dialogService.Close();
+        }
+    }
 
-    @code {
+    
         Customer customerToInsert;
         Customer customerToUpdate;
         void Reset()
         {
             customerToInsert = null;
-            customerToInsert = null;
+            customerToUpdate = null;
         }
         RadzenDataGrid<Customer> customerGrid;
 
@@ -132,12 +134,10 @@ else
             await customerGrid.InsertRow(customerToInsert);
             isButtonDisabled = true;
         }
-        bool OnEditing = false;
         async Task EditRow(Customer customer)
         {
             customerToUpdate = customer;
             await customerGrid.EditRow(customer);
-            OnEditing = true;
 
         }
 
@@ -157,31 +157,35 @@ else
             if (string.IsNullOrEmpty(customer.CustomerName))
             {
                 WarningMessage("Customer Name is Required");
-                return;
+            isButtonDisabled = false;
+            return ;
             }
             if (customers.FirstOrDefault(c => c.CustomerName == customer.CustomerName && c.CustomerId != customer.CustomerId) != null)
             {
                 WarningMessage("Customer Name already exists");
-                return;
+            isButtonDisabled = false;
+            return;
+           
             }
             if (!string.IsNullOrEmpty(customer.Email) && !IsValidEmail(customer.Email))
             {
                 WarningMessage("Provide a valid email");
-                return;
-            }  
+            isButtonDisabled = false;
+            return;
+            } 
             customerGrid.UpdateRow(customer);
             OnInitializedAsync();
             isButtonDisabled = false;
-            OnEditing = false;
 
         }
         void OnCreateRow(Customer customer)
         {
+         
             customerService.Create(customer);
         }
         void OnUpdateRow(Customer customer)
         {
-            Reset();
+         
             customerService.Update(customer);
         }
         void CancelEdit(Customer customer)
@@ -189,38 +193,12 @@ else
             customerGrid.CancelEditRow(customer);
             isButtonDisabled = false;
             OnInitializedAsync();
-            OnEditing = false;
         }
         bool? isConfirmed;
 
 
 
-        async Task ShowConfirmationDialog(Customer customer)
-        {
-            if (customer == null)
-            {
-                return;
-            }
-
-
-            isConfirmed = await DialogService.Confirm($"Are you sure to delete {customer.CustomerName} from your list? ", "Confirmation", new ConfirmOptions() { OkButtonText = "Yes", CancelButtonText = "No" });
-            try
-            {
-                if (isConfirmed == true)
-                {
-
-                    customerService.Delete(customer.CustomerId);
-                    OnInitializedAsync();
-                }
-            } 
-            catch (SqlException ex)
-            {
-                if (ex.Number == 547)
-                {
-                    WarningMessage($"Customer {customer.CustomerName} has associated orders. You cannot delete this customer.");
-                }
-            }
-        }
+        
         void ShowNotification(NotificationMessage message)
         {
             NotificationService.Notify(message);
@@ -232,5 +210,42 @@ else
         {
             navigationManager.NavigateTo($"/CustomerInfo/{customer.CustomerId}");
         }
+
+    async Task Delete(Customer customer)
+    {
+        
+        if (customer == null)
+        {
+            return;
+        }
+        try
+        {
+                await customerService.Delete(customer.CustomerId);
+                dialogService.Close(true);
+                await OnInitializedAsync();
+            
+        }
+        catch (SqlException ex)
+        {
+            if (ex.Number == 547)
+            {
+                WarningMessage($"Customer {customer.CustomerName} has associated orders. You cannot delete this customer.");
+            }
+        }
     }
+
+    async Task ShowInlineDialog(Customer customer)
+    {
+        var result = await dialogService.OpenAsync("Confirmation", ds =>
+    @<RadzenStack Gap="1.5rem">
+        <p>Are you sure to delete <b>@customer.CustomerName</b> from your list?</p>
+            <div class="custom-button-group">
+                <RadzenButton Text="Ok" Click="((args) => Delete(customer))" Style="width: 80px;" ButtonStyle="ButtonStyle.Success" />
+                <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Danger" />
+            </div>
+    </RadzenStack>);
+    }
+   
+   
+    
 }

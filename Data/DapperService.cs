@@ -30,7 +30,7 @@ namespace OMS.Data
                commandType: commandType).FirstOrDefault();
         }
         public List<T> GetAll<T>(string sp, DynamicParameters parms,
-           CommandType commandType = CommandType.StoredProcedure)
+           CommandType commandType = CommandType.Text)
         {
             using IDbConnection db = new SqlConnection
                (_config.GetConnectionString("DefaultConnection"));
@@ -43,6 +43,12 @@ namespace OMS.Data
             using IDbConnection db = new SqlConnection
                (_config.GetConnectionString("DefaultConnection"));
             return db.Execute(sp, parms, commandType: commandType);
+        }
+        public T ExecuteScalar<T>(string query, DynamicParameters parameters = null,
+        CommandType commandType = CommandType.Text)
+        {
+            using IDbConnection db = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+            return db.ExecuteScalar<T>(query, parameters, commandType: commandType);
         }
         public T Insert<T>(string sp, DynamicParameters parms,
            CommandType commandType = CommandType.StoredProcedure)

@@ -3,16 +3,22 @@
 @using System.Globalization;
 @inject Interfaces.IPriceFormattingService priceFormattingService
 
+
+
+<p class="page-title">Orders Details</p>
+ 
+
+
 @if (Orders == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <div style="display: flex; gap: 20px;">
-    <div style="flex: 1;">
+    <div class="d-flex flex-row">
+        <div class="p-2">
             <RadzenDataGrid @ref="OrderRef" Density="Density.Compact" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="20" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-            ShowPagingSummary="true" Data="@Orders" TItem="OrderCustomer" LogicalFilterOperator="LogicalFilterOperator.Or" Style="margin-top:20px" ColumnWidth="200px" RowSelect="@(args => { orderCustomer = args; UpdateOrderDetails(); })">
+            ShowPagingSummary="true" Data="@Orders" TItem="OrderCustomer" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="200px" RowSelect="@(args => { orderCustomer = args; UpdateOrderDetails(); })">
         <Columns>
 
             <RadzenDataGridColumn TItem="OrderCustomer" Property="CustomerName" Title="Customer Name" Width="180px">
@@ -29,7 +35,12 @@ else
      
          @if (orderCustomer != null)
             {
-            <div style="flex: 0.5;">
+            <div class="p-2">
+            <RadzenCard>
+                <p>Customer: </p>
+                <b>@orderCustomer.CustomerName</b>
+            </RadzenCard>
+            <div >
                 <RadzenDataGrid Density="Density.Compact" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="20" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" 
             ShowPagingSummary="true" Data="@(orderDetails)" TItem="OrderDetails" LogicalFilterOperator="LogicalFilterOperator.Or" Style="margin-top:20px" ColumnWidth="150px">
                      <Columns>
@@ -52,11 +63,12 @@ else
                         </RadzenDataGridColumn>
                     </Columns>
                 </RadzenDataGrid>
+                </div>
             </div>
             }
     </div>      
 }
-
+@implements IDisposable
 @code {
     RadzenDataGrid<OrderCustomer> OrderRef;
 
@@ -73,6 +85,17 @@ else
             orderCustomer = Orders.FirstOrDefault();
             orderDetails = await orderService.ListOrderDetailsPerCus(orderCustomer.OrderId);
 
+        }
+    }
+    public void Dispose()
+    {
+        if (Orders != null)
+        {
+            foreach (var product in Orders)
+            {
+                (product as IDisposable)?.Dispose();
+            }
+            Orders = null;
         }
     }
 

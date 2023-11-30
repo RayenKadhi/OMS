@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets\\OMS.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\Product.png",
+      "PackagePath": "staticwebassets\\Images\\Product.png"
+    },
+    {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\customer.png",
+      "PackagePath": "staticwebassets\\Images\\customer.png"
+    },
+    {
       "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
     },
@@ -51,6 +59,10 @@
     {
       "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\export.js",
+      "PackagePath": "staticwebassets\\export.js"
     },
     {
       "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\favicon.png",

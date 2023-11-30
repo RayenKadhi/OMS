@@ -1,11 +1,29 @@
-﻿using OMS.Entities;
+﻿using System;
+using System.Linq;
+using System.Web;
+using Microsoft.AspNetCore.Components;
 
 namespace OMS.Interfaces
-{   public class ThemeService
+{
+    public class ThemeService
     {
+        public class Theme
+        {
+            public string Text { get; set; }
+            public string Value { get; set; }
+            public string Primary { get; set; }
+            public string Secondary { get; set; }
+            public string Base { get; set; }
+            public string Header { get; set; }
+            public string Sidebar { get; set; }
+            public string Content { get; set; }
+            public string TitleText { get; set; }
+            public string ContentText { get; set; }
+            public bool Premium { get; set; }
+        }
         public static readonly Theme[] Themes = new[]
         {
-            new Theme() {
+            new Theme {
                 Text = "Material 3",
                 Value = "material3",
                 Premium = true,
@@ -18,7 +36,7 @@ namespace OMS.Interfaces
                 TitleText = "#1b1d20",
                 ContentText = "#1b1d20"
             },
-            new Theme() {
+            new Theme {
                 Text = "Material 3 Dark",
                 Value = "material3-dark",
                 Premium = true,
@@ -31,7 +49,7 @@ namespace OMS.Interfaces
                 TitleText = "#e0e0e9",
                 ContentText = "#e0e0e9"
             },
-            new Theme() {
+            new Theme {
                 Text = "Material",
                 Value = "material",
                 Primary = "#4340d2",
@@ -43,7 +61,7 @@ namespace OMS.Interfaces
                 TitleText = "#212121",
                 ContentText = "#bdbdbd"
             },
-            new Theme() {
+            new Theme {
                 Text = "Material Dark",
                 Value = "material-dark",
                 Premium = true,
@@ -56,7 +74,7 @@ namespace OMS.Interfaces
                 TitleText = "#ffffff",
                 ContentText = "#a0a0a0"
             },
-            new Theme() {
+            new Theme {
                 Text = "Fluent",
                 Value = "fluent",
                 Premium = true,
@@ -69,7 +87,7 @@ namespace OMS.Interfaces
                 TitleText = "black",
                 ContentText = "black"
             },
-            new Theme () {
+            new Theme {
                 Text = "Fluent Dark",
                 Value = "fluent-dark",
                 Premium = true,
@@ -82,7 +100,7 @@ namespace OMS.Interfaces
                 TitleText = "#ffffff",
                 ContentText = "#d6d6d6"
             },
-            new Theme () {
+            new Theme {
                 Text = "Standard",
                 Value = "standard",
                 Primary = "#1151f3",
@@ -94,7 +112,7 @@ namespace OMS.Interfaces
                 TitleText = "#262526",
                 ContentText = "#afafb2"
             },
-            new Theme () {
+            new Theme {
                 Text = "Default",
                 Value = "default",
                 Primary = "#ff6d41",
@@ -106,7 +124,7 @@ namespace OMS.Interfaces
                 TitleText = "#28363c",
                 ContentText = "#95a4a8"
             },
-            new Theme () {
+            new Theme {
                 Text = "Dark",
                 Value="dark",
                 Primary = "#ff6d41",
@@ -118,7 +136,7 @@ namespace OMS.Interfaces
                 TitleText = "#ffffff",
                 ContentText = "#a8b4b8"
             },
-            new Theme () {
+            new Theme {
                 Text = "Humanistic",
                 Value = "humanistic",
                 Primary = "#d64d42",
@@ -130,7 +148,7 @@ namespace OMS.Interfaces
                 TitleText = "#2b3a50",
                 ContentText = "#7293b6"
             },
-            new Theme () {
+            new Theme {
                 Text = "Software",
                 Value = "software",
                 Primary = "#598087",
@@ -143,7 +161,29 @@ namespace OMS.Interfaces
                 ContentText = "#95a4a8"
             }
         };
-    }
-    
 
+        public const string DefaultTheme = "material3";
+        public const string QueryParameter = "theme";
+
+        public string CurrentTheme { get; set; } = DefaultTheme;
+
+        public void Initialize(NavigationManager navigationManager)
+        {
+            var uri = new Uri(navigationManager.ToAbsoluteUri(navigationManager.Uri).ToString());
+            var query = HttpUtility.ParseQueryString(uri.Query);
+            var value = query.Get(QueryParameter);
+
+            if (Themes.Any(theme => theme.Value == value))
+            {
+                CurrentTheme = value;
+            }
+        }
+
+        public void Change(NavigationManager navigationManager, string theme)
+        {
+            var url = navigationManager.GetUriWithQueryParameter(QueryParameter, theme);
+
+            navigationManager.NavigateTo(url, true);
+        }
+    }
 }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "56wOKjTFfX57sl2SkliiO/y2gCZ45gRm5uavTbG2EFw=",
+  "Hash": "pJqSGzWzhalCi5by5D8icTMG+xN0LSMD7TWgODx2Hiw=",
   "Source": "OMS",
   "BasePath": "_content/OMS",
   "Mode": "Default",
@@ -816,6 +816,23 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
+      "Identity": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\export.js",
+      "SourceId": "OMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\",
+      "BasePath": "_content/OMS",
+      "RelativePath": "export.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\export.js"
+    },
+    {
       "Identity": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\favicon.png",
       "SourceId": "OMS",
       "SourceType": "Discovered",
@@ -831,6 +848,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.png"
+    },
+    {
+      "Identity": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\customer.png",
+      "SourceId": "OMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\",
+      "BasePath": "_content/OMS",
+      "RelativePath": "Images/customer.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\customer.png"
+    },
+    {
+      "Identity": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\Product.png",
+      "SourceId": "OMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\",
+      "BasePath": "_content/OMS",
+      "RelativePath": "Images/Product.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\Product.png"
     }
   ]
 }
