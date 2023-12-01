@@ -78,6 +78,11 @@
             WarningMessage("Username already exists");
             return;
         }
+        if (!string.IsNullOrEmpty(user.Email) && !IsValidEmail(user.Email))
+        {
+            WarningMessage("Provide a valid email");
+            return;
+        }
         if (string.IsNullOrEmpty(user.Password))
         {
             WarningMessage("Password is Required");
@@ -114,5 +119,10 @@
     public void Navigation()
     {
         navigationManager.NavigateTo("/login");
+    }
+    bool IsValidEmail(string email)
+    {
+        Regex emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase);
+        return emailRegex.IsMatch(email);
     }
 }
