@@ -57,9 +57,13 @@
                     <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
                         <RadzenSidebarToggle Style="color: #544a48;" Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })">
                         </RadzenSidebarToggle>
-                        <RadzenLabel @onclick="Navigation" Text="OMS" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                        <RadzenLabel style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"/>
+                            <RadzenLabel @onclick="Navigation" Text="OMS" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                             <RadzenImage Path="/Images/customer.png" style="width: 35px; height: 35px; border-radius: 16px; margin-right: 6px;" />
                             <b style="font-weight:bold;">OMS</b>
+                            <div style="position: absolute; top: 0; right: 0; margin-top: 8px; margin-right: 8px;">
+                                <span>@user</span>
+                            </div>
                         </RadzenLabel>
                     </RadzenStack>
                 </RadzenColumn>
@@ -229,12 +233,16 @@
 
 @code {
     User userInfo = new User();
+
     RadzenSidebar sidebar0;
     RadzenBody body0;
     bool sidebarExpanded = true;
     bool bodyExpanded = false;
     bool rendered;
+    bool keyExists = false;
 
+   string user;
+ 
     string IsScrollableContent(bool sidebar)
     {
         return sidebar == true ? "scrollable-content" : string.Empty;
@@ -245,27 +253,34 @@
     }
 
     IEnumerable<Example> examples;
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        ThemeService.Initialize(UriHelper);
-
         examples = ExampleService.Examples;
+
+        ThemeService.Initialize(UriHelper);
 
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
     }
-    bool keyExists = false;
+
+
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            rendered = true;
-            keyExists = await localStorage.ContainKeyAsync("UserInfo"); 
-            if (keyExists == null)
+            user = await localStorage.GetItemAsync<string>("UserInfo");
+            Console.WriteLine(user);
+            keyExists = await localStorage.ContainKeyAsync("UserInfo");
+            if (!keyExists)
             {
-                navigationManager.NavigateTo("/login");
+               navigationManager.NavigateTo("/login");
             }
+            rendered = true;
+            
         }
     }
+
+    
     private string term = string.Empty;
 
     void FilterPanelMenu(ChangeEventArgs args)
@@ -285,13 +300,6 @@
     {
         navigationManager.NavigateTo("/");
     }
-  
    
-    private List<string> loadedData = new List<string>();
-    private bool loading = true;
-
  
-   
-   
-
 }

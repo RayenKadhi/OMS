@@ -10,17 +10,15 @@
         DeleteLocalStorage();
 
         navigationManager.NavigateTo("/login");
-
+        
     }
     public void Dispose()
     {
-        
     }
 
     public async void DeleteLocalStorage()
     {
         userInfo = new User();
         await localStorage.ClearAsync();
-        navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 }
