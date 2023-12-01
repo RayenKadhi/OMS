@@ -1,0 +1,93 @@
+﻿@page "/registration"
+
+
+<style>
+    .rz-card {
+        padding: 0;
+    }
+</style>
+
+
+
+<RadzenCard class="rz-background-color-white rz-color-black rz-shadow-0 rz-border-radius-0 rz-p-2" style="margin: 0rem; margin-top: 1.5em;">
+<div class="d-flex justify-content-center">
+    <RadzenRow Gap="1rem">
+        <RadzenColumn Size="12" SizeSM="12">
+            <RadzenStack>
+                    <RadzenFormField  Text="Username">
+                        <RadzenTextBox @bind-value="@user.Username" />
+                    </RadzenFormField>
+                    <RadzenFormField  Text="Email">
+                        <RadzenTextBox @bind-value="@user.Email" />
+                    </RadzenFormField>
+                    <RadzenFormField  Text ="Password">
+                        <RadzenTextBox @bind-value="@user.Password" />
+                    </RadzenFormField>
+            </RadzenStack>
+        </RadzenColumn>
+        </RadzenRow>
+        </div>
+
+    <div class="custom-button-group" style="margin-top: 2em; padding-top: 0em; margin-right:11em; margin-bottom:1em;">
+    <RadzenButton Text="Register"  Click="@((args)=>SaveUser(user))" Icon="done"  ButtonStyle="ButtonStyle.Success" class="button-save-cancel" />
+    </div>
+</RadzenCard>
+
+
+
+
+
+
+
+
+@code {
+
+    List<User> users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await userService.ListAll();
+    }
+    User user = new User();
+
+    async Task SaveUser(User user)
+    {
+        if (string.IsNullOrEmpty(user.Username))
+        {
+            WarningMessage("Username is Required");
+            return;
+        }
+        if (users.FirstOrDefault(u => u.Username == user.Username) != null)
+        {
+            WarningMessage("Username already exists");
+            return;
+        }
+        if (string.IsNullOrEmpty(user.Password))
+        {
+            WarningMessage("Password is Required");
+            return;
+        }
+        await userService.Create(user);
+        SuccessMessage("User Is Registetred");
+        navigationManager.NavigateTo("/");
+    }
+
+    void WarningMessage(string messsage)
+    {
+        ShowNotification(new NotificationMessage { Summary = messsage, Duration = 4000 });
+    }
+
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+    }
+    void SuccessMessage(string messsage)
+    {
+        ShowNotificationSuccess(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = messsage, Duration = 4000 });
+    }
+    void ShowNotificationSuccess(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+
+    }
+}

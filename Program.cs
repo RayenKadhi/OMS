@@ -10,6 +10,7 @@ using System;
 using Radzen;
 using OMS.Entities;
 using Radzen.Blazor;
+using Blazored.LocalStorage;
 
 
 
@@ -28,6 +29,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
+builder.Services.AddBlazoredLocalStorage();
+
 
 //Customer service
 builder.Services.AddScoped<ICustomerService, CustomerService>();
@@ -42,6 +45,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderDetails, OrderDetailsService>();
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<HttpClient>();
 
 builder.Services.AddScoped<IPriceFormattingService,PriceFormattingService>();
 builder.Services.AddScoped<ExampleService>();

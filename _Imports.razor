@@ -27,6 +27,7 @@
 @using System;
 @using System.Globalization;
 @inject ICategoryService categoryService
+@inject IUserService userService
 @inject IBrandService brandService
 @inject IPriceFormattingService priceFormattingService
 @using Microsoft.AspNetCore.Components
@@ -40,5 +41,9 @@
 @using System.IO;
 @using System.Linq;
 @using System.Threading.Tasks;
-@using Microsoft.JSInterop
 @using Dapper;
+@using static System.Runtime.InteropServices.JavaScript.JSType;
+@using System.Configuration;
+@using Blazored.LocalStorage;
+
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;

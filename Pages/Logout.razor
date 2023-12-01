@@ -1,0 +1,26 @@
+﻿@page "/logout"
+
+
+
+@implements IDisposable
+@code {
+    User userInfo = new User();
+    protected override async Task OnInitializedAsync()
+    {
+        DeleteLocalStorage();
+
+        navigationManager.NavigateTo("/login");
+
+    }
+    public void Dispose()
+    {
+        
+    }
+
+    public async void DeleteLocalStorage()
+    {
+        userInfo = new User();
+        await localStorage.ClearAsync();
+        navigationManager.NavigateTo(navigationManager.Uri, true);
+    }
+}

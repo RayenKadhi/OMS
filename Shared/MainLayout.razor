@@ -5,6 +5,7 @@
 @inject ThemeService ThemeService
 @inject NavigationManager UriHelper
 @inject IJSRuntime JSRuntime
+@inject HttpClient httpClient
 
 
 <style>
@@ -132,7 +133,10 @@
     <RadzenText style="color: var(--rz-on-info-lighter);">Browse components with a free theme by selecting one from the dropdown above. </RadzenText>
     </RadzenAlert>
     } *@
-    @Body
+
+     @Body
+        
+
     @* <RadzenCard Class="rz-mt-12 rz-display-block rz-display-md-none">
     <RadzenRow AlignItems="AlignItems.Center" Gap="0px">
     <RadzenColumn Size="12" SizeMD="7" Class="rz-px-8 rz-py-5 rz-text-align-center rz-text-align-md-start">
@@ -175,42 +179,43 @@
     </RadzenContentContainer>
     </ChildContent> *@
     </RadzenBody>
-    
-
-    <RadzenSidebar @ref="@sidebar0" @bind-Expanded="@sidebarExpanded" Class="demos-sidebar" style="display: flex; flex-direction: column;" >
-        <div style="padding: 1rem">
-            <RadzenTextBox Placeholder="Search.." type="search" @oninput="@FilterPanelMenu"   style="width: 100%" Class="rz-search-input" />
-        </div>
-        <div style="flex: 1; overflow: auto">
-            <RadzenPanelMenu Match="NavLinkMatch.Prefix">
-                @foreach (var category in examples)
-                {
-                    <RadzenPanelMenuItem Text=@category.Name Path=@category.Path Icon=@category.Icon @bind-Expanded=@category.Expanded Example=@category>
-                        @if (category.Children != null)
-                        {
-                            @foreach (var example in category.Children)
+   
+        <RadzenSidebar @ref="@sidebar0" @bind-Expanded="@sidebarExpanded" Class="demos-sidebar" style="display: flex; flex-direction: column;">
+            <div style="padding: 1rem">
+                <RadzenTextBox Placeholder="Search.." type="search" @oninput="@FilterPanelMenu" style="width: 100%" Class="rz-search-input" />
+            </div>
+            <div style="flex: 1; overflow: auto">
+                <RadzenPanelMenu Match="NavLinkMatch.Prefix">
+                    @foreach (var category in examples)
+                    {
+                        <RadzenPanelMenuItem Text=@category.Name Path=@category.Path Icon=@category.Icon @bind-Expanded=@category.Expanded Example=@category>
+                            @if (category.Children != null)
                             {
-                                if (example.Children != null)
+                                @foreach (var example in category.Children)
                                 {
-                                    <RadzenPanelMenuItem Text=@example.Name Path=@example.Path Icon=@example.Icon @bind-Expanded=@example.Expanded Example=@example>
-                                        @foreach (var child in example.Children)
-                                        {
-                                            <RadzenPanelMenuItem Text=@child.Name Path=@child.Path Icon=@child.Icon @bind-Expanded=@child.Expanded Example=@child />
-                                        }
-                                    </RadzenPanelMenuItem>
-                                }
-                                else
-                                {
-                                    <RadzenPanelMenuItem Text=@example.Name Path=@example.Path Icon=@example.Icon @bind-Expanded=@example.Expanded Example=@example />
+                                    if (example.Children != null)
+                                    {
+                                        <RadzenPanelMenuItem Text=@example.Name Path=@example.Path Icon=@example.Icon @bind-Expanded=@example.Expanded Example=@example>
+                                            @foreach (var child in example.Children)
+                                            {
+                                                <RadzenPanelMenuItem Text=@child.Name Path=@child.Path Icon=@child.Icon @bind-Expanded=@child.Expanded Example=@child />
+                                            }
+                                        </RadzenPanelMenuItem>
+                                    }
+                                    else
+                                    {
+                                        <RadzenPanelMenuItem Text=@example.Name Path=@example.Path Icon=@example.Icon @bind-Expanded=@example.Expanded Example=@example />
+                                    }
                                 }
                             }
-                        }
-                    </RadzenPanelMenuItem>
-                }
-            </RadzenPanelMenu>
-        </div>
+                        </RadzenPanelMenuItem>
+                    }
+                </RadzenPanelMenu>
+            </div>
+        </RadzenSidebar>
+  
 
-    </RadzenSidebar>
+    
  
 
 </RadzenLayout>
@@ -223,6 +228,7 @@
 }
 
 @code {
+    User userInfo = new User();
     RadzenSidebar sidebar0;
     RadzenBody body0;
     bool sidebarExpanded = true;
@@ -247,12 +253,17 @@
 
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
     }
-
-    protected override void OnAfterRender(bool firstRender)
+    bool keyExists = false;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             rendered = true;
+            keyExists = await localStorage.ContainKeyAsync("UserInfo"); 
+            if (keyExists == null)
+            {
+                navigationManager.NavigateTo("/login");
+            }
         }
     }
     private string term = string.Empty;
@@ -274,5 +285,13 @@
     {
         navigationManager.NavigateTo("/");
     }
+  
+   
+    private List<string> loadedData = new List<string>();
+    private bool loading = true;
+
+ 
+   
+   
 
 }

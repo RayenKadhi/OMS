@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "uuuFoMkhoY2RCsDsSJ0VBQf6W32l8B+jgJ8kcUshPSNbbydMdru3HEbKLTp13wFptqcJVzQZMrzCd+nqCWlIiA==",
+  "dgSpecHash": "mTBrKIVHp0iGZS+x8/oEOB0s6H4Y+aR0h8QD+8Q+X1Bef3X3zLMhS4UGIwfpBzFjQRN5a216hCyzfWJOKEEsYQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\OMS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\Dell-Dev02\\.nuget\\packages\\blazored.localstorage\\4.4.0\\blazored.localstorage.4.4.0.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\dapper\\2.1.15\\dapper.2.1.15.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\dartsassbuilder\\1.0.0\\dartsassbuilder.1.0.0.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\documentformat.openxml\\3.0.0\\documentformat.openxml.3.0.0.nupkg.sha512",

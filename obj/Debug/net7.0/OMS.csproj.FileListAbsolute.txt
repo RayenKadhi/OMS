@@ -79,3 +79,4 @@ C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\runtimes\win\lib\net7.
 C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\DocumentFormat.OpenXml.dll
 C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\DocumentFormat.OpenXml.Framework.dll
 C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\System.IO.Packaging.dll
+C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\Blazored.LocalStorage.dll

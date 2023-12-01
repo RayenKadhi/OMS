@@ -16,7 +16,7 @@ namespace OMS.Data
         public Task<int> Create(User user)
         {
             var dbPara = new DynamicParameters();
-            dbPara.Add("UserName", user.Username, DbType.String);
+            dbPara.Add("Username", user.Username, DbType.String);
             dbPara.Add("Email", user.Email, DbType.String);
             dbPara.Add("Password", user.Password, DbType.String);
             dbPara.Add("Suspended", user.Suspended, DbType.String);
@@ -40,6 +40,13 @@ namespace OMS.Data
                (_dapperService.Update<int>("[dbo].[spUpdateUser]",
                dbPara, commandType: CommandType.StoredProcedure));
             return updateUser;
+        }
+        public Task<List<User>> ListAll()
+        {
+            var users = Task.FromResult
+               (_dapperService.GetAll<User>
+               ($"SELECT * FROM [User]", null, commandType: CommandType.Text));
+            return users;
         }
 
     }

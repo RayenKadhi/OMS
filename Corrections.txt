@@ -1,0 +1,68 @@
+Search : 
+
+
+Count product modifies selon search
+'RO' + Available 
+
+Product interface: 
++Initial Quantity 
+
+
+Add Product interface: 
++Initial Quantity 
+
+Design Advanced Search : 
+Background white sans bordure-radius 
++titre advaced search
+nafs lespacement 
+
+Sans select : category et brand 
+initial quantity** 
+initial quantity bin unit price w threshold 
+
+
+Search button with title top right 
+na9es fl padding 5 wela 10 
+search ba7dha button add 
+export excel top right 
+
+Export button : 
+
+Product id + brand + category ids delete 
+order column + initial quantity 
+initial quantity bin unit price w threshold 
+picture delete 
+color titre 
+auto resize column 
+Sans Name (les column) 
+titre products_date/id
+
+Dahobord:
+
+Dashobrd 1)
+sum per month
+Date bel anglais 
+
+2022 par default
++titre 
+
+Dashobrd 2)
++titre
++les valeurs 
+changement de couleur (pastel) 
+
+Dashobrd 3)
++titre
++les valeurs (a droite) 
+changement de couleur
+nkabr axe des x  
+CREATE FUNCTION Function_TopCustomers() 3 w 5 w 10 (par default 5 ) 
+
+dashbord code ) 
+
+isolé les trois graphiques (razor) 
+requete parametré 
+les trois requetes views 
+
+
+
