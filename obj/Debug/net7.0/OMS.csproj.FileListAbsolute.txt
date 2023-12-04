@@ -80,3 +80,6 @@ C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\DocumentFormat.OpenXml
 C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\DocumentFormat.OpenXml.Framework.dll
 C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\System.IO.Packaging.dll
 C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\Blazored.LocalStorage.dll
+C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\Corvus.Extensions.Newtonsoft.Json.dll
+C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\Corvus.Json.Abstractions.dll
+C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\Newtonsoft.Json.dll

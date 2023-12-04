@@ -232,3 +232,21 @@ a, .btn-link {
     margin-bottom: 0.1em;
     margin-right: 1em;
 }
+
+@keyframes connected {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.connected {
+    animation: connected 2s infinite;
+}

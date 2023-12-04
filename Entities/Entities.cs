@@ -104,5 +104,8 @@ namespace OMS.Entities
         public string ConfirmPassword { get; set; }
         public byte Suspended { get; set; }  
         public string LastLoginDate { get; set; }
+        public string ActualPassword { get; set; }
+        public string NewPassword { get; set; }
+        public string NewUserName { get; set; }
     }
 }

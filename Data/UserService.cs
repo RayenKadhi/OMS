@@ -48,6 +48,14 @@ namespace OMS.Data
                ($"SELECT * FROM [User]", null, commandType: CommandType.Text));
             return users;
         }
+        public Task<User> GetById(int id)
+        {
+            var user = Task.FromResult
+               (_dapperService.Get<User>
+               ($"select * from [User] where UserId = {id}", null,
+               commandType: CommandType.Text));
+            return user;
+        }
 
     }
 }

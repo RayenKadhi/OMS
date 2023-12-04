@@ -17,7 +17,7 @@
                 Login
             </RadzenText>
             <RadzenTemplateForm Data=@("SimpleLogin")>
-            <RadzenLogin AllowRegister="true" Register="@(args => OnRegistring())" AllowResetPassword="false" Login="@(args => HandleSubmit(args))" />
+                <RadzenLogin AllowRegister="true" ResetPassword="@OnResetPassword" Register="@(args => OnRegistring())" AllowResetPassword="true" Login="@(args => HandleSubmit(args))" />
             </RadzenTemplateForm>
         </RadzenCard>
     </RadzenColumn>
@@ -66,10 +66,6 @@
             return;
         }
      
-            
-            
-
-       
 
     }
     public void OnRegistring()
@@ -85,6 +81,10 @@
     void ShowNotification(NotificationMessage message)
     {
         NotificationService.Notify(message);
+    }
+    void OnResetPassword()
+    {
+        navigationManager.NavigateTo("/resetpassword");
     }
 }
 

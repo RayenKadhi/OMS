@@ -64,7 +64,12 @@ namespace OMS.Interfaces
                     Icon = "assessment"
                 },
             } },
-
+        new Example()
+        {
+            Name = "Profile",
+            Path = "/settings",
+            Icon = "account_circle"
+        },
         new Example()
         {
             Name = "Logout",

@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\Images\\customer.png"
     },
     {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\status-connected.png",
+      "PackagePath": "staticwebassets\\Images\\status-connected.png"
+    },
+    {
       "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
     },

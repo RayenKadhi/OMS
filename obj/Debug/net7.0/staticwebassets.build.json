@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pJqSGzWzhalCi5by5D8icTMG+xN0LSMD7TWgODx2Hiw=",
+  "Hash": "emP8Tx+VcB1OqiPqXZpdvNFR+krWf3VhVCs9CKB6TPI=",
   "Source": "OMS",
   "BasePath": "_content/OMS",
   "Mode": "Default",
@@ -882,6 +882,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Images\\Product.png"
+    },
+    {
+      "Identity": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\status-connected.png",
+      "SourceId": "OMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\",
+      "BasePath": "_content/OMS",
+      "RelativePath": "Images/status-connected.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\status-connected.png"
     }
   ]
 }

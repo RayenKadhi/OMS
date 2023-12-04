@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components
+@using Newtonsoft.Json;
 @using Radzen.Blazor
 @inherits LayoutComponentBase
 @inject ExampleService ExampleService
@@ -6,6 +7,7 @@
 @inject NavigationManager UriHelper
 @inject IJSRuntime JSRuntime
 @inject HttpClient httpClient
+
 
 
 <style>
@@ -44,6 +46,9 @@
     .nav-text {
         font-weight: bold;
     }
+
+
+    
 </style>
 
 
@@ -62,7 +67,7 @@
                             <RadzenImage Path="/Images/customer.png" style="width: 35px; height: 35px; border-radius: 16px; margin-right: 6px;" />
                             <b style="font-weight:bold;">OMS</b>
                             <div style="position: absolute; top: 0; right: 0; margin-top: 8px; margin-right: 8px;">
-                                <span>@user</span>
+                                <span> Welcome In @username ! </span> <RadzenImage Path="/Images/status-connected.png"  class="connected" style="width: 10px; height: 10px; border-radius: 16px; margin-right: 6px;" />
                             </div>
                         </RadzenLabel>
                     </RadzenStack>
@@ -220,7 +225,7 @@
   
 
     
- 
+
 
 </RadzenLayout>
 
@@ -240,9 +245,10 @@
     bool bodyExpanded = false;
     bool rendered;
     bool keyExists = false;
+    string username;
 
-   string user;
- 
+    string user;
+
     string IsScrollableContent(bool sidebar)
     {
         return sidebar == true ? "scrollable-content" : string.Empty;
@@ -269,18 +275,21 @@
         if (firstRender)
         {
             user = await localStorage.GetItemAsync<string>("UserInfo");
-            Console.WriteLine(user);
+
+            dynamic userObject = JsonConvert.DeserializeObject(user);
+            username = userObject.Username;
+            StateHasChanged();
             keyExists = await localStorage.ContainKeyAsync("UserInfo");
             if (!keyExists)
             {
-               navigationManager.NavigateTo("/login");
+                navigationManager.NavigateTo("/login");
             }
             rendered = true;
-            
+
         }
     }
 
-    
+
     private string term = string.Empty;
 
     void FilterPanelMenu(ChangeEventArgs args)
@@ -300,6 +309,8 @@
     {
         navigationManager.NavigateTo("/");
     }
-   
- 
+    public void NavigationUser()
+    {
+        navigationManager.NavigateTo("/settings");
+    }
 }

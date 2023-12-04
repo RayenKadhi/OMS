@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "mTBrKIVHp0iGZS+x8/oEOB0s6H4Y+aR0h8QD+8Q+X1Bef3X3zLMhS4UGIwfpBzFjQRN5a216hCyzfWJOKEEsYQ==",
+  "dgSpecHash": "iVFPbMo5CQJAtAxPWqjAGnpGm4Q9PgZnGpOcy8bVFcep58d9Oe4OZ+m1icZV7R/giQ93za9yu56KfQzmJ/LgAg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\OMS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\blazored.localstorage\\4.4.0\\blazored.localstorage.4.4.0.nupkg.sha512",
+    "C:\\Users\\Dell-Dev02\\.nuget\\packages\\corvus.extensions.newtonsoft.json\\3.0.0\\corvus.extensions.newtonsoft.json.3.0.0.nupkg.sha512",
+    "C:\\Users\\Dell-Dev02\\.nuget\\packages\\corvus.json.abstractions\\3.0.0\\corvus.json.abstractions.3.0.0.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\dapper\\2.1.15\\dapper.2.1.15.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\dartsassbuilder\\1.0.0\\dartsassbuilder.1.0.0.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\documentformat.openxml\\3.0.0\\documentformat.openxml.3.0.0.nupkg.sha512",
@@ -58,6 +60,7 @@
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\Dell-Dev02\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\radzen.blazor\\4.19.1\\radzen.blazor.4.19.1.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\Dell-Dev02\\.nuget\\packages\\system.configuration.configurationmanager\\6.0.1\\system.configuration.configurationmanager.6.0.1.nupkg.sha512",

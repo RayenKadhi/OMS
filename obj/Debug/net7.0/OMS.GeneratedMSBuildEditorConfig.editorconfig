@@ -76,8 +76,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXJJbnRlcmZhY2UucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/ResetPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXRQYXNzd29yZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/StackedBarSeries.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhY2tlZEJhclNlcmllcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/UserSettings.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclNldHRpbmdzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Shared/LoginLayout.razor]
@@ -86,6 +94,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Shared/RegisterLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFJlZ2lzdGVyTGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Shared/ResetLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFJlc2V0TGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/_Imports.razor]

@@ -25,6 +25,7 @@ namespace OMS.Interfaces
         Task<int> Create(User user);
         Task<int> Update(User user);
         Task<List<User>> ListAll();
+        Task<User> GetById(int UserId);
     }
 
         public interface IProductService 

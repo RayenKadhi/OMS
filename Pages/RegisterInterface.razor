@@ -21,6 +21,9 @@
     </RadzenColumn>
     <RadzenColumn Size="12" SizeMD="6">
         <RadzenCard Class="rz-shadow-0 rz-border-radius-0 rz-p-12">
+            <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="rz-mb-6">
+                Register
+            </RadzenText>
             <div class="d-flex justify-content-center">
                 <RadzenRow Gap="1rem">
                     <RadzenColumn Size="12" SizeSM="12">
@@ -32,10 +35,10 @@
                                 <RadzenTextBox @bind-value="@user.Email" />
                             </RadzenFormField>
                             <RadzenFormField Text="Password">
-                                <RadzenTextBox @bind-value="@user.Password" />
+                                <RadzenPassword Visible ="true" @bind-value="@user.Password" />
                             </RadzenFormField>
                             <RadzenFormField Text="Confirm Password">
-                                <RadzenTextBox @bind-value="@user.ConfirmPassword" />
+                                <RadzenPassword Visible="true" @bind-value="@user.ConfirmPassword" />
                             </RadzenFormField>
                         </RadzenStack>
                     </RadzenColumn>
@@ -59,12 +62,15 @@
 @code {
 
     List<User> users;
+    User userInfo = new User();
+    string key = "UserInfo";
+    User user = new User();
 
     protected override async Task OnInitializedAsync()
     {
         users = await userService.ListAll();
     }
-    User user = new User();
+    
 
     async Task SaveUser(User user)
     {
@@ -83,9 +89,9 @@
             WarningMessage("Provide a valid email");
             return;
         }
-        if (string.IsNullOrEmpty(user.Password))
+        if (string.IsNullOrEmpty(user.Password) || !IsValidPassword(user.Password))
         {
-            WarningMessage("Password is Required");
+            WarningMessage("Password must be with minimum eight characters, at least one letter and one number");
             return;
         }
         if (user.ConfirmPassword != user.Password)
@@ -94,6 +100,10 @@
             return;
         }
         await userService.Create(user);
+        userInfo.Username = user.Username;
+        userInfo.Password = user.Password;
+        userInfo.UserId = user.UserId;
+        await localStorage.SetItemAsync(key, userInfo);
         SuccessMessage("User Is Registetred");
         navigationManager.NavigateTo("/");
     }
@@ -124,5 +134,10 @@
     {
         Regex emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase);
         return emailRegex.IsMatch(email);
+    }
+    bool IsValidPassword(string password)
+    {
+        Regex passwordRegex = new Regex(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", RegexOptions.IgnoreCase);
+        return passwordRegex.IsMatch(password);
     }
 }
