@@ -26,6 +26,7 @@ namespace OMS.Interfaces
         Task<int> Update(User user);
         Task<List<User>> ListAll();
         Task<User> GetById(int UserId);
+        Task<int> Count();
     }
 
         public interface IProductService 
@@ -98,5 +99,6 @@ namespace OMS.Interfaces
     public interface IPriceFormattingService
     {
         string FormatPrice(decimal price, string currencyCode);
+        string FormatPrice(double price, string currencyCode);
     }
 }

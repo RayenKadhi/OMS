@@ -1,4 +1,5 @@
-﻿@page "/NotFound"
+﻿@layout NotFoundLayout
+@page "/NotFound"
 
 
 <style>
@@ -27,14 +28,29 @@
         <RadzenColumn SizeSM="4" class="text-center">
         <RadzenText TextStyle="TextStyle.DisplayH2" class="rz-color-danger-dark rz-mt-4 rz-mb-0"><b>Error 404 NOT FOUND</b></RadzenText>
             <RadzenText TextStyle="TextStyle.Body2" class="rz-color-black rz-mt-4 rz-mb-0"><b>Sorry, there's nothing at this address.</b></RadzenText>
-            <RadzenText TextStyle="TextStyle.Body2" class="rz-color-black rz-mt-4 rz-mb-0"><b>Return to the home page</b></RadzenText>
-            <RadzenButton Text="Home" class="rz-color-white rz-mt-8 rz-mb-0" Click="LearnMoreClicked" ButtonStyle="ButtonStyle.Primary" />
+        <RadzenText TextStyle="TextStyle.Body2" class="rz-color-black rz-mt-4 rz-mb-0"><b>Return To The @text Page</b></RadzenText>
+            <RadzenButton Text="@text" class="rz-color-white rz-mt-8 rz-mb-0" Click="LearnMoreClicked" ButtonStyle="ButtonStyle.Primary" />
         </RadzenColumn>
 </RadzenCard>
 
 @code {
+    bool keyExists;
+    string text;
     void LearnMoreClicked()
     {
-        navigationManager.NavigateTo("/");
+        navigationManager.NavigateTo("/home");
     }
+    protected override async Task OnInitializedAsync()
+    {
+        keyExists = await localStorage.ContainKeyAsync("UserInfo");
+        if (keyExists == true)
+        {
+            text = "Home";
+        }
+        else
+        {
+            text = "Login";
+        }
+    }
+
 }

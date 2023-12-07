@@ -250,3 +250,9 @@ a, .btn-link {
 .connected {
     animation: connected 2s infinite;
 }
+.form-labels{
+    margin-top:1em;
+}
+.TextBox{
+    width:100%;
+}

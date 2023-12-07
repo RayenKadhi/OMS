@@ -68,6 +68,7 @@
                             <b style="font-weight:bold;">OMS</b>
                             <div style="position: absolute; top: 0; right: 0; margin-top: 8px; margin-right: 8px;">
                                 <span> Welcome In @username ! </span> <RadzenImage Path="/Images/status-connected.png"  class="connected" style="width: 10px; height: 10px; border-radius: 16px; margin-right: 6px;" />
+                                <RadzenImage hidden="@hidden" Path="@Avatar" style="width: 35px; height: 35px; border-radius: 16px; margin-right: 6px;" />
                             </div>
                         </RadzenLabel>
                     </RadzenStack>
@@ -241,11 +242,13 @@
 
     RadzenSidebar sidebar0;
     RadzenBody body0;
+    bool hidden;
     bool sidebarExpanded = true;
     bool bodyExpanded = false;
     bool rendered;
     bool keyExists = false;
     string username;
+    string Avatar;
 
     string user;
 
@@ -275,10 +278,18 @@
         if (firstRender)
         {
             user = await localStorage.GetItemAsync<string>("UserInfo");
-
-            dynamic userObject = JsonConvert.DeserializeObject(user);
-            username = userObject.Username;
-            StateHasChanged();
+            if (!string.IsNullOrEmpty(user))
+            {
+                dynamic userObject = JsonConvert.DeserializeObject(user);
+                username = userObject.Username;
+                Avatar = userObject.Avatar;
+                if (Avatar == "/Images/None.png" || Avatar == null )
+                {
+                    hidden = true;
+                }
+                StateHasChanged();
+            }
+            
             keyExists = await localStorage.ContainKeyAsync("UserInfo");
             if (!keyExists)
             {

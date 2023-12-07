@@ -92,6 +92,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Shared/NotFoundLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5vdEZvdW5kTGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Shared/RegisterLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFJlZ2lzdGVyTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 

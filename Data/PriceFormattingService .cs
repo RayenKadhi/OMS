@@ -12,7 +12,7 @@ namespace OMS.Data
             switch (currencyCode.ToLower())
             {
                 case "tnd":
-                    return new CultureInfo("ar-TN");
+                    return new CultureInfo("fr-TN");
 
                 default:
                     return CultureInfo.CurrentCulture;
@@ -26,7 +26,20 @@ namespace OMS.Data
 
             nfi.CurrencySymbol = cultureInfo.NumberFormat.CurrencySymbol;
 
+
             return price.ToString("C", nfi);
+        
+        }
+        public string FormatPrice(double price, string currencyCode)
+        {
+            CultureInfo cultureInfo = GetCultureInfoForCurrencyCode(currencyCode);
+
+            NumberFormatInfo nfi = cultureInfo.NumberFormat;
+
+            nfi.CurrencySymbol = cultureInfo.NumberFormat.CurrencySymbol;
+       
+
+            return price.ToString("C0", nfi);
         }
     }
    

@@ -5,6 +5,26 @@
       "PackagePath": "staticwebassets\\OMS.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\Avatar1.png",
+      "PackagePath": "staticwebassets\\Images\\Avatar1.png"
+    },
+    {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\Avatar2.png",
+      "PackagePath": "staticwebassets\\Images\\Avatar2.png"
+    },
+    {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\Avatar3.png",
+      "PackagePath": "staticwebassets\\Images\\Avatar3.png"
+    },
+    {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\Avatar4.png",
+      "PackagePath": "staticwebassets\\Images\\Avatar4.png"
+    },
+    {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\None.png",
+      "PackagePath": "staticwebassets\\Images\\None.png"
+    },
+    {
       "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\Product.png",
       "PackagePath": "staticwebassets\\Images\\Product.png"
     },

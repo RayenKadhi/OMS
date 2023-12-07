@@ -5,10 +5,19 @@
         top: 50%;
         transform: translate(5px, -50%); 
     }
+
+    .rz-legend-item-text {
+        padding: 4px;
+    }
 </style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
 
     <RadzenChart SeriesClick=@OnSeriesClick style="height: 400px" ColorScheme="ColorScheme.Divergent">
-        <p class="page-title" style="font-weight: lighter; display:flex; justify-content:center">Top Five Customers</p>
+                
+    <p class="page-title" style="font-weight: lighter; display:flex; justify-content:center">Top (@selectedNum) Customers</p>
         <div class="d-flex flex-row-reverse" style="margin-top:1em;">
             <RadzenDropDown Data="@Number" TextProperty="Num" ValueProperty="Num" @bind-Value="selectedNum" Change="@(e => OnYearSelectionChange((int)e))" />
         </div>
@@ -17,31 +26,39 @@
         {
             if (selectedNum == num.Num)
             {
-                <RadzenBarSeries  Data="@GetTopData(num.Num)" CategoryProperty="CustomerName" Title="Total Amount Spent in TND" ValueProperty="TotalPrice">
-                <RadzenSeriesDataLabels Visible="true"  />
+                <RadzenBarSeries  Data="@GetTopData(num.Num)" CategoryProperty="CustomerName"  ValueProperty="TotalPrice" Title="Spent">
+                <RadzenSeriesDataLabels  Visible="true" />
                 </RadzenBarSeries>
-                <RadzenValueAxis Formatter="@FormatAsDT" Min="@(GetMinValue(num.Num))" Max="@(GetMaxValue(num.Num))" Step="@(GetStepValue(num.Num))">
-                    <RadzenGridLines Visible="false"  />
+                        <RadzenValueAxis Formatter="@FormatAsDT" Min="@(GetMinValue(num.Num))" Max="@(GetMaxValue(num.Num))" Step="@(GetStepValue(num.Num))">
+                    <RadzenGridLines />
                 </RadzenValueAxis>
             }
         }
         <RadzenBarOptions Radius="5" Height="20" />
+          <RadzenLegend Visible =false Position="LegendPosition.Right"  />
     </RadzenChart>
 
-
+        </div>
+    </div>
+</div>
 
 @code{
+
     private int selectedNum = 5;
-    List<TopFive> topFive;
-    List<TopFive> topThree;
-    List<TopFive> topTen;
+    private Dictionary<int, List<TopFive>> topRecordsByCount = new Dictionary<int, List<TopFive>>()
+    {
+        { 5, null },
+        { 3, null },
+        { 10, null }
+    };
     bool smooth = true;
 
     protected override async Task OnInitializedAsync()
     {
-        topFive = GetTopRecords(5);
-        topThree = GetTopRecords(3);
-        topTen = GetTopRecords(10);
+        foreach (var count in topRecordsByCount.Keys)
+        {
+            topRecordsByCount[count] = GetTopRecords(count);
+        }
     }
 
     List<TopFive> GetTopRecords(int count)
@@ -61,11 +78,7 @@
         public double Revenue { get; set; }
     }
 
-    string FormatAsUSD(object value)
-    {
-        return ((double)value).ToString("C", CultureInfo.CreateSpecificCulture("ar-TN"));
-
-    }
+   
 
     string FormatAsMonth(object value)
     {
@@ -76,13 +89,19 @@
 
         return string.Empty;
     }
-
     string FormatAsDT(object value)
     {
         double num = (double)value;
-
-        return num.ToString("0");
+        return priceFormattingService.FormatPrice(num, "tnd");
     }
+
+    string FormatAsUSD(object value)
+    {
+        double num = (double)value;
+
+        return num.ToString("0K");
+    }
+   
 
     private class TopModel
     {
@@ -95,15 +114,9 @@
             new TopModel { Num = 10 }
         };
 
-    List<TopFive> GetTopData(int num)
+    private List<TopFive> GetTopData(int count)
     {
-        return num switch
-        {
-            5 => topFive,
-            3 => topThree,
-            10 => topTen,
-            _ => new List<TopFive>(), 
-        };
+        return topRecordsByCount.TryGetValue(count, out var topData) ? topData : new List<TopFive>();
     }
     int GetMinValue(int num)
     {
@@ -120,9 +133,9 @@
     {
         return num switch
         {
-            5 => 1600,
-            3 => 1600,
-            10 => 1600,
+            5 => 1800,
+            3 => 1800,
+            10 => 1900,
             _ => 0, 
         };
     }
@@ -130,9 +143,9 @@
     {
         return num switch
         {
-            5 => 100,
-            3 => 100,
-            10 => 150,
+            5 => 220,
+            3 => 220,
+            10 => 350,
             _ => 0,
         };
     }

@@ -11,14 +11,28 @@
 
 </style>
 
-<RadzenChart SeriesClick=@OnSeriesClick ColorScheme="ColorScheme.Pastel" Style="width: 100%;height: 100%;margin-top: 50;">
+<RadzenChart SeriesClick=@OnSeriesClick Style="width: 100%;height: 100%;margin-top: 50;">
         <p class="page-title" style="font-weight: lighter; display:flex; justify-content:center;">Revenue Per Year</p>
-        <RadzenPieSeries Data="@RevenueYear" Title="Revenue" CategoryProperty="Year" ValueProperty="Revenue" >
-            <RadzenSeriesDataLabels Visible="true"  OffsetX="-10" OffsetY="5" />
+    <RadzenPieSeries Data="@RevenueYear" Title="Revenue" CategoryProperty="Year" ValueProperty="Revenue" Fills="customColors">
+        <RadzenSeriesDataLabels Visible="true" OffsetX="-10" OffsetY="5"  />
         </RadzenPieSeries>
+    <RadzenValueAxis Formatter="@FormatAsDT">
+        <RadzenGridLines Visible="true"  />
+        
+        <RadzenAxisTitle Text="Revenue in USD" />
+    </RadzenValueAxis>
     </RadzenChart>
 
 @code{
+    string FormatAsDT(object value)
+    {
+
+        double num = (double)value;
+        return priceFormattingService.FormatPrice(num, "tnd");
+    }
+
+    List<string> customColors = new List<string> { "#CCCCFF", "#6495ED", "#40E0D0" };
+ 
     string title = "Total Amount\nSpent in TND";
 
     string SqlQueryRevenueYear = "SELECT * FROM Pie_Chart_View";
@@ -29,13 +43,15 @@
     {
 
         RevenueYear = dapperService.GetAll<RevenueYear>(SqlQueryRevenueYear, null);
+     
     }
 
     void OnSeriesClick(SeriesClickEventArgs args)
     {
 
     }
-
+   
+  
 
 
 

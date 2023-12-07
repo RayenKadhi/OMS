@@ -1,29 +1,25 @@
-﻿
-@page "/"
+﻿@page "/home"
+<style>
+    .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        padding-right: 0;
+        padding-left: 0;
+    }
+</style>
 
 
-
-    <style>
-        .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-            padding-right: 0;
-            padding-left: 0;
-        }
-    </style>
     <PageTitle>Home</PageTitle>
-
-    <div class="page-title">Dashbord</div>
 
     <Line_Chart />
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-md-6" style="padding-right:0 !important">
-                <RadzenCard class="rz-background-color-white rz-color-black rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 0rem; margin-top: .5em; height:100%">
+            <div class="col-lg-6 col-md-6" style="padding-right:0 !important;">
+                <RadzenCard class="rz-background-color-white rz-color-black rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 0rem; margin-top: .5em; height:100% ; border : 1px solid #ebebeb">
                     <Pie_Chart />
                 </RadzenCard>
             </div>
-            <div class="col-lg-8 col-md-6">
-                <RadzenCard class="rz-background-color-white rz-color-black rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 0rem; margin-top: .5em; height:100%">
+            <div class="col-lg-6 col-md-6">
+            <RadzenCard class="rz-background-color-white rz-color-black rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 0rem; margin-top: .5em; height:100%; border : 1px solid #ebebeb">
                     <StackedBarSeries />
                 </RadzenCard>
             </div>
@@ -33,9 +29,20 @@
 
 
 
-
-
-
-
-
+@code{
+    bool keyExists;
+    protected override async Task OnInitializedAsync()
+    {
+       
+        keyExists = await localStorage.ContainKeyAsync("UserInfo");
+        if (keyExists == false)
+        {
+            await localStorage.ClearAsync();
+            navigationManager.NavigateTo("/NotFound");
+        }
+    }
+    
+}
+        
+    
 

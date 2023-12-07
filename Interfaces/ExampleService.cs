@@ -11,8 +11,14 @@ namespace OMS.Interfaces
         new Example()
         {
             Name = "Home",
-            Path = "/",
+            Path = "/home",
             Icon = "home"
+        },
+        new Example()
+        {
+            Name = "Profile",
+            Path = "/settings",
+            Icon = "account_circle"
         },
         new Example()
         {
@@ -64,12 +70,7 @@ namespace OMS.Interfaces
                     Icon = "assessment"
                 },
             } },
-        new Example()
-        {
-            Name = "Profile",
-            Path = "/settings",
-            Icon = "account_circle"
-        },
+        
         new Example()
         {
             Name = "Logout",

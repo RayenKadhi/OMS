@@ -17,9 +17,7 @@
         color: unset;
     }
 
-    .rz-multiselect-header {
-        display: none;
-    }
+    
 
     .rz-card {
         padding: 0;
@@ -43,7 +41,7 @@
 
                         <RadzenFormField>
                             <RadzenDropDown @bind-Value=@productSearch.SelectedCategories Data=@CategoryNames TextProperty="CategoryName" ValueProperty="CategoryId"
-                                            Multiple=true AllowClear=true Placeholder="Select Category"
+                                            Multiple=true SelectAllText="Select all categories" AllowClear=true Placeholder="Category"
                                             MaxSelectedLabels="@totalRecords" SelectedItemsText="are now selected" />
                         </RadzenFormField>
                         <RadzenFormField Text="Min Unit Price">
@@ -65,8 +63,9 @@
                     <RadzenStack>
                         <RadzenFormField>
                             <RadzenDropDown @bind-Value=@productSearch.SelectedBrands Data=@BrandNames TextProperty="BrandName" ValueProperty="BrandId"
-                                            Multiple=true AllowClear=true Placeholder="Select Brands"
-                                            MaxSelectedLabels="@totalRecords" SelectedItemsText="are now selected" />
+                                            Multiple=true SelectAllText="Select all brands" AllowClear=true  Placeholder="Brands"
+                                            MaxSelectedLabels="@totalRecords" SelectedItemsText="are now selected"  />
+                           
                         </RadzenFormField>
 
                         <RadzenFormField Text="Max Unit Price">
@@ -116,8 +115,8 @@
 
     </div>
 <div class="d-flex justify-content-end">
-        <RadzenButton class="button-Add-New" Click="@(()=> Navigation(product))" Text="Add New Product" Icon="add_circle_outline" Style="background-color:	#FF9900; margin-right:1em;"></RadzenButton>
-        <RadzenButton hidden="@hidden" Text="Search" Icon="search" Click="@(()=>Search())" class="button-save-cancel" Style="margin-right:1em" />    
+    <RadzenButton hidden="@hidden" Text="Search" Icon="search" Click="@(()=>Search())" class="button-save-cancel" Style="margin-right:1em" />
+    <RadzenButton class="button-Add-New" Click="@(()=> Navigation(product))" Text="Add New Product" Icon="add_circle_outline" Style="background-color:	#FF9900; margin-right:1em;"></RadzenButton>  
         <RadzenButton Text="Export XLS" Click="@(() => Export(products))" Icon="grid_on" class="button-Add-New"/> 
 </div>
 
@@ -211,11 +210,11 @@ else
     {
         totalRecords = await productService.Count();
         products = await productService.ListAll(sortColumnName, sortDir, searchTerm);
-        BrandNames = products.GroupBy(b => b.BrandId).
+        BrandNames = products.OrderBy(b => b.BrandName).GroupBy(b => b.BrandId).
     Select(group => group.First()).
     Select(b => new Brand { BrandId = b.BrandId, BrandName = b.BrandName }).
     Distinct();
-        CategoryNames = products.GroupBy(c => c.CategoryId)
+        CategoryNames = products.OrderBy(c => c.CategoryName).GroupBy(c => c.CategoryId)
         .Select(group => group.First())
         .Select(c => new Category { CategoryId = c.CategoryId, CategoryName = c.CategoryName })
         .Distinct();
@@ -303,11 +302,11 @@ else
 
     int Availability;
     int count;
-    
+
 
     void PerformSearch()
     {
-        
+
         string SqlQuery = "";
         string SqlQuery_ = "SELECT * FROM Product p LEFT JOIN Brand b ON p.BrandId = b.BrandId LEFT JOIN Category c ON c.CategoryId = p.CategoryId WHERE 1=1";
 
@@ -365,6 +364,8 @@ else
             SqlQuery += $" AND  Threshold <= {int.Parse(productSearch.MaxThreshold)}";
             parameters.Add("MaxThreshold", productSearch.MaxThreshold);
         }
+        search = false;
+        hidden = false;
         products = dapperService.GetAll<Product>(SqlQuery_+SqlQuery, parameters);
         string countQuery = "SELECT COUNT(*) FROM (SELECT DISTINCT p.ProductId FROM Product p LEFT JOIN Brand b ON p.BrandId = b.BrandId LEFT JOIN Category c ON c.CategoryId = p.CategoryId WHERE 1=1";
 

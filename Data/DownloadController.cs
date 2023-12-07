@@ -11,6 +11,7 @@ public class DownloadController : ControllerBase
     [HttpPost("~/download")]
     public async Task<IActionResult> Download([FromBody] List<Product> products)
     {
+        products = products.OrderBy(p => p.ProductName).ToList();
         // Create a new Excel package
         using (var package = new ExcelPackage())
         {

@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.Data;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 
 namespace OMS.Entities
 {
@@ -83,16 +85,17 @@ namespace OMS.Entities
     {
         public DateTime OrderDate { get; set; }
         public double Revenue { get; set; }
+        public string FormattedOrderDate => OrderDate.ToString("dd-MM-yyyy");
     }
     public class RevenueYear
     {
         public string Year { get; set; }
-        public double Revenue { get; set; }
+        public int Revenue { get; set; }
     }
     public class TopFive
     {
         public string CustomerName { get; set; }
-        public double TotalPrice { get; set; }
+        public int TotalPrice { get; set; }
     }
 
     public class User
@@ -103,9 +106,13 @@ namespace OMS.Entities
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public byte Suspended { get; set; }  
-        public string LastLoginDate { get; set; }
+        public DateTime LastLoginDate { get; set; }
         public string ActualPassword { get; set; }
         public string NewPassword { get; set; }
         public string NewUserName { get; set; }
+        public int UserNameChanged {  get; set; }
+        public string Avatar { get; set; }
     }
+
+    
 }

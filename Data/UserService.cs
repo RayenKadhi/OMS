@@ -19,8 +19,10 @@ namespace OMS.Data
             dbPara.Add("Username", user.Username, DbType.String);
             dbPara.Add("Email", user.Email, DbType.String);
             dbPara.Add("Password", user.Password, DbType.String);
-            dbPara.Add("Suspended", user.Suspended, DbType.String);
+            dbPara.Add("Suspended", user.Suspended, DbType.Byte);
+            dbPara.Add("UserNameChanged", user.UserNameChanged, DbType.Int64);
             dbPara.Add("LastLoginDate", user.LastLoginDate, DbType.String);
+            dbPara.Add("Avatar", user.Avatar, DbType.String);
             var UserId = Task.FromResult
                (_dapperService.Insert<int>("[dbo].[spAddUser]",
                dbPara, commandType: CommandType.StoredProcedure));
@@ -35,7 +37,9 @@ namespace OMS.Data
             dbPara.Add("Email", user.Email, DbType.String);
             dbPara.Add("Password", user.Password, DbType.String);
             dbPara.Add("Suspended", user.Suspended, DbType.Byte);
+            dbPara.Add("UserNameChanged", user.UserNameChanged, DbType.Int64);
             dbPara.Add("LastLoginDate", user.LastLoginDate, DbType.DateTime);
+            dbPara.Add("Avatar", user.Avatar, DbType.String);
             var updateUser = Task.FromResult
                (_dapperService.Update<int>("[dbo].[spUpdateUser]",
                dbPara, commandType: CommandType.StoredProcedure));
@@ -55,6 +59,14 @@ namespace OMS.Data
                ($"select * from [User] where UserId = {id}", null,
                commandType: CommandType.Text));
             return user;
+        }
+        public Task<int> Count()
+        {
+            var totUsers = Task.FromResult(_dapperService.Get<int>
+               ($"select COUNT(*) from [User]", null,
+
+               commandType: CommandType.Text));
+            return totUsers;
         }
 
     }
