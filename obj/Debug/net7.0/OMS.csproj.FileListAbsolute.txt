@@ -83,3 +83,4 @@ C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\Blazored.LocalStorage.
 C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\Corvus.Extensions.Newtonsoft.Json.dll
 C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\Corvus.Json.Abstractions.dll
 C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\Dell-Dev02\source\repos\oms\OMS\bin\Debug\net7.0\BCrypt.Net-Next.dll

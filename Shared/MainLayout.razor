@@ -66,11 +66,12 @@
                             <RadzenLabel @onclick="Navigation" Text="OMS" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                             <RadzenImage Path="/Images/customer.png" style="width: 35px; height: 35px; border-radius: 16px; margin-right: 6px;" />
                             <b style="font-weight:bold;">OMS</b>
-                            <div style="position: absolute; top: 0; right: 0; margin-top: 8px; margin-right: 8px;">
-                                <span> Welcome In @username ! </span> <RadzenImage Path="/Images/status-connected.png"  class="connected" style="width: 10px; height: 10px; border-radius: 16px; margin-right: 6px;" />
-                                <RadzenImage hidden="@hidden" Path="@Avatar" style="width: 35px; height: 35px; border-radius: 16px; margin-right: 6px;" />
-                            </div>
+                           
                         </RadzenLabel>
+                        <div style="position: absolute; top: 0; right: 0; margin-top: 8px; margin-right: 8px;">
+                            <span> Welcome In @username ! </span> <RadzenImage Path="/Images/status-connected.png" class="connected" style="width: 10px; height: 10px; border-radius: 16px; margin-right: 6px;" />
+                            <RadzenImage @onclick="NavigationProfile" hidden="@hidden" Path="@Avatar" style="width: 35px; height: 35px; border-radius: 16px; margin-right: 6px;" />
+                        </div>
                     </RadzenStack>
                 </RadzenColumn>
                 @* <RadzenColumn Size="7">
@@ -318,10 +319,11 @@
     }
     public void Navigation()
     {
-        navigationManager.NavigateTo("/");
+        navigationManager.NavigateTo("/home");
     }
-    public void NavigationUser()
+    public void NavigationProfile()
     {
         navigationManager.NavigateTo("/settings");
     }
+    
 }

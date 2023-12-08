@@ -11,6 +11,9 @@ using Radzen;
 using OMS.Entities;
 using Radzen.Blazor;
 using Blazored.LocalStorage;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 
 
@@ -54,15 +57,15 @@ builder.Services.AddScoped<ContextMenuService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<DownloadController>();
 builder.Services.AddScoped<RevenueDataService>();
-
-
-
-
 builder.Services.AddSignalR(e => e.MaximumReceiveMessageSize = 102400000);
 builder.Services.AddScoped<ICategoryService,CategoryService>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 
 var app = builder.Build();
+
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

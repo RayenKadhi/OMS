@@ -8,7 +8,7 @@
                 <div class="d-flex flex-row-reverse">
 
 
-                    <RadzenDropDown Data="@years" TextProperty="Year" ValueProperty="Year" @bind-Value="selectedYear" Change="@(e => OnYearSelectionChange((int)e))" />
+                    <RadzenDropDown style="max-width: 13%;" Data="@years" TextProperty="Year" ValueProperty="Year" @bind-Value="selectedYear" Change="@(e => OnYearSelectionChange((int)e))" />
                 </div>
                 
                 <RadzenChart>
@@ -48,7 +48,7 @@
     }
     List<RevenueData> GetYear(int year)
     {
-        string sqlQuery = $"SELECT * FROM GetRevenueDataFunction({year});";
+        string sqlQuery = $"SELECT * FROM GetMonthlyRevenue({year});";
         return dapperService.GetAll<RevenueData>(sqlQuery, null);
     }
 

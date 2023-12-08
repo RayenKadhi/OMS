@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Fq+5jn7zR6Wmh5ww0yxMMisOyd0aT4TIlSNxsY3Wx2o=",
+  "Hash": "WjDbFFFA/m63NIWdgadgLZJSGgh+XNQApEAaWan2c3M=",
   "Source": "OMS",
   "BasePath": "_content/OMS",
   "Mode": "Default",
@@ -935,6 +935,23 @@
       "OriginalItemSpec": "wwwroot\\Images\\customer.png"
     },
     {
+      "Identity": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\left.svg",
+      "SourceId": "OMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\",
+      "BasePath": "_content/OMS",
+      "RelativePath": "Images/left.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\left.svg"
+    },
+    {
       "Identity": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\None.png",
       "SourceId": "OMS",
       "SourceType": "Discovered",
@@ -967,6 +984,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Images\\Product.png"
+    },
+    {
+      "Identity": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\right.svg",
+      "SourceId": "OMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\",
+      "BasePath": "_content/OMS",
+      "RelativePath": "Images/right.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\right.svg"
     },
     {
       "Identity": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\status-connected.png",

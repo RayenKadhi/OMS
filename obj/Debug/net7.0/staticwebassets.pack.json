@@ -33,6 +33,14 @@
       "PackagePath": "staticwebassets\\Images\\customer.png"
     },
     {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\left.svg",
+      "PackagePath": "staticwebassets\\Images\\left.svg"
+    },
+    {
+      "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\right.svg",
+      "PackagePath": "staticwebassets\\Images\\right.svg"
+    },
+    {
       "Id": "C:\\Users\\Dell-Dev02\\source\\repos\\oms\\OMS\\wwwroot\\Images\\status-connected.png",
       "PackagePath": "staticwebassets\\Images\\status-connected.png"
     },

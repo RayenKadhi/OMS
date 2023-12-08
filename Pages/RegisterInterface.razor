@@ -1,49 +1,18 @@
 ﻿@layout RegisterLayout
 @page "/registration"
 
-@inject IJSRuntime jsRuntime
+
 <style>
     .rz-card {
         padding: 0;
     }
 
-    .rz-login .rz-register {
-        display: flex;
-        flex-flow: row wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.5rem;
-        background-color: var(--rz-login-register-background-color);
-        margin: var(--rz-login-register-margin);
-        padding: var(--rz-login-register-padding);
-        border-radius: var(--rz-border-radius);
-    }
-
-    .hover-pointer {
-        cursor: pointer;
-        border: .5px solid #000;
-    }
-
-        .hover-pointer:hover {
-          border-color: #007bff;
-    
-        }
-        .hover-pointer.selected{
-            border-color: #007bff;
-        }
-    .Image-Selected{
-        border: 2px solid #007bff;
-    }
- 
 </style>
-
 
 <RadzenRow Gap="0" Class="rz-my-12 rz-mx-auto rz-border-radius-6 rz-shadow-10" Style="width: 100%; max-width: 800px; overflow: hidden;">
     <RadzenColumn Size="12" SizeMD="6">
         <RadzenCard Class="rz-shadow-0 rz-border-radius-0 rz-text-align-center rz-p-12" Style="height: 100%; background: var(--rz-primary-lighter) no-repeat 30% 40% fixed url('data:image/webp;base64,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')">
             <RadzenText TextStyle="TextStyle.DisplayH3" TagName="TagName.H2" Class="rz-color-black rz-mb-6">Welcome!</RadzenText>
-            @* <RadzenText TextStyle="TextStyle.H6" Class="rz-color-white">Join the world's largest community!</RadzenText>
-            <RadzenText TextStyle="TextStyle.Body2" Class="rz-color-white">Let's get started with your <strong>30 days</strong> trial.</RadzenText> *@
         </RadzenCard>
     </RadzenColumn>
 
@@ -52,18 +21,14 @@
             <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="rz-mb-6">
                 Register
             </RadzenText>
-         
-            
                 <div class="d-flex justify-content-center">
                     <RadzenRow Gap=".5rem">
                         <RadzenColumn Size="12" SizeSM="12">
                             <RadzenStack>
-
                                 <p>Username </p>
                                 <RadzenTextBox @bind-value="@user.Username" />
                                 <p class="form-labels">Email </p>
                                 <RadzenTextBox @bind-value="@user.Email" />
-
                                 <p class="form-labels">Password </p>
                                 <RadzenPassword Visible="true" @bind-value="@user.Password" />
                                 <p class="form-labels">Confirm Password</p>
@@ -72,17 +37,11 @@
                         </RadzenColumn>
                     </RadzenRow>
                 </div>
-                
-            
-            
-            
-            
             <div class="row">
                 <RadzenButton Text="Register" Click="@((args)=>SaveUser(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" Style="margin-top:2em;" />
                 <p Style="margin-top:1.5em;">Already Have An Acoount ?</p>
                 <RadzenButton Shade="Shade.Lighter" Text="Return" Click="@Navigation" Icon="cancel" ButtonStyle="ButtonStyle.Danger" class="button-save-cancel" />
             </div>
-            
         </RadzenCard>
     </RadzenColumn>
 </RadzenRow>
@@ -146,7 +105,8 @@
         userInfo.Username = user.Username;
         userInfo.Password = user.Password;
         userInfo.UserId = totUsers + 1;
-        user.Avatar = UserAvatar;
+        string passwordHash = BCrypt.HashPassword(user.Password);
+        user.Password = passwordHash;
         await userService.Create(user);
 
         await localStorage.SetItemAsync(key, userInfo);
@@ -186,84 +146,6 @@
         Regex passwordRegex = new Regex(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", RegexOptions.IgnoreCase);
         return passwordRegex.IsMatch(password);
     }
-    int CurrentStep =0;
-    public void MoveToNextStep()
-    {
-        CurrentStep ++;
-        DisabledNext = false;
-        DisabledPrevious = true;
-        hiddenPrevious = true;
 
-
-    }
-
-    public void MoveToPreviousStep()
-    {
-        CurrentStep--;
-        DisabledNext = true;
-        DisabledPrevious = false;
-        hiddenPrevious = false;
-    }
-    private RadzenImage Avatar0;
-    private RadzenImage Avatar1;
-    private RadzenImage Avatar2;
-    private RadzenImage Avatar3;
-    private RadzenImage Avatar4;
-    private string selectedImagePath = "/Images/None.png";
-    string className = "hover-pointer";
-    bool ImageSelected = false;
-    int selected;
-    RadzenImage SelectedImageRef;
-    string UserAvatar;
-    string selection;
-
-    private async void SelectedImage(RadzenImage image)
-    {
-        await DeselectAllImages();
-        await ToggleImageSelected(image, true);
-        SetUserAvatar(image);
-    }
-
-    private async Task DeselectAllImages()
-    {
-        await ToggleImageSelected(Avatar0, false);
-        await ToggleImageSelected(Avatar1, false);
-        await ToggleImageSelected(Avatar2, false);
-        await ToggleImageSelected(Avatar3, false);
-        await ToggleImageSelected(Avatar4, false);
-    }
-
-    private async Task ToggleImageSelected(RadzenImage image, bool isSelected)
-    {
-        var element = await jsRuntime.InvokeAsync<IJSObjectReference>("eval", $"document.getElementById('{image.UniqueID}')");
-        await element.InvokeVoidAsync("classList.toggle", "Image-Selected", isSelected);
-    }
-
-    private void SetUserAvatar(RadzenImage image)
-    {
-        if (image == Avatar0)
-        {
-            UserAvatar = "/Images/None.png";
-        }
-        else if (image == Avatar1)
-        {
-            UserAvatar = "/Images/Avatar1.png";
-        }
-        else if (image == Avatar2)
-        {
-            UserAvatar = "/Images/Avatar2.png";
-        }
-        else if (image == Avatar3)
-        {
-            UserAvatar = "/Images/Avatar3.png";
-        }
-        else if (image == Avatar4)
-        {
-            UserAvatar = "/Images/Avatar4.png";
-        }
-    }
-
-
-    
 
 }

@@ -114,5 +114,4 @@ namespace OMS.Entities
         public string Avatar { get; set; }
     }
 
-    
 }

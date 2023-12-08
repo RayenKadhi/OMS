@@ -23,6 +23,12 @@
         padding: 0;
 
     }
+    .form-labels{
+        margin-top:0em;
+    }
+.rz-p-md-12 {
+    padding: 1rem !important;
+}
  
 </style>
 
@@ -30,29 +36,25 @@
 @if (search)
 {
     <RadzenCard  class="rz-background-color-white rz-color-black rz-shadow-0 " Style="margin-bottom:1em;">
-        <p class="page-title" style="padding-left:1em; padding-top:2em;">Advanced Search</p>
+        <p class="page-title" style="padding-left:1em; padding-top:1em;">Advanced Search</p>
         <div Class="rz-p-0 rz-p-md-12">
-            <RadzenFormField Style="width:100%; margin-bottom:1em;" Text="Product | Barcode">
-                <RadzenTextBox @bind-Value="@productSearch.ProductNameOrBarcode" />
-            </RadzenFormField>
-            <RadzenRow Gap="1rem">
+            <p class="form-labels" style="width:100%; margin-bottom: .5em;">Product | Barcode</p>
+            <RadzenTextBox style="margin-bottom:1em;width: 100%;" @bind-Value="@productSearch.ProductNameOrBarcode" />
+            <RadzenRow Gap=".5rem">
                 <RadzenColumn Size="12" SizeSM="6">
                     <RadzenStack>
+                        <p class="form-labels">Category</p>
+                        <RadzenDropDown @bind-Value=@productSearch.SelectedCategories Data=@CategoryNames TextProperty="CategoryName" ValueProperty="CategoryId"
+                            Multiple=true SelectAllText="Select all categories" AllowClear=true Placeholder="Category"
+                            MaxSelectedLabels="@totalRecords" SelectedItemsText="are now selected" />
+                
+                        <p class="form-labels">Min Unit Price</p>
+                        <RadzenNumeric Min="0" @bind-Value="@productSearch.MinUnitPrice" />
 
-                        <RadzenFormField>
-                            <RadzenDropDown @bind-Value=@productSearch.SelectedCategories Data=@CategoryNames TextProperty="CategoryName" ValueProperty="CategoryId"
-                                            Multiple=true SelectAllText="Select all categories" AllowClear=true Placeholder="Category"
-                                            MaxSelectedLabels="@totalRecords" SelectedItemsText="are now selected" />
-                        </RadzenFormField>
-                        <RadzenFormField Text="Min Unit Price">
-                            <RadzenNumeric @bind-Value="@productSearch.MinUnitPrice" />
-                        </RadzenFormField>
-                        <RadzenFormField Text="Min Initial Quantity">
-                            <RadzenNumeric @bind-Value="@productSearch.MinIntialQuantity" />
-                        </RadzenFormField>
-                        <RadzenFormField Text="Min Threshold">
-                            <RadzenNumeric @bind-Value="@productSearch.MinThreshold" />
-                        </RadzenFormField>
+                        <p class="form-label">Min Initial Quantity</p>
+                        <RadzenNumeric Min="0" @bind-Value="@productSearch.MinIntialQuantity" />
+                        <p class="form-label">Min Threshold</p>
+                            <RadzenNumeric Min="0" @bind-Value="@productSearch.MinThreshold" />
                         <div style="display:flex; justify-content:left;align-items:center;">
                         <RadzenCheckBox TriState=true @bind-Value=@productSearch.Available Name="Available" />
                         <RadzenLabel Style="margin-left: 1em;" Text="Available" Component="Available" />
@@ -61,25 +63,16 @@
                 </RadzenColumn>
                 <RadzenColumn Size="12" SizeSM="6">
                     <RadzenStack>
-                        <RadzenFormField>
-                            <RadzenDropDown @bind-Value=@productSearch.SelectedBrands Data=@BrandNames TextProperty="BrandName" ValueProperty="BrandId"
-                                            Multiple=true SelectAllText="Select all brands" AllowClear=true  Placeholder="Brands"
-                                            MaxSelectedLabels="@totalRecords" SelectedItemsText="are now selected"  />
-                           
-                        </RadzenFormField>
-
-                        <RadzenFormField Text="Max Unit Price">
-                            <RadzenNumeric @bind-Value="@productSearch.MaxUnitPrice" />
-                        </RadzenFormField>
-
-
-                        <RadzenFormField Text="Max Initial Quantity">
-                            <RadzenNumeric @bind-Value="@productSearch.MaxIntialQuantity" />
-                        </RadzenFormField>
-
-                        <RadzenFormField Text="Max Threshold">
-                            <RadzenNumeric @bind-Value="@productSearch.MaxThreshold" />
-                        </RadzenFormField>
+                        <p class="form-labels">Brand</p>
+                        <RadzenDropDown @bind-Value=@productSearch.SelectedBrands Data=@BrandNames TextProperty="BrandName" ValueProperty="BrandId"
+                            Multiple=true SelectAllText="Select all brands" AllowClear=true  Placeholder="Brands"
+                            MaxSelectedLabels="@totalRecords" SelectedItemsText="are now selected"  />
+                        <p class="form-label">Max Unit Price</p>
+                        <RadzenNumeric Min="0" @bind-Value="@productSearch.MaxUnitPrice" />
+                        <p class="form-label">Max Initial Quantity</p>
+                        <RadzenNumeric Min="0" @bind-Value="@productSearch.MaxIntialQuantity" />
+                        <p class="form-label">Max Threshold</p>
+                        <RadzenNumeric Min="0" @bind-Value="@productSearch.MaxThreshold" />
                     </RadzenStack>
                 </RadzenColumn>
             </RadzenRow>

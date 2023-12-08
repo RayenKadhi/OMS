@@ -101,4 +101,8 @@ namespace OMS.Interfaces
         string FormatPrice(decimal price, string currencyCode);
         string FormatPrice(double price, string currencyCode);
     }
+    public interface IEmailSender
+    {
+        Task SendEmailAsync(string email, string subject, string message);
+    }
 }

@@ -28,6 +28,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdF9BZGRfUHJvZHVjdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/EmailSender.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1haWxTZW5kZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/ErrorPage.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3JQYWdlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 

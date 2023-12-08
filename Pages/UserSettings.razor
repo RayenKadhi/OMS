@@ -1,6 +1,6 @@
 ﻿@page "/settings"
 
-@inject IJSRuntime jsRuntime
+
 <style>
     .rz-card {
         padding: 0;
@@ -26,6 +26,14 @@
     .Image-Selected {
         border: 2px solid #007bff;
     }
+
+    .form-labels{
+        color:#ebebeb
+    }
+
+    .no-class  {
+        margin-top:1em;
+    }
 </style>
 
 
@@ -38,7 +46,7 @@
             {
                 <p>Username</p>
                 <RadzenTextBox class="TextBox" @bind-value="@user.Username" />
-                <p class="form-labels">Actual Password</p>
+                <p style="margin-top:1em;">Actual Password</p>
                 <RadzenPassword class="TextBox" Visible=true @bind-Value="@user.ActualPassword" />
                 <RadzenCheckBox @bind-Value=@value style="margin-top:1em;" Name="CheckBox1" />
                 <RadzenLabel Text="Change Password?" Component="CheckBox1" Style="margin-left: 8px; vertical-align: middle; margin-top:1em;" />
@@ -50,9 +58,9 @@
         {
             valuePassword = true;
         }
-                <p class="form-labels">New Password</p>
+        <p class="@label_class()">New Password</p>
                 <RadzenPassword  Disabled="@valuePassword" class="TextBox" Visible=true @bind-Value="@user.NewPassword" />
-                <p class="form-labels">Confirm Password</p>
+        <p class="@label_class()">Confirm Password</p>
         <RadzenPassword Disabled="@valuePassword" class="TextBox" Visible=true @bind-value="@user.ConfirmPassword" />
                 }
     @if (CurrentStep != 0)
@@ -77,15 +85,19 @@
                 </div>
             </div>
         </div>
-        
 
     }
+ 
+            
+          
+       
+    
     <div class="row" style="margin-top: .5em;">
         <div class="col-md-6 d-flex align-items-end justify-content-start">
-            <RadzenButton hidden="@hiddenPrevious" Disabled="@DisabledPrevious" Size="ButtonSize.ExtraSmall" Text="<-" Click="@((args) => MoveToNextStep())" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Secondary" />
+            <RadzenButton hidden="@hiddenPrevious" Disabled="@DisabledPrevious" Size="ButtonSize.ExtraSmall" Click="@((args) => MoveToNextStep())" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Light"><RadzenImage Path="/Images/right.svg" width="16" height="16" /></RadzenButton>
         </div>
         <div class="col-md-6 d-flex align-items-end justify-content-end">
-            <RadzenButton Disabled="@DisabledNext" Size="ButtonSize.ExtraSmall" Text="->" Click="((args) => MoveToPreviousStep())" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Secondary" />
+            <RadzenButton Disabled="@DisabledNext" Size="ButtonSize.ExtraSmall" Click="((args) => MoveToPreviousStep())" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Light"> <RadzenImage Path="/Images/left.svg" width="16" height="16" /> </RadzenButton>
         </div>
     </div>
     <div class="custom-button-group" style="padding-top:0;margin-top:0;">
@@ -99,10 +111,8 @@
         </RadzenCard>
 
 
-
-
 @code {
-    bool value = true;
+    bool value = false;
     bool valuePassword;
     string userinfo;
     int userid;
@@ -121,15 +131,14 @@
         dynamic userObject = JsonConvert.DeserializeObject(userinfo);
         userid = userObject.UserId;
         user = await userService.GetById(userid);
-        Console.WriteLine(userInfoOld.Username);
-        Console.WriteLine(userInfoOld.UserId);
-        Console.WriteLine(userInfoOld.Password);
+
     }
 
     async Task SaveUser(User user)
     {
         string ActualUsername = user.Username;
         string ActualPassword = user.Password;
+        string ActualLocalStoragePassword = userInfoOld.Password;
         string ActualAvatar = user.Avatar;
 
         if (string.IsNullOrEmpty(user.Username))
@@ -137,7 +146,7 @@
             WarningMessage("Username is Required");
             return;
         }
-        if (user.UserNameChanged == 2)
+        if (user.UserNameChanged == 2 && ActualUsername != userInfoOld.Username)
         {
             WarningMessage("Username could not be changed more than 2 times");
             return;
@@ -157,12 +166,13 @@
             WarningMessage("Password is Required");
             return;
         }
-        if (user.ActualPassword != user.Password)
+
+        if (!BCrypt.Verify(user.ActualPassword, ActualPassword))
         {
             WarningMessage("Password is not correct");
             return;
         }
-        if (string.IsNullOrEmpty(user.NewPassword) && value == true )
+        if (string.IsNullOrEmpty(user.NewPassword) && !valuePassword)
         {
             WarningMessage("Password is Required");
             return;
@@ -172,15 +182,15 @@
             WarningMessage("Password Confirmation is Required");
             return;
         }
-        if (user.ConfirmPassword != user.NewPassword)
+        if (user.ConfirmPassword != user.NewPassword && !valuePassword)
         {
-            WarningMessage("Password is Not Correct");
+            WarningMessage("Password is not correct");
             return;
         }
         userInfo.UserId = user.UserId;
         if (string.IsNullOrEmpty(UserAvatar))
         {
-            userInfo.Avatar = userInfoOld.Avatar;
+            userInfo.Avatar = ActualAvatar;
         }
         else
         {
@@ -188,11 +198,20 @@
             user.Avatar = UserAvatar;
         }
         userInfo.Username = user.Username;
-        userInfo.Password = user.Password;
+        userInfo.Password = ActualLocalStoragePassword;
         await localStorage.SetItemAsync(key, userInfo);
         if(user.NewPassword != null)
         {
-            user.Password = user.NewPassword;
+            string NewpasswordHash = BCrypt.HashPassword(user.NewPassword);
+            if (!valuePassword)
+            {
+                user.Password = NewpasswordHash;
+                userInfo.Password = user.NewPassword;
+            }
+           
+            await localStorage.SetItemAsync(key, userInfo);
+            ActualLocalStoragePassword = userInfo.Password;
+
         }
         else
         {
@@ -204,8 +223,8 @@
             user.UserNameChanged = user.UserNameChanged + 1;
         }
         await userService.Update(user);
-      
-        if (ActualUsername != userInfoOld.Username || ActualPassword != userInfoOld.Password || userInfo.Avatar != userInfoOld.Avatar)
+
+        if (ActualUsername != userInfoOld.Username || !BCrypt.Verify(ActualLocalStoragePassword, ActualPassword) || userInfo.Avatar != ActualAvatar)
         {
             SuccessMessage("User Is Updated");
         }
@@ -322,5 +341,13 @@
         DisabledNext = true;
         DisabledPrevious = false;
         hiddenPrevious = false;
+    }
+    public string label_class()
+    {
+        if (!valuePassword)
+        {
+            return "no-class";
+        }
+        return "form-labels";
     }
 }

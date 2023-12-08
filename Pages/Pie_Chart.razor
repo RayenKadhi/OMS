@@ -13,9 +13,10 @@
 
 <RadzenChart SeriesClick=@OnSeriesClick Style="width: 100%;height: 100%;margin-top: 50;">
         <p class="page-title" style="font-weight: lighter; display:flex; justify-content:center;">Revenue Per Year</p>
-    <RadzenPieSeries Data="@RevenueYear" Title="Revenue" CategoryProperty="Year" ValueProperty="Revenue" Fills="customColors">
-        <RadzenSeriesDataLabels Visible="true" OffsetX="-10" OffsetY="5"  />
+    <RadzenPieSeries Data="@RevenueYear" Title="Revenue" CategoryProperty="Year" ValueProperty="Revenue" Fills="customColors" Visible=true>
+        <RadzenSeriesDataLabels Visible="true" />
         </RadzenPieSeries>
+        
     <RadzenValueAxis Formatter="@FormatAsDT">
         <RadzenGridLines Visible="true"  />
         
