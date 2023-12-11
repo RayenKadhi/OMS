@@ -23,6 +23,8 @@ namespace OMS.Data
             dbPara.Add("UserNameChanged", user.UserNameChanged, DbType.Int64);
             dbPara.Add("LastLoginDate", user.LastLoginDate, DbType.String);
             dbPara.Add("Avatar", user.Avatar, DbType.String);
+            dbPara.Add("ConfirmationToken", user.ConfirmationToken, DbType.String);
+            dbPara.Add("IsConfirmed", user.IsConfirmed, DbType.Byte);
             var UserId = Task.FromResult
                (_dapperService.Insert<int>("[dbo].[spAddUser]",
                dbPara, commandType: CommandType.StoredProcedure));
@@ -40,6 +42,8 @@ namespace OMS.Data
             dbPara.Add("UserNameChanged", user.UserNameChanged, DbType.Int64);
             dbPara.Add("LastLoginDate", user.LastLoginDate, DbType.DateTime);
             dbPara.Add("Avatar", user.Avatar, DbType.String);
+            dbPara.Add("ConfirmationToken", user.ConfirmationToken, DbType.String);
+            dbPara.Add("IsConfirmed", user.IsConfirmed, DbType.Byte);
             var updateUser = Task.FromResult
                (_dapperService.Update<int>("[dbo].[spUpdateUser]",
                dbPara, commandType: CommandType.StoredProcedure));

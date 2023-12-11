@@ -112,6 +112,8 @@ namespace OMS.Entities
         public string NewUserName { get; set; }
         public int UserNameChanged {  get; set; }
         public string Avatar { get; set; }
+        public string ConfirmationToken { get; set; }
+        public byte IsConfirmed { get; set; }
     }
 
 }

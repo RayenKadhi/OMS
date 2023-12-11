@@ -33,6 +33,7 @@
 @using Microsoft.Data.SqlClient;
 @using System;
 @using System.Globalization;
+@using System.Data.SqlTypes;
 @inject NotificationService NotificationService
 @inject IOrderService orderService
 @inject ICustomerService customerService
@@ -47,4 +48,6 @@
 @inject IDapperService dapperService
 @inject IJSRuntime jsRuntime
 @inject Blazored.LocalStorage.ILocalStorageService localStorage;
+@inject IEmailSender emailSender
+
 

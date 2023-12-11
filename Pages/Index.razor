@@ -30,17 +30,36 @@
 
 
 @code{
+
+    byte suspended;
     bool keyExists;
+    User userInfo = new User();
+    User user = new User();
     protected override async Task OnInitializedAsync()
     {
-       
         keyExists = await localStorage.ContainKeyAsync("UserInfo");
-        if (keyExists == false)
+        // if (keyExists)
+        // {
+        //     userInfo = await localStorage.GetItemAsync<User>("UserInfo");
+
+        //     user.Suspended = 1;
+        //     await userService.Update(user);
+        //     // if (userInfo.Suspended == 0)
+        //     // {
+        //     //     user = await userService.GetById(userInfo.UserId);
+        //     //     userInfo.Suspended = 1;
+        //     //     await localStorage.SetItemAsync("UserInfo", userInfo);
+        //     // }
+        // }
+       
+        
+        if (!keyExists)
         {
             await localStorage.ClearAsync();
             navigationManager.NavigateTo("/NotFound");
         }
     }
+    
     
 }
         

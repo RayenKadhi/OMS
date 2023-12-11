@@ -9,10 +9,10 @@ namespace OMS.Data
     {
         public Task SendEmailAsync(string recipientEmail, string emailSubject, string emailMessage)
         {
-            var senderEmail = "mohamedrayenkadhi40@gmail.com";
+            var senderEmail = "mohamedrayenkadhi40@outlook.com";
             var password = "rayenrayen1234566";
 
-            var client = new SmtpClient("smtp.gmail.com", 587)
+            var client = new SmtpClient("smtp-mail.outlook.com", 587)
             {
                 EnableSsl = true,
                 Credentials = new NetworkCredential(senderEmail, password),

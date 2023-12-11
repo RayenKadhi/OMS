@@ -251,7 +251,8 @@
     string username;
     string Avatar;
 
-    string user;
+
+    User user = new User();
 
     string IsScrollableContent(bool sidebar)
     {
@@ -278,23 +279,25 @@
     {
         if (firstRender)
         {
-            user = await localStorage.GetItemAsync<string>("UserInfo");
-            if (!string.IsNullOrEmpty(user))
+            keyExists = await localStorage.ContainKeyAsync("UserInfo");
+            
+            if (keyExists)
             {
-                dynamic userObject = JsonConvert.DeserializeObject(user);
-                username = userObject.Username;
-                Avatar = userObject.Avatar;
+                user = await localStorage.GetItemAsync<User>("UserInfo");
+                username = user.Username;
+                Avatar = user.Avatar;
                 if (Avatar == "/Images/None.png" || Avatar == null )
                 {
                     hidden = true;
                 }
                 StateHasChanged();
             }
-            
-            keyExists = await localStorage.ContainKeyAsync("UserInfo");
+
+
             if (!keyExists)
             {
-                navigationManager.NavigateTo("/login");
+                navigationManager.NavigateTo("/NotFound");
+                return;
             }
             rendered = true;
 
