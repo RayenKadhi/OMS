@@ -171,7 +171,7 @@
                 return;
             }
         }
-        
+
         if (string.IsNullOrEmpty(user.NewPassword) && !valuePassword)
         {
             WarningMessage("Password is Required");
@@ -197,6 +197,7 @@
             userInfo.Avatar = UserAvatar;
             user.Avatar = UserAvatar;
         }
+        userInfo.Suspended = 1;
         userInfo.Username = user.Username;
         userInfo.Password = ActualLocalStoragePassword;
         await localStorage.SetItemAsync(key, userInfo);

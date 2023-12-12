@@ -113,7 +113,6 @@ namespace OMS.Entities
         public int UserNameChanged {  get; set; }
         public string Avatar { get; set; }
         public string ConfirmationToken { get; set; }
-        public byte IsConfirmed { get; set; }
         public DateTime EmailSent { get; set; }
     }
 

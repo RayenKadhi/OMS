@@ -24,7 +24,6 @@ namespace OMS.Data
             dbPara.Add("LastLoginDate", user.LastLoginDate, DbType.String);
             dbPara.Add("Avatar", user.Avatar, DbType.String);
             dbPara.Add("ConfirmationToken", user.ConfirmationToken, DbType.String);
-            dbPara.Add("IsConfirmed", user.IsConfirmed, DbType.Byte);
             dbPara.Add("EmailSent", user.EmailSent, DbType.DateTime);
             var UserId = Task.FromResult
                (_dapperService.Insert<int>("[dbo].[spAddUser]",
@@ -44,7 +43,6 @@ namespace OMS.Data
             dbPara.Add("LastLoginDate", user.LastLoginDate, DbType.DateTime);
             dbPara.Add("Avatar", user.Avatar, DbType.String);
             dbPara.Add("ConfirmationToken", user.ConfirmationToken, DbType.String);
-            dbPara.Add("IsConfirmed", user.IsConfirmed, DbType.Byte);
             dbPara.Add("EmailSent", user.EmailSent, DbType.DateTime);
             var updateUser = Task.FromResult
                (_dapperService.Update<int>("[dbo].[spUpdateUser]",
