@@ -20,7 +20,7 @@
                 <p class="page-title" style="font-weight: lighter; ">Top (@selectedNum) Customers</p>
         </div>
          <div class="col-md-6 d-flex align-items-end justify-content-end">
-           <RadzenDropDown  Data="@Number" TextProperty="Num" ValueProperty="Num" @bind-Value="selectedNum" Change="@(e => OnYearSelectionChange((int)e))" />
+           <RadzenDropDown Style="width:50%" Data="@Number" TextProperty="Num" ValueProperty="Num" @bind-Value="selectedNum" Change="@(e => OnYearSelectionChange((int)e))" />
         </div>
         </div>
 
@@ -136,7 +136,7 @@
         return num switch
         {
             5 => 2000,
-            3 => 1800,
+            3 => 2000,
             10 => 2100,
             _ => 0, 
         };
@@ -146,7 +146,7 @@
         return num switch
         {
             5 => 750,
-            3 => 500,
+            3 => 750,
             10 => 750,
             _ => 0,
         };

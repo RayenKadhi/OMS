@@ -93,7 +93,7 @@
                                 <RadzenColumn Size="12" SizeSM="6">
                                     <RadzenStack>
                             <p class="form-label">Category *</p>
-                                <RadzenDropDown @bind-Value="@product.CategoryId" Data="@CategoryNames" TextProperty="CategoryName" ValueProperty="CategoryId" />
+                            <RadzenDropDown Placeholder="Category" @bind-Value="@product.CategoryId" Data="@CategoryNames" TextProperty="CategoryName" ValueProperty="CategoryId" />
 
                             <p class="form-label">Unit Price</p>
                                 <RadzenNumeric Placeholder="Unit Price.."  ShowUpDown="true" @bind-Value=@product.UnitPrice />
@@ -104,7 +104,7 @@
                                 <RadzenColumn Size="12" SizeSM="6">
                                     <RadzenStack>
                                             <p class="form-label">Brand *</p>
-                                            <RadzenDropDown Data="@BrandNames" @bind-Value="@product.BrandId" TextProperty="BrandName" ValueProperty="BrandId" />
+                            <RadzenDropDown Placeholder="Brand" Data="@BrandNames" @bind-Value="@product.BrandId" TextProperty="BrandName" ValueProperty="BrandId" />
                                             <p class="form-label">Threshold</p>
                                             <RadzenNumeric Placeholder="Threshold.." ShowUpDown="true" @bind-Value=@product.Threshold />
 
@@ -116,7 +116,7 @@
                                     </RadzenStack>
                                 </RadzenColumn>
                             </RadzenRow>
-                <p class="form-label" style="width:100%; margin-bottom: .5em; margin-top:1em;">Description</p>
+                <p class="form-label" style="width:100%; margin-bottom: .5em; margin-top:.5em;">Description</p>
                                         <RadzenTextArea style="margin-bottom:1em;width: 100%;" Placeholder="Description.." @bind-Value=@product.Description />
                 <div class="custom-button-group" style="padding-top: 0rem;">
                                 <RadzenButton Text="Save" Icon="save" Click="@((args) => SaveProduct(product))" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" />

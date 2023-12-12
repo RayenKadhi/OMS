@@ -66,7 +66,7 @@
                         <RadzenSidebarToggle Style="color: #544a48;" Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })">
                         </RadzenSidebarToggle>
                         <RadzenLabel style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"/>
-                            <RadzenLabel @onclick="Navigation" Text="OMS" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                        <RadzenLabel class="hover-pointer-image" @onclick="Navigation" Text="OMS" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                             <RadzenImage Path="/Images/customer.png" style="width: 35px; height: 35px; border-radius: 16px; margin-right: 6px;" />
                             <b style="font-weight:bold;">OMS</b>
                         </RadzenLabel>
