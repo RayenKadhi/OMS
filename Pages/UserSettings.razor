@@ -46,8 +46,6 @@
             {
                 <p>Username</p>
                 <RadzenTextBox class="TextBox" @bind-value="@user.Username" />
-                <p style="margin-top:1em;">Actual Password</p>
-                <RadzenPassword class="TextBox" Visible=true @bind-Value="@user.ActualPassword" />
                 <RadzenCheckBox @bind-Value=@value style="margin-top:1em;" Name="CheckBox1" />
                 <RadzenLabel Text="Change Password?" Component="CheckBox1" Style="margin-left: 8px; vertical-align: middle; margin-top:1em;" />
         @if (value == true)
@@ -57,7 +55,9 @@
         else
         {
             valuePassword = true;
-        }
+        }  
+        <p class="@label_class()" style="margin-top:1em;">Actual Password</p>
+        <RadzenPassword class="TextBox" Disabled="@valuePassword" Visible=true @bind-Value="@user.ActualPassword" />
         <p class="@label_class()">New Password</p>
                 <RadzenPassword  Disabled="@valuePassword" class="TextBox" Visible=true @bind-Value="@user.NewPassword" />
         <p class="@label_class()">Confirm Password</p>
@@ -87,10 +87,6 @@
         </div>
 
     }
- 
-            
-          
-       
     
     <div class="row" style="margin-top: .5em;">
         <div class="col-md-6 d-flex align-items-end justify-content-start">
@@ -161,17 +157,21 @@
             }
 
         }
-        if (string.IsNullOrEmpty(user.ActualPassword))
+        if (!valuePassword)
         {
-            WarningMessage("Password is Required");
-            return;
-        }
+            if (string.IsNullOrEmpty(user.ActualPassword))
+            {
+                WarningMessage("Password is Required");
+                return;
+            }
 
-        if (!BCrypt.Verify(user.ActualPassword, ActualPassword))
-        {
-            WarningMessage("Password is not correct");
-            return;
+            if (!BCrypt.Verify(user.ActualPassword, ActualPassword))
+            {
+                WarningMessage("Password is not correct");
+                return;
+            }
         }
+        
         if (string.IsNullOrEmpty(user.NewPassword) && !valuePassword)
         {
             WarningMessage("Password is Required");

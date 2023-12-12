@@ -47,6 +47,9 @@
         font-weight: bold;
     }
 
+    .hover-pointer-image {
+        cursor: pointer;
+    }
 
     
 </style>
@@ -66,11 +69,10 @@
                             <RadzenLabel @onclick="Navigation" Text="OMS" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                             <RadzenImage Path="/Images/customer.png" style="width: 35px; height: 35px; border-radius: 16px; margin-right: 6px;" />
                             <b style="font-weight:bold;">OMS</b>
-                           
                         </RadzenLabel>
                         <div style="position: absolute; top: 0; right: 0; margin-top: 8px; margin-right: 8px;">
                             <span> Welcome In @username ! </span> <RadzenImage Path="/Images/status-connected.png" class="connected" style="width: 10px; height: 10px; border-radius: 16px; margin-right: 6px;" />
-                            <RadzenImage @onclick="NavigationProfile" hidden="@hidden" Path="@Avatar" style="width: 35px; height: 35px; border-radius: 16px; margin-right: 6px;" />
+                            <RadzenImage  class="hover-pointer-image"  @onclick="NavigationProfile" hidden="@hidden" Path="@Avatar" style="width: 35px; height: 35px; border-radius: 16px; margin-right: 6px;" />
                         </div>
                     </RadzenStack>
                 </RadzenColumn>
@@ -262,7 +264,6 @@
     {
         return toggle == false ? "forme" : string.Empty;
     }
-
     IEnumerable<Example> examples;
     protected override async Task OnInitializedAsync()
     {
@@ -280,17 +281,27 @@
         if (firstRender)
         {
             keyExists = await localStorage.ContainKeyAsync("UserInfo");
-            
+
+
             if (keyExists)
             {
                 user = await localStorage.GetItemAsync<User>("UserInfo");
-                username = user.Username;
-                Avatar = user.Avatar;
-                if (Avatar == "/Images/None.png" || Avatar == null )
+                if (user.Suspended ==1)
                 {
-                    hidden = true;
+                    username = user.Username;
+                    Avatar = user.Avatar;
+                    if (Avatar == "/Images/None.png" || Avatar == null)
+                    {
+                        hidden = true;
+                    }
+                    StateHasChanged();
                 }
-                StateHasChanged();
+                else
+                {
+                    navigationManager.NavigateTo("/NotFound");
+                    return;
+                }
+
             }
 
 

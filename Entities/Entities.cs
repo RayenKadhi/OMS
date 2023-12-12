@@ -114,6 +114,7 @@ namespace OMS.Entities
         public string Avatar { get; set; }
         public string ConfirmationToken { get; set; }
         public byte IsConfirmed { get; set; }
+        public DateTime EmailSent { get; set; }
     }
 
 }

@@ -88,10 +88,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXRQYXNzd29yZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/SetUpAccountDetails.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0VXBBY2NvdW50RGV0YWlscy5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/StackedBarSeries.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhY2tlZEJhclNlcmllcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

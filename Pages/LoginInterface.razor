@@ -27,7 +27,7 @@
     </RadzenColumn>
     <RadzenColumn Size="12" SizeMD="6">
         <RadzenCard Class="rz-shadow-0 rz-border-radius-0 rz-p-12">
-            <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="rz-mb-6">
+            <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="rz-mb-6" Style="margin-top:1em;">
                 Login
             </RadzenText>
             @if (suspended == 1)
@@ -49,7 +49,6 @@
                     <RadzenButton ButtonType="ButtonType.Submit" Text="Login" Click="@(args => HandleSubmit(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" Style="margin-top:2.5em;" />
                     <p Style="margin-top:1.5em;">Don't have an account yet?</p>
                     <RadzenButton Shade="Shade.Lighter" Text="Register" Click="@(args => OnRegistring())" Icon="launch" ButtonStyle="ButtonStyle.Danger" class="button-save-cancel" />
-
                 </div>
             }
             else
@@ -67,7 +66,7 @@
                     </RadzenRow>
                 </div>
                 <div class="row">
-                    <RadzenButton Disabled="@Disable" Text="Send A Confirmation Email" Click="@((args) => EmailSender(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" Style="margin-top:2em;" />
+                    <RadzenButton Disabled="@Disable" Text="Send A Confirmation Email" Click="@((args) => EmailSender(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" Style="margin-top:5em;" />
                 </div>
             }
 
@@ -76,6 +75,7 @@
 </RadzenRow>
 
 @code{
+    DateTime SentDate;
     bool Disable = false;
     int suspended = 1;
     List<User> users;
@@ -88,6 +88,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+
+
         users = await userService.ListAll();
     }
 
@@ -95,6 +97,8 @@
 
     public async Task HandleSubmit(User user)
     {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var Token = QueryHelpers.ParseQuery(uri.Query).TryGetValue("Token", out var parsedCode) ? parsedCode.ToString() : null;
         string username = user.Username;
         string password = user.Password;
 
@@ -115,22 +119,30 @@
         {
             if (BCrypt.Verify(password, foundUser.Password))
             {
+
+                userInfo.Avatar = foundUser.Avatar;
+                userInfo.UserId = foundUser.UserId;
+                userInfo.Username = username;
+                userInfo.Password = password;
+                TimeSpan DifferenceTime = DateTime.Now - foundUser.EmailSent;
+                if ((foundUser.ConfirmationToken == Token && DifferenceTime.Minutes <= 30) || foundUser.Suspended == 1)
+                {
+                    foundUser.Suspended = 1;
+                    userInfo.Suspended = 1;
+                }
+                userInfo.LastLoginDate = DateTime.Now;
+                await localStorage.SetItemAsync(key, userInfo);
+                foundUser.LastLoginDate = userInfo.LastLoginDate;
+                foundUser.EmailSent = userInfo.LastLoginDate;
+                await userService.Update(foundUser);
                 if (foundUser.Suspended == 1)
                 {
-                    userInfo.Avatar = foundUser.Avatar;
-                    userInfo.UserId = foundUser.UserId;
-                    userInfo.Username = username;
-                    userInfo.Password = password;
-                    await localStorage.SetItemAsync(key, userInfo);
-                    userInfo.LastLoginDate = DateTime.Now;
-                    foundUser.LastLoginDate = userInfo.LastLoginDate;
-                    await userService.Update(foundUser);
                     navigationManager.NavigateTo("/home", forceLoad: true);
                 }
                 else
                 {
                     suspended = 0;
-                    Message = $"Hello {username}! To ensure the security of your account, we require your confirmation. Kindly click the link below to verify and confirm your account details. Your prompt attention to this matter is appreciated.";
+                    Message = $"Hello {username}! To ensure the security of your account, we require your confirmation. Kindly click enter your email below to verify and confirm your account details. Your prompt attention to this matter is appreciated.";
                 }
 
             }
@@ -180,20 +192,17 @@
             return;
         }
         User foundUser = users.FirstOrDefault(u => u.Email == user.Email);
-        try
-        {
-            var receiver = user.Email;
-            var subject = "Account Confirmation";
-            var confirmationToken = foundUser.ConfirmationToken;
-            var messageBody = $"Click here to Confirm Your Account https://localhost:7131/home?token={confirmationToken}";
-            await emailSender.SendEmailAsync(receiver, subject, messageBody);
-            Message = "Email sent successfully!";
-            SuccessMessage(Message);
-           
-        }
-        catch
-        {
-        }
+        // Email Confirmation ------------------------------------------------------------------------------------->
+        var receiver = user.Email;
+        var subject = "Account Confirmation";
+        var confirmationToken = foundUser.ConfirmationToken;
+        var messageBody = $"Click here to Confirm Your Account https://localhost:7131/login?Token={confirmationToken}";
+        await emailSender.SendEmailAsync(receiver, subject, messageBody);
+        Message = "Email sent successfully!";
+        SuccessMessage(Message);
+      //End Email Confirmation ------------------------------------------------------------------------------------->
+        
+   
     }
     bool IsValidEmail(string email)
     {
@@ -208,6 +217,12 @@
     {
         NotificationService.Notify(message);
 
+    }
+    private void ConfirmAccount(string Token)
+    {
+     
+        Console.WriteLine($"Handling confirmation logic for code: {Token}");
+   
     }
 }
 

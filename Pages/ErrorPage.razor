@@ -36,21 +36,24 @@
 @code {
     bool keyExists;
     string text;
+    User user = new User();
     void LearnMoreClicked()
     {
         navigationManager.NavigateTo("/login");
     }
     protected override async Task OnInitializedAsync()
     {
+        user = await localStorage.GetItemAsync<User>("UserInfo");
         keyExists = await localStorage.ContainKeyAsync("UserInfo");
-        if (keyExists == true)
+        if (keyExists == true && user.Suspended == 1)
         {
-            text = "Home";
+            navigationManager.NavigateTo("/home");
         }
         else
         {
             text = "Login";
         }
+        
     }
 
 }

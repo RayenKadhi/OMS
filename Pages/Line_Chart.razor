@@ -23,9 +23,10 @@
                     }
                     }
                     <RadzenCategoryAxis Padding="0" Formatter="@FormatAsMonth" />
-                    <RadzenValueAxis Formatter="@FormatAsDT">
+                    <RadzenValueAxis Min="0" Max="2200" Step="500" Formatter="@FormatAsDT">
                         <RadzenGridLines Visible="true" />
                         <RadzenAxisTitle Text="Revenue in DT" />
+                        
                     </RadzenValueAxis>
                 </RadzenChart>
             </div>
@@ -89,5 +90,6 @@
         }
         return new List<RevenueData>();
     }
+  
     
 }

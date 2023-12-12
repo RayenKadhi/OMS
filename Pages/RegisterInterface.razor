@@ -41,7 +41,7 @@
             <div class="row">
                 <RadzenButton Text="Register" Click="@((args)=>SaveUser(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" Style="margin-top:2em;" />
                 <p Style="margin-top:1.5em;">Already Have An Acoount ?</p>
-                <RadzenButton Shade="Shade.Lighter" Text="Return" Click="@Navigation" Icon="cancel" ButtonStyle="ButtonStyle.Danger" class="button-save-cancel" />
+                <RadzenButton Shade="Shade.Lighter" Text="Login" Click="@Navigation" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" />
             </div>
         </RadzenCard>
     </RadzenColumn>
@@ -49,6 +49,7 @@
 
 
 @code {
+    DateTime EmailSent;
     string Message;
     bool hiddenPrevious = true;
     bool DisabledNext;
@@ -83,7 +84,12 @@
             WarningMessage("Username already exists");
             return;
         }
-        if (!string.IsNullOrEmpty(user.Email) && !IsValidEmail(user.Email))
+        if (string.IsNullOrEmpty(user.Email))
+        {
+            WarningMessage("Email is Required");
+            return;
+        }
+        if (!IsValidEmail(user.Email))
         {
             WarningMessage("Provide a valid email");
             return;
@@ -110,23 +116,18 @@
         string passwordHash = BCrypt.HashPassword(user.Password);
         user.Password = passwordHash;
         user.ConfirmationToken = Guid.NewGuid().ToString();
+        user.EmailSent = DateTime.Now;
+        user.LastLoginDate = DateTime.Now;
         await userService.Create(user);
-
         await localStorage.SetItemAsync(key, userInfo);
         SuccessMessage("User Is Registetred");
         navigationManager.NavigateTo("/confirmationAccount");
-        try
-        {
-            var receiver = user.Email;
-            var subject = "Account Confirmation";
-            var messageBody = $"Click here to Confirm Your Account https://localhost:7131/home";
-            await emailSender.SendEmailAsync(receiver, subject, messageBody);
-            
-        }
-        catch
-        {
-            
-        }
+        // Email Confirmation ------------------------------------------------------------------------------------->
+        var receiver = user.Email;
+        var subject = "Account Confirmation";
+        var messageBody = $"Click here to Confirm Your Account https://localhost:7131/home?Token={user.ConfirmationToken}";
+        await emailSender.SendEmailAsync(receiver, subject, messageBody);
+        // Email Confirmation ------------------------------------------------------------------------------------->
     }
 
     void WarningMessage(string messsage)

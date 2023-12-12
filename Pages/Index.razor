@@ -29,38 +29,39 @@
 
 
 
-@code{
-
+@code {
     byte suspended;
     bool keyExists;
     User userInfo = new User();
     User user = new User();
+    List<User> users;
+    string key = "UserInfo";
     protected override async Task OnInitializedAsync()
     {
+        users = await userService.ListAll();
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var Token = QueryHelpers.ParseQuery(uri.Query).TryGetValue("Token", out var parsedCode) ? parsedCode.ToString() : null;
         keyExists = await localStorage.ContainKeyAsync("UserInfo");
-        // if (keyExists)
-        // {
-        //     userInfo = await localStorage.GetItemAsync<User>("UserInfo");
-
-        //     user.Suspended = 1;
-        //     await userService.Update(user);
-        //     // if (userInfo.Suspended == 0)
-        //     // {
-        //     //     user = await userService.GetById(userInfo.UserId);
-        //     //     userInfo.Suspended = 1;
-        //     //     await localStorage.SetItemAsync("UserInfo", userInfo);
-        //     // }
-        // }
+        user = await localStorage.GetItemAsync<User>("UserInfo");
+        User foundUser = users.FirstOrDefault(u => u.Username == user.Username);
+        if (foundUser != null)
+        {
+            TimeSpan DifferenceTime = DateTime.Now - foundUser.EmailSent;
+            if (foundUser.ConfirmationToken == Token && DifferenceTime.Minutes <=30)
+            {
+                user.Suspended = 1;
+                await localStorage.SetItemAsync(key, user);
+                foundUser.Suspended = 1;
+                await userService.Update(foundUser);
+            }
+        }
        
-        
         if (!keyExists)
         {
             await localStorage.ClearAsync();
             navigationManager.NavigateTo("/NotFound");
         }
     }
-    
-    
 }
         
     

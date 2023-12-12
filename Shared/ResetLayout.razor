@@ -1,6 +1,21 @@
 ﻿@inherits LayoutComponentBase
 <RadzenNotification />
-<div>
+<style>
+    body {
+        background-color: #eeeeec;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .centered-content {
+        max-width: 800px;
+        width: 100%;
+    }
+</style>
+<div class="centered-content">
 	@Body
 </div>
 

@@ -34,6 +34,7 @@
 @using System;
 @using System.Globalization;
 @using System.Data.SqlTypes;
+@using Microsoft.AspNetCore.WebUtilities
 @inject NotificationService NotificationService
 @inject IOrderService orderService
 @inject ICustomerService customerService
@@ -48,6 +49,13 @@
 @inject IDapperService dapperService
 @inject IJSRuntime jsRuntime
 @inject Blazored.LocalStorage.ILocalStorageService localStorage;
+@inject IEmailSender emailSender
+@inject Interfaces.IProductService productService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@inject IJSRuntime JSRuntime
+@inject DialogService DialogService
+@inject Interfaces.IPriceFormattingService priceFormattingService
+@inject DownloadController downloadController
 @inject IEmailSender emailSender
 
 
