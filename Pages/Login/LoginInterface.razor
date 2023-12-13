@@ -1,0 +1,234 @@
+﻿@page "/"
+@layout LoginLayout
+@page "/login"
+
+
+<style>
+    .forget-password:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .forget-password{
+        width:100%;
+    }
+
+    .rz-p-12 {
+         padding:2rem !important;   
+    }
+</style>
+
+
+<RadzenRow Gap="0" Class="rz-my-12 rz-mx-auto rz-border-radius-6 rz-shadow-10" Style="width: 100%; max-width: 800px; overflow: hidden;">
+    <RadzenColumn Size="12" SizeMD="6">
+        <RadzenCard class="card" >
+            <RadzenText TextStyle="TextStyle.DisplayH3" TagName="TagName.H2" Class="welcome-text">Welcome!</RadzenText>
+            <RadzenImage Path="/Images/customer.png" class="image" />
+        </RadzenCard>
+    </RadzenColumn>
+    <RadzenColumn Size="12" SizeMD="6">
+        <RadzenCard class="card" Style="height:100%">
+            <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="login-title">
+                Login
+            </RadzenText>
+            @if (suspended == 1)
+            {
+                <div class="d-flex justify-content-center">
+                    <RadzenRow Gap=".5rem">
+                        <RadzenColumn Size="12" SizeSM="12">
+                            <RadzenStack>
+                                <p>Username</p>
+                                <RadzenTextBox class="form-custom" @bind-value="@user.Username" />
+                                <p class="form-labels">Password</p>
+                                <RadzenPassword Visible="true" @bind-value="@user.Password" />
+                            </RadzenStack>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </div>
+                <div class="row">
+                    <RadzenText class="forget-password" onclick="@OnResetPassword" Style="margin-top:1em; Color:#3F33FF">Forget your password ?</RadzenText>
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Login" Click="@(args => HandleSubmit(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="login-button" Style="margin-top:2.5em;" />
+                    <p class="question-text">Don't have an account yet?</p>
+                    <RadzenButton Text="Register" Click="@(args => OnRegistring())" Icon="launch" ButtonStyle="ButtonStyle.Danger" class="register-button" />
+                </div>
+            }
+            else
+            {
+                @Message;
+                <div class="d-flex justify-content-center">
+                    <RadzenRow Style="margin-top:3em" Gap="1rem">
+                        <RadzenColumn Size="12" SizeSM="12">
+                            <RadzenStack>
+                                <RadzenFormField Text="Email">
+                                    <RadzenTextBox @bind-value="@user.Email" />
+                                </RadzenFormField>
+                            </RadzenStack>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </div>
+                <div class="row">
+                    <RadzenButton Disabled="@Disable" Text="Send A Confirmation Email" Click="@((args) => EmailSender(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="save-button" Style="margin-top:6.5em;" />
+                </div>
+            }
+
+        </RadzenCard>
+    </RadzenColumn>
+</RadzenRow>
+
+@code{
+    DateTime SentDate;
+    bool Disable = false;
+    int suspended = 1;
+    List<User> users;
+
+    string key = "UserInfo";
+    User userInfo = new User();
+    User user = new User();
+    string Message;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        users = await userService.ListAll();
+    }
+
+
+
+    public async Task HandleSubmit(User user)
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var Token = QueryHelpers.ParseQuery(uri.Query).TryGetValue("Token", out var parsedCode) ? parsedCode.ToString() : null;
+        string username = user.Username;
+        string password = user.Password;
+
+        if (string.IsNullOrEmpty(username))
+        {
+            WarningMessage("Username is Required");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(password))
+        {
+            WarningMessage("Password is Required");
+            return;
+        }
+
+        User foundUser = users.FirstOrDefault(u => u.Username == username);
+        if (foundUser != null)
+        {
+            if (BCrypt.Verify(password, foundUser.Password))
+            {
+
+                userInfo.Avatar = foundUser.Avatar;
+                userInfo.UserId = foundUser.UserId;
+                userInfo.Username = username;
+                userInfo.Password = password;
+                TimeSpan DifferenceTime = DateTime.Now - foundUser.EmailSent;
+                if ((foundUser.ConfirmationToken == Token && DifferenceTime.Minutes <= 30) || foundUser.Suspended == 1)
+                {
+                    foundUser.Suspended = 1;
+                    userInfo.Suspended = 1;
+                }
+                else if (DifferenceTime.Minutes >= 30)
+                {
+                    foundUser.ConfirmationToken = Guid.NewGuid().ToString();
+                }
+                userInfo.LastLoginDate = DateTime.Now;
+                await localStorage.SetItemAsync(key, userInfo);
+                foundUser.LastLoginDate = userInfo.LastLoginDate;
+                foundUser.EmailSent = foundUser.EmailSent;
+                await userService.Update(foundUser);
+                if (foundUser.Suspended == 1)
+                {
+                    navigationManager.NavigateTo("/home", forceLoad: true);
+                }
+                else
+                {
+                    suspended = 0;
+                    Message = $"Hello {username}! To ensure the security of your account, we require your confirmation. Kindly click enter your email below to verify and confirm your account details. Your prompt attention to this matter is appreciated.";
+                }
+
+            }
+            else
+            {
+                WarningMessage("Password is Invalid");
+            }
+
+        }
+        else
+        {
+
+            WarningMessage("Username is Invalid");
+        }
+
+
+    }
+    public void OnRegistring()
+    {
+        navigationManager.NavigateTo("/registration");
+    }
+
+    void WarningMessage(string messsage)
+    {
+        ShowNotification(new NotificationMessage { Summary = messsage, Duration = 4000 });
+    }
+
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+    }
+    void OnResetPassword()
+    {
+        navigationManager.NavigateTo("/resetpassword");
+    }
+
+    public async void EmailSender(User user)
+    {
+        if (string.IsNullOrEmpty(user.Email) || !IsValidEmail(user.Email))
+        {
+            WarningMessage("Provide a valid email");
+            return;
+        }
+        if (users.FirstOrDefault(u => u.Email == user.Email) == null)
+        {
+            WarningMessage("Email Address Doesn't exist");
+            return;
+        }
+        User foundUser = users.FirstOrDefault(u => u.Email == user.Email);
+        // Email Confirmation ------------------------------------------------------------------------------------->
+        var receiver = user.Email;
+        var subject = "Account Confirmation";
+        var confirmationToken = foundUser.ConfirmationToken;
+        var messageBody = $"Click here to Confirm Your Account https://localhost:7131/login?Token={confirmationToken}";
+        await emailSender.SendEmailAsync(receiver, subject, messageBody);
+        Message = "Email sent successfully!";
+        SuccessMessage(Message);
+      //End Email Confirmation ------------------------------------------------------------------------------------->
+        
+   
+    }
+    bool IsValidEmail(string email)
+    {
+        Regex emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase);
+        return emailRegex.IsMatch(email);
+    }
+    void SuccessMessage(string messsage)
+    {
+        ShowNotificationSuccess(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = messsage, Duration = 4000 });
+    }
+    void ShowNotificationSuccess(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+
+    }
+    private void ConfirmAccount(string Token)
+    {
+     
+        Console.WriteLine($"Handling confirmation logic for code: {Token}");
+   
+    }
+}
+
+
+

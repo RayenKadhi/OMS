@@ -1,0 +1,17 @@
+﻿@page "/logout"
+
+
+@code {
+    User userInfo = new User();
+    protected override async Task OnInitializedAsync()
+    {
+        DeleteLocalStorage();
+        navigationManager.NavigateTo("/login");
+    }
+
+    public async void DeleteLocalStorage()
+    {
+        userInfo = new User();
+        await localStorage.ClearAsync();
+    }
+}

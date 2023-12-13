@@ -1,0 +1,160 @@
+﻿@layout RegisterLayout
+@page "/registration"
+
+
+<style>
+
+
+</style>
+
+<RadzenRow Gap="0" Class="rz-my-12 rz-mx-auto rz-border-radius-6 rz-shadow-10" Style="width: 100%; max-width: 800px; overflow: hidden;">
+    <RadzenColumn Size="12" SizeMD="6">
+        <RadzenCard class="card" Style="height: 100%;">
+            <RadzenText TextStyle="TextStyle.DisplayH3" TagName="TagName.H2" Class="welcome-text">Welcome!</RadzenText>
+            <RadzenImage Path="/Images/customer.png" class="image" />
+        </RadzenCard>
+    </RadzenColumn>
+    <RadzenColumn Size="12" SizeMD="6">
+        <RadzenCard class="card" >
+            <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="login-title">
+                Register
+            </RadzenText>
+                <div class="d-flex justify-content-center">
+                    <RadzenRow Gap=".5rem">
+                        <RadzenColumn Size="12" SizeSM="12">
+                            <RadzenStack>
+                                <p>Username </p>
+                                <RadzenTextBox @bind-value="@user.Username" />
+                                <p class="form-labels">Email </p>
+                                <RadzenTextBox @bind-value="@user.Email" />
+                                <p class="form-labels">Password </p>
+                                <RadzenPassword Visible="true" @bind-value="@user.Password" />
+                                <p class="form-labels">Confirm Password</p>
+                                <RadzenPassword Visible="true" @bind-value="@user.ConfirmPassword" />
+                            </RadzenStack>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </div>
+            <div class="row">
+                <RadzenButton Text="Register" Click="@((args)=>SaveUser(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="register-button" Style="margin-top:2em;" />
+                <p class="question-text">Already Have An Acoount ?</p>
+                <RadzenButton Text="Login" Click="@Navigation" ButtonStyle="ButtonStyle.Success" class="login-button" />
+            </div>
+        </RadzenCard>
+    </RadzenColumn>
+</RadzenRow>
+
+
+@code {
+    DateTime EmailSent;
+    string Message;
+    bool hiddenPrevious = true;
+    bool DisabledNext;
+    bool DisabledPrevious;
+
+    List<User> users;
+    User userInfo = new User();
+    string key = "UserInfo";
+    User user = new User();
+    int totUsers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await userService.ListAll();
+        totUsers = await userService.Count();
+
+    }
+   
+    async Task SaveUser(User user)
+    {
+        if (string.IsNullOrEmpty(user.Username))
+        {
+            WarningMessage("Username is Required");
+            return;
+        }
+        if (users.FirstOrDefault(u => u.Username.ToLower() == user.Username.ToLower()) != null)
+        {
+            WarningMessage("Username already exists");
+            return;
+        }
+        if (string.IsNullOrEmpty(user.Email))
+        {
+            WarningMessage("Email is Required");
+            return;
+        }
+        if (!IsValidEmail(user.Email))
+        {
+            WarningMessage("Provide a valid email");
+            return;
+        }
+        if (users.FirstOrDefault(u => u.Email == user.Email) != null)
+        {
+            WarningMessage("Email Already Exists ");
+            return;
+        }
+        if (string.IsNullOrEmpty(user.Password) || !IsValidPassword(user.Password))
+        {
+            WarningMessage("Password must be with minimum eight characters, at least one letter and one number");
+            return;
+        }
+        if (user.ConfirmPassword != user.Password)
+        {
+            WarningMessage("Password is Not Correct");
+            return;
+        }
+        user.LastLoginDate = DateTime.Now;
+        userInfo.Username = user.Username;
+        userInfo.Password = user.Password;
+        userInfo.UserId = totUsers + 1;
+        string passwordHash = BCrypt.HashPassword(user.Password);
+        user.Password = passwordHash;
+        user.ConfirmationToken = Guid.NewGuid().ToString();
+        user.EmailSent = DateTime.Now;
+        user.LastLoginDate = DateTime.Now;
+        await userService.Create(user);
+        await localStorage.SetItemAsync(key, userInfo);
+        SuccessMessage("User Is Registetred");
+        navigationManager.NavigateTo("/confirmationAccount");
+        // Email Confirmation ------------------------------------------------------------------------------------->
+        var receiver = user.Email;
+        var subject = "Account Confirmation";
+        var messageBody = $"Click here to Confirm Your Account https://localhost:7131/home?Token={user.ConfirmationToken}";
+        await emailSender.SendEmailAsync(receiver, subject, messageBody);
+        // Email Confirmation ------------------------------------------------------------------------------------->
+    }
+
+    void WarningMessage(string messsage)
+    {
+        ShowNotification(new NotificationMessage { Summary = messsage, Duration = 4000 });
+    }
+
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+    }
+    void SuccessMessage(string messsage)
+    {
+        ShowNotificationSuccess(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = messsage, Duration = 4000 });
+    }
+    void ShowNotificationSuccess(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+
+    }
+    public void Navigation()
+    {
+        navigationManager.NavigateTo("/login");
+    }
+    bool IsValidEmail(string email)
+    {
+        Regex emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase);
+        return emailRegex.IsMatch(email);
+    }
+    bool IsValidPassword(string password)
+    {
+        Regex passwordRegex = new Regex(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", RegexOptions.IgnoreCase);
+        return passwordRegex.IsMatch(password);
+    }
+
+
+}

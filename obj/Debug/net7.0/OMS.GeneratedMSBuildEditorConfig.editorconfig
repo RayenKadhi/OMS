@@ -20,80 +20,80 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/ConfirmationAccount.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlybWF0aW9uQWNjb3VudC5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/Customer/CustomerInfo.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cQ3VzdG9tZXJcQ3VzdG9tZXJJbmZvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/CustomerInfo.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJJbmZvLnJhem9y
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/Customer/FetchCustomer.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cQ3VzdG9tZXJcRmV0Y2hDdXN0b21lci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Edit_Add_Product.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdF9BZGRfUHJvZHVjdC5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/Order/FetchOrder.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cT3JkZXJcRmV0Y2hPcmRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/ErrorPage.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3JQYWdlLnJhem9y
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/Product/Edit_Add_Product.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cUHJvZHVjdFxFZGl0X0FkZF9Qcm9kdWN0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/FetchBrand.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hCcmFuZC5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/Product/FetchProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cUHJvZHVjdFxGZXRjaFByb2R1Y3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/FetchCategory.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hDYXRlZ29yeS5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Dashbord/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvcmRcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/FetchCustomer.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hDdXN0b21lci5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Dashbord/Line_Chart.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvcmRcTGluZV9DaGFydC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/FetchOrder.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hPcmRlci5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Dashbord/Pie_Chart.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvcmRcUGllX0NoYXJ0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/FetchProduct.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hQcm9kdWN0LnJhem9y
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Dashbord/StackedBarSeries.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvcmRcU3RhY2tlZEJhclNlcmllcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Index.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Login/ConfirmationAccount.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cQ29uZmlybWF0aW9uQWNjb3VudC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Line_Chart.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGluZV9DaGFydC5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Login/LoginInterface.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cTG9naW5JbnRlcmZhY2UucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/LoginInterface.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5JbnRlcmZhY2UucmF6b3I=
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Login/Logout.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cTG9nb3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Logout.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LnJhem9y
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Login/PageReset.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cUGFnZVJlc2V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/PageReset.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFnZVJlc2V0LnJhem9y
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Login/RegisterInterface.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cUmVnaXN0ZXJJbnRlcmZhY2UucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Pie_Chart.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGllX0NoYXJ0LnJhem9y
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Login/ResetPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cUmVzZXRQYXNzd29yZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/RegisterInterface.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXJJbnRlcmZhY2UucmF6b3I=
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Others/ErrorPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3RoZXJzXEVycm9yUGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/ResetPassword.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXRQYXNzd29yZC5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Profile/UserSettings.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZmlsZVxVc2VyU2V0dGluZ3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/StackedBarSeries.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhY2tlZEJhclNlcmllcy5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Purchase/FetchBrand.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VcRmV0Y2hCcmFuZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/UserSettings.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclNldHRpbmdzLnJhem9y
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Purchase/FetchCategory.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VcRmV0Y2hDYXRlZ29yeS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Shared/LoginLayout.razor]

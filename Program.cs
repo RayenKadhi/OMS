@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using OMS.Interfaces;
-using OMS.Data;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +10,8 @@ using Radzen;
 using OMS.Entities;
 using Radzen.Blazor;
 using Blazored.LocalStorage;
-using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-
+using OMS.Data.PurchaseService;
+using OMS.Data;
 
 
 // ...

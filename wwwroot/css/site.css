@@ -151,7 +151,7 @@ a, .btn-link {
 
 .custom-card {
     padding: 0.5rem;
-    border-radius: 5px;
+    border-radius: 10px;
     display: flex;
     align-items: baseline;
 }
@@ -160,7 +160,7 @@ a, .btn-link {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .custom-card h3 {
@@ -177,7 +177,7 @@ a, .btn-link {
 }
 
 .custom-switch-container {
-    border-radius: 5px;
+    border-radius: 10px;
     margin: 0.5rem 0;
     display: flex;
     align-items: baseline;
@@ -198,32 +198,16 @@ a, .btn-link {
     gap: 0em;
 }
 
-
-
-    .
-
 .Picture {
     height: 1px;
     width: 1px;
 }
 
-.page-title {
-    font-size: 1.2em;
-    margin-top: .5em;
-    font-weight: bold;
-}
+
 .button-grid {
 }
 
-.button-Add-New{
 
-}
-
-.radzen-cards {
-    margin: 0rem;
-    margin-top: .5em;
-    
-}
 .rz-form-field-content {
     padding :var(--rz-numeric-input-padding);
 }
@@ -255,4 +239,89 @@ a, .btn-link {
 }
 .TextBox{
     width:100%;
+}
+
+/*edit radzen classes*/
+.rz-button-icon-left {
+    color:white;
+}
+/*Project Classes*/
+.page-title {
+    font-size: 1.2em;
+    margin-top: .5em;
+    font-weight: bold;
+}
+.add-button {
+    background-color: #83B30E !important;
+    border-radius: 10px;
+}
+
+.cancel-button {
+    background-color: #f3654e !important;
+    border-radius: 10px;
+}
+.export-button {
+    background-color: #696969 !important;
+    border-radius: 10px;
+}
+.search-button {
+    background-color: #0E83B3 !important;
+    border-radius: 10px;
+}
+.clear-button {
+    background-color: #696969 !important;
+    border-radius: 10px;
+}
+/* Small Action Buttons */
+.small-edit-button {
+    background-color: #0E83B3 !important;
+    border-radius: 10px;
+}
+.small-cancel-button {
+    background-color: #f3654e !important;
+    border-radius: 10px;
+}
+.small-delete-button {
+    background-color: #f3654e !important;
+    border-radius: 10px;
+}
+.small-detail-button {
+    background-color: #696969 !important;
+    border-radius: 10px;
+}
+.small-save-button {
+    background-color: #83B30E !important;
+    border-radius: 10px;
+}
+.card {
+    border: 1px solid #ebebeb;
+    border-radius : 5px;
+}
+/* Login Interface */
+.welcome-text{
+    display:flex;
+    justify-content:center;
+    color: black;
+    margin-right:1em;
+}
+.image{
+    height:100%;
+    width:100%;
+}
+.question-text {
+    margin-top: 1.5em;
+}
+.login-button {
+    background-color: #83B30E !important;
+    border-radius: 10px;
+}
+.register-button {
+    background-color: #f3654e !important;
+    border-radius: 10px;
+}
+.login-title {
+    font-size: 1.2em;
+    margin-top: .5em;
+    font-weight: bold;
+  
 }
