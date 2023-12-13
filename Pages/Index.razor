@@ -54,6 +54,10 @@
                 foundUser.Suspended = 1;
                 await userService.Update(foundUser);
             }
+            else if (DifferenceTime.Minutes >= 30)
+            {
+                foundUser.ConfirmationToken = Guid.NewGuid().ToString();
+            }
         }
        
         if (!keyExists)

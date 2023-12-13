@@ -21,8 +21,8 @@
 <RadzenRow Gap="0" Class="rz-my-12 rz-mx-auto rz-border-radius-6 rz-shadow-10" Style="width: 100%; max-width: 800px; overflow: hidden;">
     <RadzenColumn Size="12" SizeMD="6">
         <RadzenCard Class="rz-shadow-0 rz-border-radius-0 rz-text-align-center rz-p-12 rz-background-color-base-200">
-            <RadzenText TextStyle="TextStyle.DisplayH3" TagName="TagName.H2" Class="rz-color-black rz-mb-6">Welcome!</RadzenText>
-            <RadzenImage Path="/Images/customer.png" Style="height: 80%; width: 100%; margin-left:1em;" />
+            <RadzenText  TextStyle="TextStyle.DisplayH3" TagName="TagName.H2" Class="rz-color-black rz-mb-6">Welcome!</RadzenText>
+            <RadzenImage Path="/Images/customer.png" Style="height: 100%; width: 100%; margin-left:1em;margin-top:1.5em;" />
         </RadzenCard>
     </RadzenColumn>
     <RadzenColumn Size="12" SizeMD="6">
@@ -66,7 +66,7 @@
                     </RadzenRow>
                 </div>
                 <div class="row">
-                    <RadzenButton Disabled="@Disable" Text="Send A Confirmation Email" Click="@((args) => EmailSender(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" Style="margin-top:5em;" />
+                    <RadzenButton Disabled="@Disable" Text="Send A Confirmation Email" Click="@((args) => EmailSender(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" Style="margin-top:6.5em;" />
                 </div>
             }
 
@@ -129,6 +129,10 @@
                 {
                     foundUser.Suspended = 1;
                     userInfo.Suspended = 1;
+                }
+                else if (DifferenceTime.Minutes >= 30)
+                {
+                    foundUser.ConfirmationToken = Guid.NewGuid().ToString();
                 }
                 userInfo.LastLoginDate = DateTime.Now;
                 await localStorage.SetItemAsync(key, userInfo);
