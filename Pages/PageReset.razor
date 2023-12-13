@@ -21,9 +21,9 @@
                     <RadzenColumn Size="12" SizeSM="12">
                         <RadzenStack>
                             <p class="form-label">New Password</p>
-                                <RadzenTextBox @bind-Value=user.NewPassword />
+                            <RadzenPassword Visible="true" @bind-Value=user.NewPassword />
                             <p class="form-label">Confirm Password</p>
-                            <RadzenTextBox @bind-Value=user.ConfirmPassword />
+                            <RadzenPassword Visible="true" @bind-Value=user.ConfirmPassword />
                         </RadzenStack>
                     </RadzenColumn>
                 </RadzenRow>
@@ -44,12 +44,13 @@
 @code {
     List<User> users;
     User user = new User();
+    User foundUser = new User();
     protected override async Task OnInitializedAsync()
     {
         users = await userService.ListAll();
         var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
         var Token = QueryHelpers.ParseQuery(uri.Query).TryGetValue("Token", out var parsedCode) ? parsedCode.ToString() : null;
-        User foundUser = users.FirstOrDefault(u => u.ConfirmationToken == Token);
+        foundUser = users.FirstOrDefault(u => u.ConfirmationToken == Token);
         TimeSpan DifferenceTime = DateTime.Now - foundUser.EmailSent;
         if (foundUser == null || DifferenceTime.Minutes >=30)
         {
@@ -76,11 +77,10 @@
         SuccessMessage("Password Has Successfully Changed");
         string passwordHash = BCrypt.HashPassword(user.NewPassword);
         user.Password = passwordHash;
-        user.LastLoginDate = DateTime.Now;
-        user.EmailSent = DateTime.Now;
+        user.LastLoginDate = foundUser.LastLoginDate;
+        user.EmailSent = foundUser.EmailSent;
         await userService.Update(user);
         navigationManager.NavigateTo("/login");
-
     }
     void WarningMessage(string messsage)
     {

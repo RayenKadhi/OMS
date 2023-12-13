@@ -133,7 +133,7 @@
                 userInfo.LastLoginDate = DateTime.Now;
                 await localStorage.SetItemAsync(key, userInfo);
                 foundUser.LastLoginDate = userInfo.LastLoginDate;
-                foundUser.EmailSent = userInfo.LastLoginDate;
+                foundUser.EmailSent = foundUser.EmailSent;
                 await userService.Update(foundUser);
                 if (foundUser.Suspended == 1)
                 {
