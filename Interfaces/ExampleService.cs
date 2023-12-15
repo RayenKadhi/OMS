@@ -23,7 +23,7 @@ namespace OMS.Interfaces
         new Example()
         {
             Name = "Purchase",
-            Icon = "credit_card",
+            Icon = "shop_two",
             Children = new [] {
                 new Example()
                 {
@@ -37,8 +37,8 @@ namespace OMS.Interfaces
                     Name = "Products",
                     Title = "How to get started with the Radzen Blazor components",
                     Path = "/productlist",
-                    Icon = "markunread_mailbox"
-                },
+                    Icon = "inventory"
+				},
                 new Example
 
                 {
@@ -52,7 +52,7 @@ namespace OMS.Interfaces
         new Example()
         {
             Name = "Administration",
-            Icon = "card_membership",
+            Icon = "admin_panel_settings",
             Children = new [] {
 
                 new Example
@@ -60,22 +60,22 @@ namespace OMS.Interfaces
                     Name = "Category",
                     Title = "How to get support for the Radzen Blazor components",
                     Path = "/Categorylist",
-                    Icon = "assignment"
-                },
+                    Icon = "category"
+				},
                 new Example
                 {
                     Name = "Brand",
                     Title = "How to get support for the Radzen Blazor components",
                     Path = "/Brandlist",
-                    Icon = "assessment"
-                },
+                    Icon = "branding_watermark"
+				},
             } },
         
         new Example()
         {
             Name = "Logout",
             Path = "/logout",
-            Icon = "exit_to_app"
+            Icon = "logout"
         },
         
 

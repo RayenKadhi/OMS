@@ -1,0 +1,210 @@
+﻿@page "/customerlist"
+@implements IDisposable
+
+<div class="row">
+	<div class="col-md-6 d-flex align-items-end justify-content-start">
+		<h3 class="page-title"> Customers: @totalRecords </h3>
+	</div>
+	<div class="col-md-6 d-flex align-items-end justify-content-end">
+		<RadzenButton class="add-button" Icon="add_circle_outline" Text="Add" Click="@InsertRow" Disabled="@isButtonDisabled"></RadzenButton>
+	</div>
+</div>
+
+
+@if (customers == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+
+	<RadzenDataGrid Density="Density.Compact" @ref="customerGrid" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="20" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+					Data="@customers" TItem="Customer" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" EditMode="DataGridEditMode.Single" Style="margin-top:20px">
+		<EmptyTemplate>
+			<p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+		</EmptyTemplate>
+		<Columns>
+			<RadzenDataGridColumn TItem="Customer" Property="CustomerName" Title="Customer" Width="180px">
+				<EditTemplate Context="customer">
+					<RadzenTextBox Placeholder="Name.." @bind-Value="@customer.CustomerName" Style="width:100%" />
+				</EditTemplate>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Customer" Property="Email" Title="Email" Width="200px">
+				<EditTemplate Context="customer">
+					<RadzenTextBox Placeholder="Email.." @bind-Value="@customer.Email" Style="width:100%" />
+				</EditTemplate>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Customer" Property="Mobile" Title="Mobile" Width="100px">
+				<EditTemplate Context="customer">
+					<RadzenTextBox Placeholder="Mobile.." @bind-Value="@customer.Mobile" Style="width:100%" />
+				</EditTemplate>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Customer" Property="Address" Title="Address" Width="250px">
+				<EditTemplate Context="customer">
+					<RadzenTextArea Placeholder="Address.." @bind-Value="@customer.Address" Style="width:100%" />
+				</EditTemplate>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Customer" Filterable="false" Sortable="false" Width="100px">
+				<Template Context="customer">
+					<RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Size="ButtonSize.ExtraSmall" class="small-edit-button" Click="@(args => EditRow(customer))" @onclick:stopPropagation="true">
+					</RadzenButton>
+					<RadzenButton Icon="info" Size="ButtonSize.ExtraSmall" class="small-detail-button" Click="@((args) => Navigation(customer))">
+					</RadzenButton>
+					<RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.ExtraSmall" class="small-delete-button" Click="@((args) => ShowInlineDialog(customer))">
+					</RadzenButton>
+				</Template>
+				<EditTemplate Context="customer">
+					<RadzenButton Icon="check" ButtonType="ButtonType.Submit" Size="ButtonSize.ExtraSmall" class="small-save-button" Click="@((args) => SaveRow(customer))">
+					</RadzenButton>
+					<RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="cancel" Size="ButtonSize.ExtraSmall" class="small-cancel-button" Click="@(args => CancelEdit(customer))">
+					</RadzenButton>
+				</EditTemplate>
+			</RadzenDataGridColumn>
+		</Columns>
+	</RadzenDataGrid>
+
+}
+
+
+
+@code {
+
+	List<Customer> customers;
+
+	int totalRecords;
+
+	protected override async Task OnInitializedAsync()
+	{
+		totalRecords = await customerService.Count();
+		customers = await customerService.ListAll("", "CustomerName", "");
+	}
+	public void Dispose()
+	{
+		if (dialogService != null && dialogService.Close != null)
+		{
+			dialogService.Close();
+		}
+	}
+
+
+	Customer customerToInsert;
+	Customer customerToUpdate;
+
+	RadzenDataGrid<Customer> customerGrid;
+
+	bool isButtonDisabled;
+	async Task InsertRow()
+	{
+		customerToInsert = new Customer();
+		await customerGrid.InsertRow(customerToInsert);
+		isButtonDisabled = true;
+	}
+	async Task EditRow(Customer customer)
+	{
+		customerToUpdate = customer;
+		await customerGrid.EditRow(customer);
+
+	}
+
+	bool IsValidEmail(string email)
+	{
+		Regex emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase);
+		return emailRegex.IsMatch(email);
+	}
+
+	void WarningMessage(string messsage)
+	{
+		ShowNotification(new NotificationMessage { Summary = messsage, Duration = 4000 });
+	}
+
+	async Task SaveRow(Customer customer)
+	{
+		if (string.IsNullOrEmpty(customer.CustomerName))
+		{
+			WarningMessage("Customer Name is Required");
+			isButtonDisabled = false;
+			return;
+		}
+		if (customers.FirstOrDefault(c => c.CustomerName == customer.CustomerName && c.CustomerId != customer.CustomerId) != null)
+		{
+			WarningMessage("Customer Name already exists");
+			isButtonDisabled = false;
+			return;
+
+		}
+		if (!string.IsNullOrEmpty(customer.Email) && !IsValidEmail(customer.Email))
+		{
+			WarningMessage("Provide a valid email");
+			isButtonDisabled = false;
+			return;
+		}
+		customerGrid.UpdateRow(customer);
+		isButtonDisabled = false;
+		StateHasChanged();
+	}
+	void OnCreateRow(Customer customer)
+	{
+		customerService.Create(customer);
+	}
+	void OnUpdateRow(Customer customer)
+	{
+		customerService.Update(customer);
+	}
+	void CancelEdit(Customer customer)
+	{
+		customerGrid.CancelEditRow(customer);
+		isButtonDisabled = false;
+		StateHasChanged();
+	}
+	bool? isConfirmed;
+	void ShowNotification(NotificationMessage message)
+	{
+		NotificationService.Notify(message);
+		StateHasChanged();
+
+	}
+	public void Navigation(Customer customer)
+	{
+		navigationManager.NavigateTo($"/CustomerInfo/{customer.CustomerId}");
+	}
+
+	async Task Delete(Customer customer)
+	{
+
+		if (customer == null)
+		{
+			return;
+		}
+		try
+		{
+			await customerService.Delete(customer.CustomerId);
+			dialogService.Close(true);
+			totalRecords = await customerService.Count();
+			customers = await customerService.ListAll("", "CustomerName", "");
+			StateHasChanged();
+		}
+		catch (SqlException ex)
+		{
+			if (ex.Number == 547)
+			{
+				WarningMessage($"Customer {customer.CustomerName} has associated orders. You cannot delete this customer.");
+			}
+		}
+		
+	}
+
+	async Task ShowInlineDialog(Customer customer)
+	{
+		var result = await dialogService.OpenAsync("Confirmation", ds =>
+	@<RadzenStack Gap="1.5rem">
+		<p>Are you sure to delete <b>@customer.CustomerName</b> from your list?</p>
+		<div class="custom-button-group">
+			<RadzenButton Text="Ok" Click="((args) => Delete(customer))" Style="width: 80px;" ButtonStyle="ButtonStyle.Success" />
+			<RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Danger" />
+		</div>
+	</RadzenStack>);
+	}
+
+
+
+}

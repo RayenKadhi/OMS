@@ -1,0 +1,172 @@
+﻿@page "/categorylist"
+@implements IDisposable
+
+<div class="row">
+	<div class="col-md-6 d-flex align-items-end justify-content-start">
+		<h3 class="page-title"> Categories: @totalRecords </h3>
+	</div>
+	<div class="col-md-6 d-flex align-items-end justify-content-end">
+		<RadzenButton class="add-button" Icon="add_circle_outline" Click="@InsertRow" Text="Add" Disabled="@isButtonDisabled"></RadzenButton>
+	</div>
+</div>
+
+
+
+@if (categories == null)
+{
+	<p><em>Loading...</em></p>
+}
+
+else
+{
+	<RadzenDataGrid @ref="categoryGrid" Density="Density.Compact" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="20" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+					Data="@categories" TItem="Category" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" EditMode="DataGridEditMode.Single" Style="margin-top:20px">
+		<EmptyTemplate>
+			<p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+		</EmptyTemplate>
+		<Columns>
+			<RadzenDataGridColumn TItem="Category" Property="CategoryName" Title="Category" Width="250px">
+				<EditTemplate Context="category">
+					<RadzenTextBox Placeholder="Name.." @bind-Value="@category.CategoryName" Style="width:100%" />
+				</EditTemplate>
+
+			</RadzenDataGridColumn>
+
+			<RadzenDataGridColumn TItem="Category" Filterable="false" Sortable="false" Width="25px">
+				<Template Context="category">
+					<RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Size="ButtonSize.ExtraSmall" class="small-edit-button" Click="@(args => EditRow(category))" @onclick:stopPropagation="true">
+					</RadzenButton>
+					<RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.ExtraSmall" class="small-delete-button" Click="@(args => ShowInlineDialog(category))">
+					</RadzenButton>
+				</Template>
+				<EditTemplate Context="category">
+
+					<RadzenButton Icon="check" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Success" class="small-save-button" Size="ButtonSize.ExtraSmall" Click="@((args) => SaveRow(category))">
+					</RadzenButton>
+					<RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="cancel" Size="ButtonSize.ExtraSmall" class="small-cancel-button" Click="@(args => CancelEdit(category))">
+					</RadzenButton>
+
+				</EditTemplate>
+
+			</RadzenDataGridColumn>
+		</Columns>
+	</RadzenDataGrid>
+
+}
+
+@code {
+
+	RadzenDataGrid<Category> categoryGrid;
+	Category categoryToInsert;
+	Category categoryToUpdate;
+	List<Category> categories;
+	private string searchTerm;
+	bool? isConfirmed;
+	bool isButtonDisabled;
+	int totalRecords;
+
+	protected override async Task OnInitializedAsync()
+	{
+		totalRecords = await categoryService.Count();
+		categories = await categoryService.ListAll("", "CategoryName", "");
+	}
+	public void Dispose()
+	{
+		if (dialogService != null && dialogService.Close != null)
+		{
+			dialogService.Close();
+		}
+	}
+	void OnCreateRow(Category category)
+	{
+		categoryService.Create(category);
+	}
+	void OnUpdateRow(Category category)
+	{
+		categoryService.Update(category);
+	}
+	async Task InsertRow()
+	{
+		categoryToInsert = new Category();
+		await categoryGrid.InsertRow(categoryToInsert);
+		isButtonDisabled = true;
+	}
+	async Task EditRow(Category category)
+	{
+		categoryToUpdate = category;
+		await categoryGrid.EditRow(category);
+		isButtonDisabled = true;
+
+	}
+	async Task Delete(Category category)
+	{
+
+		if (category == null)
+		{
+			return;
+		}
+		try
+		{
+			await categoryService.Delete(category.CategoryId);
+			dialogService.Close(true);
+			totalRecords = await categoryService.Count();
+			categories = await categoryService.ListAll("", "CategoryName", "");
+
+		}
+		catch (SqlException ex)
+		{
+			if (ex.Number == 547)
+			{
+				WarningMessage($"{category.CategoryName} has associated products. You cannot delete this category.");
+				dialogService.Close(true);
+			}
+		}
+	}
+
+	async Task ShowInlineDialog(Category category)
+	{
+		var result = await dialogService.OpenAsync("Confirmation", ds =>
+	@<RadzenStack Gap="1.5rem">
+		<p>Are you sure to delete <b>@category.CategoryName</b> from your list?</p>
+		<div class="custom-button-group">
+			<RadzenButton Text="Ok" Click="((args) => Delete(category))" Style="width: 80px;" ButtonStyle="ButtonStyle.Success" />
+			<RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Danger" />
+		</div>
+	</RadzenStack>);
+	}
+	async Task SaveRow(Category category)
+	{
+		if (string.IsNullOrEmpty(category.CategoryName))
+		{
+			WarningMessage("Category Name is Required");
+			isButtonDisabled = false;
+			return;
+		}
+		if (categories.FirstOrDefault(c => c.CategoryName == category.CategoryName && c.CategoryId != category.CategoryId) != null)
+		{
+			WarningMessage("Category Name already exists");
+			isButtonDisabled = false;
+			return;
+		}
+
+		categoryGrid.UpdateRow(category);
+		StateHasChanged();
+		isButtonDisabled = false;
+	}
+	void WarningMessage(string messsage)
+	{
+		ShowNotification(new NotificationMessage { Summary = messsage, Duration = 4000 });
+	}
+	void ShowNotification(NotificationMessage message)
+	{
+		NotificationService.Notify(message);
+		StateHasChanged();
+	}
+	void CancelEdit(Category category)
+	{
+		categoryGrid.CancelEditRow(category);
+		isButtonDisabled = false;
+		StateHasChanged();
+	}
+}
+

@@ -88,10 +88,10 @@
 
 	<div class="row" style="margin-top: .5em;">
 		<div class="col-md-6 d-flex align-items-end justify-content-start">
-			<RadzenButton hidden="@hiddenPrevious" Disabled="@DisabledPrevious" Size="ButtonSize.ExtraSmall" Click="@((args) => MoveToNextStep())" ButtonStyle="ButtonStyle.Light"><RadzenImage Path="/Images/right.svg" width="16" height="16" /></RadzenButton>
+			<RadzenButton hidden="@hiddenPrevious" Icon="chevron_left" IconColor="black" Disabled="@DisabledPrevious" Size="ButtonSize.ExtraSmall" Click="@((args) => MoveToNextStep())" ButtonStyle="ButtonStyle.Light"></RadzenButton>
 		</div>
 		<div class="col-md-6 d-flex align-items-end justify-content-end">
-			<RadzenButton Disabled="@DisabledNext" Size="ButtonSize.ExtraSmall" Click="((args) => MoveToPreviousStep())" ButtonStyle="ButtonStyle.Light"> <RadzenImage Path="/Images/left.svg" width="16" height="16" /> </RadzenButton>
+			<RadzenButton Icon="navigate_next" IconColor="black" Disabled="@DisabledNext" Size="ButtonSize.ExtraSmall" Click="((args) => MoveToPreviousStep())" ButtonStyle="ButtonStyle.Light"> @* <RadzenImage Path="/Images/left.svg" width="16" height="16" /> *@ </RadzenButton>
 		</div>
 	</div>
 	<div class="custom-button-group" style="padding-top:0;margin-top:0;">
@@ -195,7 +195,7 @@
 			userInfo.Avatar = UserAvatar;
 			user.Avatar = UserAvatar;
 		}
-		userInfo.Suspended = 1;
+		userInfo.Suspended = 0;
 		userInfo.Username = user.Username;
 		userInfo.Password = ActualLocalStoragePassword;
 		await localStorage.SetItemAsync(key, userInfo);

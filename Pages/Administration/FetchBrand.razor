@@ -1,0 +1,163 @@
+﻿@page "/brandlist"
+@implements IDisposable
+
+
+<div class="row">
+	<div class="col-md-6 d-flex align-items-end justify-content-start">
+		<h3 class="page-title"> Brands: @totalRecords </h3>
+	</div>
+	<div class="col-md-6 d-flex align-items-end justify-content-end">
+		<RadzenButton class="add-button" Icon="add_circle_outline" Click="@InsertRow" Text="Add" Disabled="@isButtonDisabled"></RadzenButton>
+	</div>
+</div>
+
+
+
+@if (brands == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<RadzenDataGrid @ref=brandGrid Density="Density.Compact" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="20" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+					Data="@brands" TItem="Brand" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" EditMode="DataGridEditMode.Single" Style="margin-top:20px">
+		<EmptyTemplate>
+			<p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+		</EmptyTemplate>
+		<Columns>
+			<RadzenDataGridColumn TItem="Brand" Property="BrandName" Title="Brand" Width="250px">
+				<EditTemplate Context="brand">
+					<RadzenTextBox Placeholder="Name.." @bind-Value="@brand.BrandName" Style="width:100%" />
+				</EditTemplate>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Brand" Filterable="false" Sortable="false" Width="25px">
+				<Template Context="brand">
+					<RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" class="small-edit-button" Size="ButtonSize.ExtraSmall" Click="@(args => EditRow(brand))" @onclick:stopPropagation="true">
+					</RadzenButton>
+					<RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.ExtraSmall" class="small-delete-button" Click="@(args => ShowInlineDialog(brand))">
+					</RadzenButton>
+				</Template>
+				<EditTemplate Context="brand">
+					<RadzenButton Icon="check" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Success" class="small-save-button" Size="ButtonSize.ExtraSmall" Click="@((args) => SaveRow(brand))">
+					</RadzenButton>
+					<RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="cancel" Size="ButtonSize.ExtraSmall" class="small-cancel-button" Click="@(args => CancelEdit(brand))">
+					</RadzenButton>
+				</EditTemplate>
+			</RadzenDataGridColumn>
+		</Columns>
+	</RadzenDataGrid>
+
+}
+@code {
+	RadzenDataGrid<Brand> brandGrid;
+	Brand brandToInsert;
+	Brand brandToUpdate;
+	bool isButtonDisabled;
+	bool? isConfirmed;
+	List<Brand> brands;
+
+	int totalRecords;
+
+	protected override async Task OnInitializedAsync()
+	{
+		totalRecords = await brandService.Count();
+		brands = await brandService.ListAll("", "BrandName", "");
+	}
+	public void Dispose()
+	{
+		if (dialogService != null && dialogService.Close != null)
+		{
+			dialogService.Close();
+		}
+	}
+	void OnCreateRow(Brand brand)
+	{
+		brandService.Create(brand);
+	}
+	void OnUpdateRow(Brand brand)
+	{
+		brandService.Update(brand);
+	}
+	async Task InsertRow()
+	{
+		brandToInsert = new Brand();
+		await brandGrid.InsertRow(brandToInsert);
+		isButtonDisabled = true;
+	}
+	async Task EditRow(Brand brand)
+	{
+		brandToUpdate = brand;
+		await brandGrid.EditRow(brand);
+		isButtonDisabled = true;
+
+	}
+
+	async Task Delete(Brand brand)
+	{
+
+		if (brand == null)
+		{
+			return;
+		}
+		try
+		{
+			await brandService.Delete(brand.BrandId);
+			dialogService.Close(true);
+			totalRecords = await brandService.Count();
+			brands = await brandService.ListAll("", "BrandName", "");
+		}
+		catch (SqlException ex)
+		{
+			if (ex.Number == 547)
+			{
+				WarningMessage($"{brand.BrandName} has associated products. You cannot delete this brand.");
+				dialogService.Close(true);
+			}
+		}
+	}
+	async Task ShowInlineDialog(Brand brand)
+	{
+		var result = await dialogService.OpenAsync("Confirmation", ds =>
+	@<RadzenStack Gap="1.5rem">
+		<p>Are you sure to delete <b>@brand.BrandName</b> from your list?</p>
+		<div class="custom-button-group">
+			<RadzenButton Text="Ok" Click="((args) => Delete(brand))" Style="width: 80px;" ButtonStyle="ButtonStyle.Success" />
+			<RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Danger" />
+		</div>
+	</RadzenStack>);
+	}
+	async Task SaveRow(Brand brand)
+	{
+		if (string.IsNullOrEmpty(brand.BrandName))
+		{
+			WarningMessage("Brand Name is Required");
+			isButtonDisabled = false;
+			return;
+		}
+		if (brands.FirstOrDefault(c => c.BrandName == brand.BrandName && c.BrandId != brand.BrandId) != null)
+		{
+			WarningMessage("Brand Name already exists");
+			isButtonDisabled = false;
+			return;
+		}
+
+		brandGrid.UpdateRow(brand);
+		StateHasChanged();
+		isButtonDisabled = false;
+	}
+	void WarningMessage(string messsage)
+	{
+		ShowNotification(new NotificationMessage { Summary = messsage, Duration = 4000 });
+	}
+	void ShowNotification(NotificationMessage message)
+	{
+		NotificationService.Notify(message);
+		StateHasChanged();
+	}
+	void CancelEdit(Brand brand)
+	{
+		brandGrid.CancelEditRow(brand);
+		isButtonDisabled = false;
+		StateHasChanged();
+	}
+}

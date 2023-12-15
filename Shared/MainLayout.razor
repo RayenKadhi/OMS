@@ -1,14 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components
-@using Newtonsoft.Json;
-@using Radzen.Blazor
-@inherits LayoutComponentBase
-@inject ExampleService ExampleService
-@inject ThemeService ThemeService
-@inject NavigationManager UriHelper
-@inject IJSRuntime JSRuntime
-@inject HttpClient httpClient
-
-
+﻿@inherits LayoutComponentBase
 
 <style>
     .nav-container {
@@ -50,8 +40,6 @@
     .hover-pointer-image {
         cursor: pointer;
     }
-
-    
 </style>
 
 
@@ -192,7 +180,6 @@
     </RadzenContentContainer>
     </ChildContent> *@
     </RadzenBody>
-   
         <RadzenSidebar @ref="@sidebar0" @bind-Expanded="@sidebarExpanded" Class="demos-sidebar" style="display: flex; flex-direction: column;">
             <div style="padding: 1rem">
                 <RadzenTextBox Placeholder="Search.." type="search" @oninput="@FilterPanelMenu" style="width: 100%" Class="rz-search-input" />
@@ -201,7 +188,7 @@
                 <RadzenPanelMenu Match="NavLinkMatch.Prefix">
                     @foreach (var category in examples)
                     {
-                        <RadzenPanelMenuItem Text=@category.Name Path=@category.Path Icon=@category.Icon @bind-Expanded=@category.Expanded Example=@category>
+                    <RadzenPanelMenuItem Text=@category.Name Path=@category.Path Icon=@category.Icon @bind-Expanded=@category.Expanded Example=@category>
                             @if (category.Children != null)
                             {
                                 @foreach (var example in category.Children)
@@ -226,11 +213,6 @@
                 </RadzenPanelMenu>
             </div>
         </RadzenSidebar>
-  
-
-    
-
-
 </RadzenLayout>
 
 @if (!rendered)
@@ -242,7 +224,6 @@
 
 @code {
     User userInfo = new User();
-
     RadzenSidebar sidebar0;
     RadzenBody body0;
     bool hidden;
@@ -253,8 +234,9 @@
     string username;
     string Avatar;
 
-
     User user = new User();
+    User UserConnected = new User();
+    List<User> users;
 
     string IsScrollableContent(bool sidebar)
     {
@@ -267,6 +249,7 @@
     IEnumerable<Example> examples;
     protected override async Task OnInitializedAsync()
     {
+        users = await userService.ListAll();
         examples = ExampleService.Examples;
 
         ThemeService.Initialize(UriHelper);
@@ -274,22 +257,20 @@
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
     }
 
-
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             keyExists = await localStorage.ContainKeyAsync("UserInfo");
-
-
+           
             if (keyExists)
             {
                 user = await localStorage.GetItemAsync<User>("UserInfo");
-                if (user.Suspended ==1)
+                UserConnected = users.FirstOrDefault(u => u.UserId == user.UserId);
+                if (user.Suspended ==0)
                 {
-                    username = user.Username;
-                    Avatar = user.Avatar;
+                    username = UserConnected.Username;
+                    Avatar = UserConnected.Avatar;
                     if (Avatar == "/Images/None.png" || Avatar == null)
                     {
                         hidden = true;
@@ -301,7 +282,6 @@
                     navigationManager.NavigateTo("/NotFound");
                     return;
                 }
-
             }
 
 
@@ -311,10 +291,8 @@
                 return;
             }
             rendered = true;
-
         }
     }
-
 
     private string term = string.Empty;
 

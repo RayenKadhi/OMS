@@ -53,7 +53,6 @@ builder.Services.AddScoped<ThemeService>();
 builder.Services.AddScoped<ContextMenuService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<DownloadController>();
-builder.Services.AddScoped<RevenueDataService>();
 builder.Services.AddSignalR(e => e.MaximumReceiveMessageSize = 102400000);
 builder.Services.AddScoped<ICategoryService,CategoryService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();

@@ -1,72 +1,51 @@
 ﻿@page "/home"
 <style>
-    .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-        padding-right: 0;
-        padding-left: 0;
-    }
+	.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+		padding-right: 0;
+		padding-left: 0;
+	}
 </style>
 
 
-    <PageTitle>Home</PageTitle>
+<PageTitle>Home</PageTitle>
 
-    <Line_Chart />
+<Line_Chart />
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-6" style="padding-right:0 !important;">
-                <RadzenCard class="card"  style="margin: 0rem; margin-top: .5em; height:100% ; border : 1px solid #ebebeb">
-                    <Pie_Chart />
-                </RadzenCard>
-            </div>
-            <div class="col-lg-6 col-md-6">
-            <RadzenCard class="card"  style="margin: 0rem; margin-top: .5em; height:100%; border : 1px solid #ebebeb">
-                    <StackedBarSeries />
-                </RadzenCard>
-            </div>
-        </div>
-    </div>
+<div class="container">
+	<div class="row">
+		<div class="col-lg-6 col-md-6" style="padding-right:0 !important;">
+			<RadzenCard class="card" style="width:100;margin: 0rem; margin-top: .5em; height:100% ; border : 1px solid #ebebeb">
+				<Pie_Chart />
+			</RadzenCard>
+		</div>
+		<div class="col-lg-6 col-md-6">
+			<RadzenCard class="card" style="width:100;margin: 0rem; margin-top: .5em; height:100%; border : 1px solid #ebebeb">
+				<StackedBarSeries />
+			</RadzenCard>
+		</div>
+	</div>
+</div>
 
 
 
 
 @code {
-    byte suspended;
-    bool keyExists;
-    User userInfo = new User();
-    User user = new User();
-    List<User> users;
-    string key = "UserInfo";
-    protected override async Task OnInitializedAsync()
-    {
-        users = await userService.ListAll();
-        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
-        var Token = QueryHelpers.ParseQuery(uri.Query).TryGetValue("Token", out var parsedCode) ? parsedCode.ToString() : null;
-        keyExists = await localStorage.ContainKeyAsync("UserInfo");
-        user = await localStorage.GetItemAsync<User>("UserInfo");
-        User foundUser = users.FirstOrDefault(u => u.Username == user.Username);
-        if (foundUser != null)
-        {
-            TimeSpan DifferenceTime = DateTime.Now - foundUser.EmailSent;
-            if (foundUser.ConfirmationToken == Token && DifferenceTime.Minutes <=30)
-            {
-                user.Suspended = 1;
-                await localStorage.SetItemAsync(key, user);
-                foundUser.Suspended = 1;
-                await userService.Update(foundUser);
-            }
-            else if (DifferenceTime.Minutes >= 30)
-            {
-                foundUser.ConfirmationToken = Guid.NewGuid().ToString();
-            }
-        }
-       
-        if (!keyExists)
-        {
-            await localStorage.ClearAsync();
-            navigationManager.NavigateTo("/NotFound");
-        }
-    }
+	byte suspended;
+	bool keyExists;
+	User userInfo = new User();
+	User user = new User();
+	List<User> users;
+	string key = "UserInfo";
+	protected override async Task OnInitializedAsync()
+	{
+		keyExists = await localStorage.ContainKeyAsync("UserInfo");
+		if (!keyExists)
+		{
+			await localStorage.ClearAsync();
+			navigationManager.NavigateTo("/NotFound");
+		}
+	}
 }
-        
-    
+
+
 

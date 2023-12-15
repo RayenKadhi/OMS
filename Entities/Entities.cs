@@ -71,12 +71,12 @@ namespace OMS.Entities
         public string ProductNameOrBarcode { get; set; }
         public List<int> SelectedCategories { get; set; } = new List<int>();
         public List<int> SelectedBrands { get; set; } = new List<int>();
-        public string MinUnitPrice { get; set; }
-        public string MaxUnitPrice { get; set; }
-        public string MinIntialQuantity { get; set; }
-        public string MaxIntialQuantity { get; set; }
-        public string MaxThreshold { get; set; }
-        public string MinThreshold { get; set; }
+        public int? MinUnitPrice { get; set; }
+        public int? MaxUnitPrice { get; set; }
+        public int? MinIntialQuantity { get; set; }
+        public int? MaxIntialQuantity { get; set; }
+        public int? MaxThreshold { get; set; }
+        public int? MinThreshold { get; set; }
         public bool? Available { get; set; }
 
     }
@@ -105,7 +105,7 @@ namespace OMS.Entities
         public string Email { get; set; }   
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
-        public byte Suspended { get; set; }  
+        public byte Suspended { get; set; } = 1;
         public DateTime LastLoginDate { get; set; }
         public string ActualPassword { get; set; }
         public string NewPassword { get; set; }

@@ -21,7 +21,7 @@ namespace OMS.Data
             dbPara.Add("Password", user.Password, DbType.String);
             dbPara.Add("Suspended", user.Suspended, DbType.Byte);
             dbPara.Add("UserNameChanged", user.UserNameChanged, DbType.Int64);
-            dbPara.Add("LastLoginDate", user.LastLoginDate, DbType.String);
+            dbPara.Add("LastLoginDate", user.LastLoginDate, DbType.DateTime);
             dbPara.Add("Avatar", user.Avatar, DbType.String);
             dbPara.Add("ConfirmationToken", user.ConfirmationToken, DbType.String);
             dbPara.Add("EmailSent", user.EmailSent, DbType.DateTime);

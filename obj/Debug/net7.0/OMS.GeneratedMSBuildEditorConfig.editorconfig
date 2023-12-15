@@ -20,24 +20,12 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/Customer/CustomerInfo.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cQ3VzdG9tZXJcQ3VzdG9tZXJJbmZvLnJhem9y
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/FetchBrand.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cRmV0Y2hCcmFuZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/Customer/FetchCustomer.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cQ3VzdG9tZXJcRmV0Y2hDdXN0b21lci5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/Order/FetchOrder.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cT3JkZXJcRmV0Y2hPcmRlci5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/Product/Edit_Add_Product.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cUHJvZHVjdFxFZGl0X0FkZF9Qcm9kdWN0LnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/Product/FetchProduct.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cUHJvZHVjdFxGZXRjaFByb2R1Y3QucmF6b3I=
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Administration/FetchCategory.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cRmV0Y2hDYXRlZ29yeS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Dashbord/Index.razor]
@@ -88,12 +76,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZmlsZVxVc2VyU2V0dGluZ3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Purchase/FetchBrand.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VcRmV0Y2hCcmFuZC5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Purchase/Customer/CustomerInfo.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VcQ3VzdG9tZXJcQ3VzdG9tZXJJbmZvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Purchase/FetchCategory.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VcRmV0Y2hDYXRlZ29yeS5yYXpvcg==
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Purchase/Customer/FetchCustomer.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VcQ3VzdG9tZXJcRmV0Y2hDdXN0b21lci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Purchase/Order/FetchOrder.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VcT3JkZXJcRmV0Y2hPcmRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Purchase/Product/Edit_Add_Product.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VcUHJvZHVjdFxFZGl0X0FkZF9Qcm9kdWN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell-Dev02/source/repos/oms/OMS/Pages/Purchase/Product/FetchProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VcUHJvZHVjdFxGZXRjaFByb2R1Y3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Dell-Dev02/source/repos/oms/OMS/Shared/LoginLayout.razor]

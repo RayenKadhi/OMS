@@ -2,10 +2,6 @@
 @page "/registration"
 
 
-<style>
-
-
-</style>
 
 <RadzenRow Gap="0" Class="rz-my-12 rz-mx-auto rz-border-radius-6 rz-shadow-10" Style="width: 100%; max-width: 800px; overflow: hidden;">
     <RadzenColumn Size="12" SizeMD="6">
@@ -36,7 +32,7 @@
                     </RadzenRow>
                 </div>
             <div class="row">
-                <RadzenButton Text="Register" Click="@((args)=>SaveUser(user))" Icon="done" ButtonStyle="ButtonStyle.Success" class="register-button" Style="margin-top:2em;" />
+                <RadzenButton Text="Register" Click="@((args)=>SaveUser(user))" Icon="exit_to_app" ButtonStyle="ButtonStyle.Success" class="register-button" Style="margin-top:2em;" />
                 <p class="question-text">Already Have An Acoount ?</p>
                 <RadzenButton Text="Login" Click="@Navigation" ButtonStyle="ButtonStyle.Success" class="login-button" />
             </div>
@@ -64,7 +60,7 @@
         totUsers = await userService.Count();
 
     }
-   
+
     async Task SaveUser(User user)
     {
         if (string.IsNullOrEmpty(user.Username))
@@ -111,6 +107,7 @@
         user.ConfirmationToken = Guid.NewGuid().ToString();
         user.EmailSent = DateTime.Now;
         user.LastLoginDate = DateTime.Now;
+        user.Suspended = 1;
         await userService.Create(user);
         await localStorage.SetItemAsync(key, userInfo);
         SuccessMessage("User Is Registetred");
@@ -118,7 +115,8 @@
         // Email Confirmation ------------------------------------------------------------------------------------->
         var receiver = user.Email;
         var subject = "Account Confirmation";
-        var messageBody = $"Click here to Confirm Your Account https://localhost:7131/home?Token={user.ConfirmationToken}";
+        var confirmationLink = $"https://localhost:7131/login?Token={user.ConfirmationToken}";
+        var messageBody = $"Click <a href=\"{confirmationLink}\">here</a> to confirm your account.";
         await emailSender.SendEmailAsync(receiver, subject, messageBody);
         // Email Confirmation ------------------------------------------------------------------------------------->
     }

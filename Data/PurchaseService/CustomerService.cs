@@ -25,14 +25,7 @@ namespace OMS.Data.PurchaseService
                dbPara, commandType: CommandType.StoredProcedure));
             return CustomerId;
         }
-        public Task<Customer> GetById(int id)
-        {
-            var customer = Task.FromResult
-               (_dapperService.Get<Customer>
-               ($"select * from [Customer] where CustomerId = {id}", null,
-               commandType: CommandType.Text));
-            return customer;
-        }
+     
         public Task<int> Delete(int id)
         {
             var deleteCustomer = Task.FromResult
@@ -49,8 +42,7 @@ namespace OMS.Data.PurchaseService
                commandType: CommandType.Text));
             return totCustomer;
         }
-        public Task<List<Customer>> ListAll(
-         string orderBy, string direction = "DESC", string search = "")
+        public Task<List<Customer>> ListAll(string search, string direction,string orderBy)
         {
             var customers = Task.FromResult
                (_dapperService.GetAll<Customer>
@@ -79,7 +71,7 @@ namespace OMS.Data.PurchaseService
             return customers;
         }
 
-        public Task<Customer> GetByIdDetail(int id)
+        public Task<Customer> GetById(int id)
         {
             var customer = Task.FromResult
                (_dapperService.Get<Customer>

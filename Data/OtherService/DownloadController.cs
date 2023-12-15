@@ -70,7 +70,7 @@ public class DownloadController : ControllerBase
 
             // Set the content type and download file name
             var result = new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            result.FileDownloadName = $"produc_{DateTime.Now}.xlsx";
+            result.FileDownloadName = $"products_{DateTime.Now}.xlsx";
 
             return result;
         }

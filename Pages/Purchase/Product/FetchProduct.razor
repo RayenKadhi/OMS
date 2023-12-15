@@ -1,0 +1,335 @@
+﻿@page "/productlist"
+@implements IDisposable
+
+
+<style>
+	.rz-grid-table td .rz-cell-data {
+		color: unset;
+	}
+
+	.rz-card {
+		padding: 0;
+	}
+
+	.form-labels {
+		margin-top: 0em;
+	}
+
+	.rz-p-md-12 {
+		padding: 1rem !important;
+	}
+</style>
+
+
+
+<div class="row">
+	<div class="col-md-3 d-flex align-items-end justify-content-start">
+		@if (count != 0)
+		{
+			<h3 class="page-title"> Products: @count </h3>
+		}
+		else
+		{
+			<h3 class="page-title"> Products: @totalRecords </h3>
+		}
+	</div>
+	<div class="col-md-9 d-flex align-items-end justify-content-end">
+		<RadzenButton hidden="@hidden" Text="Search" Icon="search" Click="@(()=>Search())" class="search-button" Style="margin-right:5px" />
+		<RadzenButton class="add-button" Click="@(()=> Navigation(product))" Text="Add" Icon="add_circle_outline" Style="margin-right:5px"></RadzenButton>
+		<RadzenButton Text="Export" Click="@(() => Export(products))" Icon="grid_on" class="export-button" />
+	</div>
+</div>
+
+
+@if (search)
+{
+	<RadzenCard class="card" Style="margin-bottom:1em; margin-top:1em;">
+		<p class="page-title" style="padding-left:1em; padding-top:1em;">Advanced Search</p>
+		<div Class="rz-p-0 rz-p-md-12">
+			<p class="form-labels" style="width:100%; margin-bottom: .5em;">Product | Barcode</p>
+			<RadzenTextBox style="margin-bottom:1em;width: 100%;" @bind-Value="@productSearch.ProductNameOrBarcode" />
+			<RadzenRow Gap=".5rem">
+				<RadzenColumn Size="12" SizeSM="6">
+					<RadzenStack>
+						<p class="form-labels">Category</p>
+						<RadzenDropDown @bind-Value=@productSearch.SelectedCategories Data=@CategoryNames TextProperty="CategoryName" ValueProperty="CategoryId"
+										Multiple=true SelectAllText="Select all categories" AllowClear=true Placeholder="Category"
+										MaxSelectedLabels="@totalRecords" SelectedItemsText="are now selected" />
+
+						<p class="form-labels">Min Unit Price</p>
+						<RadzenNumeric Min="0" @bind-Value="@productSearch.MinUnitPrice" />
+
+						<p class="form-label">Min Initial Quantity</p>
+						<RadzenNumeric Min="0" @bind-Value="@productSearch.MinIntialQuantity" />
+						<p class="form-label">Min Threshold</p>
+						<RadzenNumeric Min="0" @bind-Value="@productSearch.MinThreshold" />
+						<div style="display:flex; justify-content:left;align-items:center;">
+							<RadzenCheckBox TriState=true @bind-Value=@productSearch.Available Name="Available" />
+							<RadzenLabel Style="margin-left: 1em;" Text="Available" Component="Available" />
+						</div>
+					</RadzenStack>
+				</RadzenColumn>
+				<RadzenColumn Size="12" SizeSM="6">
+					<RadzenStack>
+						<p class="form-labels">Brand</p>
+						<RadzenDropDown @bind-Value=@productSearch.SelectedBrands Data=@BrandNames TextProperty="BrandName" ValueProperty="BrandId"
+										Multiple=true SelectAllText="Select all brands" AllowClear=true Placeholder="Brands"
+										MaxSelectedLabels="@totalRecords" SelectedItemsText="are now selected" />
+						<p class="form-label">Max Unit Price</p>
+						<RadzenNumeric Min="0" @bind-Value="@productSearch.MaxUnitPrice" />
+						<p class="form-label">Max Initial Quantity</p>
+						<RadzenNumeric Min="0" @bind-Value="@productSearch.MaxIntialQuantity" />
+						<p class="form-label">Max Threshold</p>
+						<RadzenNumeric Min="0" @bind-Value="@productSearch.MaxThreshold" />
+					</RadzenStack>
+				</RadzenColumn>
+			</RadzenRow>
+
+			<div class="d-flex flex-row-reverse">
+				<div class="p-2">
+					<RadzenButton Icon="search" class="search-button" Text="Search" Click="SearchProducts" />
+				</div>
+				<div class="p-2">
+					<RadzenButton Text="Cancel" Icon="cancel" Click="@(()=>Cancel())" ButtonStyle="ButtonStyle.Danger" class="cancel-button" />
+				</div>
+				<div class="p-2">
+					<RadzenButton Text="Clear" Icon="clear" ButtonStyle="ButtonStyle.Dark" Click="@(()=>Clear())" class="clear-button" />
+				</div>
+			</div>
+
+		</div>
+	</RadzenCard>
+}
+
+
+
+@if (products == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<RadzenDataGrid @ref="productGrid" Density="Density.Compact" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="16" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+					Data="@products" TItem="Product" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" RowCreate="@OnCreateRow" RowUpdate="@OnUpdateRow" RowRender="@RowRender" Style="margin-top:20px;">
+		<EmptyTemplate>
+			<p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+		</EmptyTemplate>
+		<Columns>
+			<RadzenDataGridColumn TItem="Product" Property="ProductName" Title="Product" Width="160px">
+				<Template Context="products">
+					<RadzenImage Path="@($"{products.Picture}")" style="width: 30px; height: 30px; margin-right: 6px;" />
+					@products.ProductName
+				</Template>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Product" Property="BrandName" Title="Brand" Width="160px">
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Product" Property="CategoryName" Title="Category" Width="160px">
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Product" Property="Unit Price" Title="Unit Price" Frozen="true" Width="200px">
+				<Template Context="products">
+					@priceFormattingService.FormatPrice(products.UnitPrice, "tnd")
+				</Template>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Product" Property="InitialQuantity" Title="Initial Quantity" Width="130px">
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Product" Property="Threshold" Title="Threshold" Width="130px">
+			</RadzenDataGridColumn>
+
+			<RadzenDataGridColumn TItem="Product" Property="Description" Title="Description" Frozen="true" Width="130px">
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="Product" Filterable="false" Sortable="false" Width="100px">
+				<Template Context="product">
+					<RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Size="ButtonSize.ExtraSmall" class="small-edit-button" Click="@((args) => Navigation(product))">
+					</RadzenButton>
+					<RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.ExtraSmall" class="small-delete-button" Click="@(args => ShowInlineDialog(product))">
+					</RadzenButton>
+				</Template>
+			</RadzenDataGridColumn>
+		</Columns>
+	</RadzenDataGrid>
+}
+
+
+	@code {
+
+	bool hidden = false;
+	bool search = false;
+
+	ProductSearch productSearch = new ProductSearch();
+
+
+	int count;
+
+
+	List<Product> products;
+
+	Product product = new Product();
+
+	RadzenDataGrid<Product> productGrid;
+	int totalRecords;
+
+	IEnumerable<Brand> BrandNames;
+	IEnumerable<Category> CategoryNames;
+
+	protected override async Task OnInitializedAsync()
+	{
+		totalRecords = await productService.Count();
+		products = await productService.ListAll("1=1", "ProductName", "");
+		BrandNames = products.OrderBy(b => b.BrandName).GroupBy(b => b.BrandId).Select(group => group.First()).Select(b => new Brand { BrandId = b.BrandId, BrandName = b.BrandName }).Distinct();
+		CategoryNames = products.OrderBy(c => c.CategoryName).GroupBy(c => c.CategoryId).Select(group => group.First()).Select(c => new Category { CategoryId = c.CategoryId, CategoryName = c.CategoryName }).Distinct();
+	}
+
+	void OnCreateRow(Product product)
+	{
+		productService.Create(product);
+	}
+	void OnUpdateRow(Product product)
+	{
+		productService.Update(product);
+	}
+	public void Dispose()
+	{
+		if (dialogService != null && dialogService.Close != null)
+		{
+			dialogService.Close();
+		}
+	}
+	async Task Delete(Product product)
+	{
+		if (product == null)
+		{
+			return;
+		}
+		try
+		{
+			await productService.Delete(product.ProductId);
+			dialogService.Close(true);
+			totalRecords = await productService.Count();
+			products = await productService.ListAll("1=1", "ProductName", "");
+
+		}
+		catch (SqlException ex)
+		{
+			if (ex.Number == 547)
+			{
+				WarningMessage($"Product {product.ProductName} has associated orders. You cannot delete this product.");
+			}
+		}
+	}
+
+	async Task ShowInlineDialog(Product product)
+	{
+		var result = await dialogService.OpenAsync("Confirmation", ds =>
+	@<RadzenStack Gap="1.5rem">
+		<p>Are you sure to delete <b>@product.ProductName</b> from your list?</p>
+		<div class="custom-button-group">
+			<RadzenButton Text="Ok" Click="((args) => Delete(product))" Style="width: 80px;" ButtonStyle="ButtonStyle.Success" />
+			<RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Danger" />
+		</div>
+	</RadzenStack>
+	);
+	}
+	void ShowNotification(NotificationMessage message)
+	{
+		NotificationService.Notify(message);
+
+	}
+	void WarningMessage(string messsage)
+	{
+		ShowNotification(new NotificationMessage { Summary = messsage, Duration = 4000 });
+	}
+	public void Navigation(Product product)
+	{
+		navigationManager.NavigateTo($"/Product/{product.ProductId}");
+
+	}
+
+	void RowRender(RowRenderEventArgs<Product> args)
+	{
+		args.Attributes.Add("style", $"color: {(!args.Data.Available ? "#ababab" : "unset")};");
+	}
+	int available;
+	async Task SearchProducts()
+	{
+		string Condition = "1=1";
+
+		if (!string.IsNullOrEmpty(productSearch.ProductNameOrBarcode))
+		{
+			Condition += $" AND (ProductName LIKE '%{productSearch.ProductNameOrBarcode}%' OR Barcode = '{productSearch.ProductNameOrBarcode}')";
+		}
+
+		if (productSearch.SelectedCategories != null && productSearch.SelectedCategories.Any())
+		{
+			Condition += $" AND p.CategoryId IN ({string.Join(",", productSearch.SelectedCategories)})";
+		}
+		if (productSearch.SelectedBrands != null && productSearch.SelectedBrands.Any())
+		{
+			Condition += $" AND p.BrandId IN ({string.Join(",", productSearch.SelectedBrands)})";
+		}
+		if (productSearch.Available.HasValue)
+		{
+			if (productSearch.Available == true)
+			{
+				available = 1;
+			}
+			else if (productSearch.Available == false)
+			{
+				available = 0;
+			}
+
+			Condition += $" AND Available = {available}";
+		}
+		if (productSearch.MinUnitPrice.HasValue)
+		{
+			Condition += $" AND  UnitPrice >= {productSearch.MinUnitPrice}";
+		}
+		if (productSearch.MaxUnitPrice.HasValue)
+		{
+			Condition += $" AND  UnitPrice <= {productSearch.MaxUnitPrice}";
+		}
+		if (productSearch.MinIntialQuantity.HasValue)
+		{
+			Condition += $" AND  InitialQuantity >= {productSearch.MinIntialQuantity}";
+		}
+		if (productSearch.MaxIntialQuantity.HasValue)
+		{
+			Condition += $" AND  InitialQuantity <= {productSearch.MaxIntialQuantity}";
+		}
+		if (productSearch.MinThreshold.HasValue)
+		{
+			Condition += $" AND  Threshold >= {productSearch.MinThreshold}";
+		}
+		if (productSearch.MaxThreshold.HasValue)
+		{
+			Condition += $" AND  Threshold <= {productSearch.MaxThreshold}";
+		}
+		search = false;
+		hidden = false;
+		products = await productService.ListAll(Condition, "ProductName", "");
+		count = products.Count();
+	}
+
+
+	public bool Search()
+	{
+		search = true;
+		hidden = true;
+		return search;
+	}
+	public bool Cancel()
+	{
+		search = false;
+		hidden = false;
+		return search;
+	}
+	public void Clear()
+	{
+		productSearch = new ProductSearch();
+	}
+	private void Export(List<Product> data)
+	{
+		JSRuntime.InvokeVoidAsync("exportToExcel", data);
+	}
+ }
+
+

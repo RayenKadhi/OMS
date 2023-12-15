@@ -323,5 +323,13 @@ a, .btn-link {
     font-size: 1.2em;
     margin-top: .5em;
     font-weight: bold;
-  
 }
+.send-email {
+    background-color: #696969 !important;
+    border-radius: 10px;
+}
+.confirm-button {
+    background-color: #0EB391 !important;
+    border-radius: 10px;
+}
+

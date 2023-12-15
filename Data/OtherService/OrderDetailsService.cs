@@ -1,12 +1,8 @@
 ﻿using OMS.Interfaces;
 using OMS.Entities;
 using Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using OMS.Interfaces;
+
 
 namespace OMS.Data
 {

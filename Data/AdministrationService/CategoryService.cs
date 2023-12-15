@@ -5,7 +5,6 @@ using System.Data;
 
 namespace OMS.Data
 {
-
         public class CategoryService : ICategoryService
         {
             private readonly IDapperService _dapperService;
@@ -43,8 +42,7 @@ namespace OMS.Data
                    dbPara, commandType: CommandType.StoredProcedure));
                 return updateCategory;
             }
-        public Task<List<Category>> ListAll(
-         string orderBy, string direction = "DESC", string search = "")
+        public Task<List<Category>> ListAll(string search,string direction,  string orderBy)
         {
             var categories = Task.FromResult
                (_dapperService.GetAll<Category>

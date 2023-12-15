@@ -1,58 +1,56 @@
 ﻿<style>
-    .rz-legend {
-        width: 80px;
-        padding-left: 2em;
-      
-    }
-    .svg{
-        margin-top:50%;
-    }
+	.rz-legend {
+		width: 80px;
+		padding-left: 2em;
+	}
 
+	.svg {
+		margin-top: 50%;
+	}
 
 </style>
 
 <RadzenChart SeriesClick=@OnSeriesClick Style="width: 100%;height: 100%;margin-top: 50;">
-        <p class="page-title" style="font-weight: lighter; display:flex; justify-content:center;">Revenue Per Year</p>
-    <RadzenPieSeries Data="@RevenueYear" Title="Revenue" CategoryProperty="Year" ValueProperty="Revenue" Fills="customColors" Visible=true>
-        <RadzenSeriesDataLabels Visible="true" />
-        </RadzenPieSeries>
-        
-    <RadzenValueAxis Formatter="@FormatAsDT">
-        <RadzenGridLines Visible="true"  />
-        
-        <RadzenAxisTitle Text="Revenue in USD" />
-    </RadzenValueAxis>
-    </RadzenChart>
+	<p class="page-title" style="font-weight: lighter; display:flex; justify-content:center;">Revenue Per Year</p>
+	<RadzenPieSeries Data="@RevenueYear" Title="Revenue" CategoryProperty="Year" ValueProperty="Revenue" Fills="customColors" Visible=true>
+		<RadzenSeriesDataLabels Visible="true" />
+	</RadzenPieSeries>
 
-@code{
-    string FormatAsDT(object value)
-    {
+	<RadzenValueAxis Formatter="@FormatAsDT">
+		<RadzenGridLines Visible="true" />
+		<RadzenAxisTitle Text="Revenue in USD" />
+	</RadzenValueAxis>
+</RadzenChart>
 
-        double num = (double)value;
-        return priceFormattingService.FormatPrice(num, "tnd");
-    }
+@code {
+	string FormatAsDT(object value)
+	{
 
-    List<string> customColors = new List<string> { "#CCCCFF", "#6495ED", "#40E0D0" };
- 
-    string title = "Total Amount\nSpent in TND";
+		double num = (double)value;
+		return priceFormattingService.FormatPrice(num, "tnd");
+	}
 
-    string SqlQueryRevenueYear = "SELECT * FROM Pie_Chart_View";
+	List<string> customColors = new List<string> { "#CCCCFF", "#6495ED", "#40E0D0" };
 
-    List<RevenueYear> RevenueYear;
-   
-    protected override async Task OnInitializedAsync()
-    {
+	string title = "Total Amount\nSpent in TND";
 
-        RevenueYear = dapperService.GetAll<RevenueYear>(SqlQueryRevenueYear, null);
-     
-    }
+	string SqlQueryRevenueYear = "SELECT * FROM Pie_Chart_View";
 
-    void OnSeriesClick(SeriesClickEventArgs args)
-    {
+	List<RevenueYear> RevenueYear;
 
-    }
-   
-  
+	protected override async Task OnInitializedAsync()
+	{
+
+		RevenueYear = dapperService.GetAll<RevenueYear>(SqlQueryRevenueYear, null);
+
+	}
+
+	void OnSeriesClick(SeriesClickEventArgs args)
+	{
+
+	}
+
+
 
 
 

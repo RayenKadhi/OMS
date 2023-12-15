@@ -39,15 +39,22 @@
     User user = new User();
     void LearnMoreClicked()
     {
-        navigationManager.NavigateTo("/login");
+        if (keyExists == true && user.Suspended == 0)
+        {
+            navigationManager.NavigateTo("/home");
+        }
+        else
+        {
+            navigationManager.NavigateTo("/login");
+        }
     }
     protected override async Task OnInitializedAsync()
     {
         user = await localStorage.GetItemAsync<User>("UserInfo");
         keyExists = await localStorage.ContainKeyAsync("UserInfo");
-        if (keyExists == true && user.Suspended == 1)
+        if (keyExists == true && user.Suspended == 0)
         {
-            navigationManager.NavigateTo("/home");
+            text = "Home";
         }
         else
         {

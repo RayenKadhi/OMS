@@ -5,20 +5,20 @@
 <RadzenRow Gap="0" Class="rz-my-12 rz-mx-auto rz-border-radius-6 rz-shadow-10" Style="width: 100%; max-width: 800px; overflow: hidden;">
     <RadzenColumn Size="12" SizeMD="6">
         <RadzenCard class="card"  Style="height: 100%;">
-            <RadzenText TextStyle="TextStyle.DisplayH3" TagName="TagName.H2" Class="rz-color-black rz-mb-6">Welcome!</RadzenText>
+            <RadzenText TextStyle="TextStyle.DisplayH3" TagName="TagName.H2" Class="welcome-text">Welcome!</RadzenText>
             <RadzenImage Path="/Images/customer.png" Style="height: 80%; width: 100%; margin-left:1em;" />
         </RadzenCard>
     </RadzenColumn>
     <RadzenColumn Size="12" SizeMD="6">
-        <RadzenCard class="card" >
-            <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="rz-mb-6">
+        <RadzenCard class="card" Style="height:100%;">
+            <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="login-title">
                 Password Reset
             </RadzenText>
             <div class="d-flex justify-content-center">
                 <RadzenRow Gap="1rem">
                     <RadzenColumn Size="12" SizeSM="12">
                         <RadzenStack>
-                            <p class="form-label">New Password</p>
+                            <p class="form-label" style="margin-top:2em;">New Password</p>
                             <RadzenPassword Visible="true" @bind-Value=user.NewPassword />
                             <p class="form-label">Confirm Password</p>
                             <RadzenPassword Visible="true" @bind-Value=user.ConfirmPassword />
@@ -26,9 +26,9 @@
                     </RadzenColumn>
                 </RadzenRow>
             </div>
-            <div class="row" style="margin-top:2em;">
-                <RadzenButton Text="Confirm" Icon="done" Click="(args)=>PasswordReset(user)" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" Style="margin-top:2em;" />
-                <RadzenButton Text="Login"  Click="@Navigation" ButtonStyle="ButtonStyle.Success" class="button-save-cancel" Style="margin-top:2em" />
+            <div class="row" style="margin-top:2.8em;">
+                <RadzenButton Text="Confirm" Icon="done" Click="(args)=>PasswordReset(user)" ButtonStyle="ButtonStyle.Success" class="confirm-button" Style="margin-top:2em;" />
+                <RadzenButton Text="Login" Click="@Navigation" ButtonStyle="ButtonStyle.Success" class="login-button" Style="margin-top:2em" />
             </div>
         </RadzenCard>
     </RadzenColumn>
@@ -38,6 +38,7 @@
     List<User> users;
     User user = new User();
     User foundUser = new User();
+
     protected override async Task OnInitializedAsync()
     {
         users = await userService.ListAll();
@@ -56,6 +57,11 @@
     }
     public async void PasswordReset(User user)
     {
+        User foundUser = new User();
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var Token = QueryHelpers.ParseQuery(uri.Query).TryGetValue("Token", out var parsedCode) ? parsedCode.ToString() : null;
+
+        foundUser = users.FirstOrDefault(u => u.ConfirmationToken == Token);
         if (string.IsNullOrEmpty(user.NewPassword) || !IsValidPassword(user.NewPassword))
         {
             WarningMessage("Password must be with minimum eight characters, at least one letter and one number");
@@ -71,7 +77,10 @@
         user.Password = passwordHash;
         user.LastLoginDate = foundUser.LastLoginDate;
         user.EmailSent = foundUser.EmailSent;
-        await userService.Update(user);
+        foundUser.Password = user.Password;
+        foundUser.LastLoginDate = user.LastLoginDate;
+        foundUser.EmailSent = user.EmailSent;
+        await userService.Update(foundUser);
         navigationManager.NavigateTo("/login");
     }
     void WarningMessage(string messsage)

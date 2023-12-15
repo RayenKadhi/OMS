@@ -17,7 +17,6 @@ namespace OMS.Interfaces
         Task<List<Customer>> ListAll(
           string orderBy, string direction, string search);
         Task<List<Customer>> FetchAll();
-        Task<Customer> GetByIdDetail(int CustomerId);
 
     }
     public interface IUserService
@@ -36,10 +35,9 @@ namespace OMS.Interfaces
         Task<int> Count();
         Task<int> Update(Product product);
         Task<Product> GetById(int ProductId);
-        Task<List<Product>> ListAll(string orderBy, string direction, string search);
+        Task<List<Product>> ListAll(string search, string orderBy, string direction);
         Task<Product> GetByIdDetail(int ProductId);
         Task<Product> GetCategoryByName(string CategoryName);
-       
     }
     public interface IOrderService 
     {
@@ -56,8 +54,7 @@ namespace OMS.Interfaces
         Task<int> Create(Brand brand);
         Task<int> Delete(int brand);
         Task<int> Update(Brand brand);
-        Task<List<Brand>> ListAll(
-        string orderBy, string direction, string search);
+        Task<List<Brand>> ListAll(string search,string orderBy, string direction);
         Task<int> Count();
 
     }
@@ -66,9 +63,8 @@ namespace OMS.Interfaces
         Task<int> Create(Category category);
         Task<int> Delete(int category);
         Task<int> Update(Category category);
-        Task<List<Category>> ListAll(
-        string orderBy, string direction, string search);
-        Task<int> Count();
+        Task<List<Category>> ListAll(string search, string orderBy, string direction);
+		Task<int> Count();
     }
     public interface IDapperService : IDisposable
     {
@@ -103,6 +99,6 @@ namespace OMS.Interfaces
     }
     public interface IEmailSender
     {
-        Task SendEmailAsync(string email, string subject, string message);
+        Task SendEmailAsync(string email, string subject, string message, bool isHtml = true);
     }
 }

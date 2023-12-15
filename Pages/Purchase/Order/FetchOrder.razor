@@ -1,0 +1,108 @@
+﻿@page "/orderlist"
+@implements IDisposable
+
+<p class="page-title">Orders Details</p>
+@if (Orders == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<div class="d-flex flex-row">
+		<div class="p-2">
+			<RadzenDataGrid @ref="OrderRef" Density="Density.Compact" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="20" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+							ShowPagingSummary="true" Data="@Orders" TItem="OrderCustomer" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="200px" RowSelect="@(args => { orderCustomer = args; UpdateOrderDetails(); })">
+				<EmptyTemplate>
+					<p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+				</EmptyTemplate>
+				<Columns>
+					<RadzenDataGridColumn TItem="OrderCustomer" Property="CustomerName" Title="Customer Name" Width="180px">
+					</RadzenDataGridColumn>
+					<RadzenDataGridColumn TItem="OrderCustomer" Property="OrderDate" Title="Order Date" Width="180px">
+						<Template Context="order">
+							@order.OrderDate.ToString("dd/MM/yyyy")
+						</Template>
+					</RadzenDataGridColumn>
+				</Columns>
+			</RadzenDataGrid>
+		</div>
+
+		@if (orderCustomer != null)
+		{
+			<div class="p-2">
+				<RadzenCard class="card">
+					<p>Customer: </p>
+					<b>@orderCustomer.CustomerName</b>
+				</RadzenCard>
+				<div>
+					<RadzenDataGrid Density="Density.Compact" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="20" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+									ShowPagingSummary="true" Data="@(orderDetails)" TItem="OrderDetails" LogicalFilterOperator="LogicalFilterOperator.Or" Style="margin-top:20px" ColumnWidth="150px">
+						<Columns>
+							<RadzenDataGridColumn TItem="OrderDetails" Property="ProductName" Title="Product Name" Width="180px"> </RadzenDataGridColumn>
+							<RadzenDataGridColumn TItem="OrderDetails" Property="UnitPrice" Title="Unit Price" Width="140px">
+								<Template Context="orderDetails">
+									@priceFormattingService.FormatPrice(orderDetails.UnitPrice, "tnd")
+								</Template>
+							</RadzenDataGridColumn>
+							<RadzenDataGridColumn TItem="OrderDetails" Property="Quantity" Title="Quantity" Width="140px">
+
+							</RadzenDataGridColumn>
+							<RadzenDataGridColumn TItem="OrderDetails" Property="TotalPrice" Title="Total Price" Width="140px">
+								<Template Context="orderDetails">
+									@priceFormattingService.FormatPrice(orderDetails.TotalPrice, "tnd")
+								</Template>
+								<FooterTemplate>
+									Total: @priceFormattingService.FormatPrice(orderDetails.Sum(o => o.TotalPrice), "tnd")
+								</FooterTemplate>
+							</RadzenDataGridColumn>
+						</Columns>
+					</RadzenDataGrid>
+				</div>
+			</div>
+		}
+	</div>
+}
+
+
+@code {
+	RadzenDataGrid<OrderCustomer> OrderRef;
+	OrderCustomer orderCustomer = new OrderCustomer();
+	List<OrderCustomer> Orders;
+	List<OrderDetails> orderDetails;
+
+	protected override async Task OnInitializedAsync()
+	{
+		Orders = await orderService.ListAll();
+		if (Orders.Count > 0)
+		{
+			orderCustomer = Orders.FirstOrDefault();
+			orderDetails = await orderService.ListOrderDetailsPerCus(orderCustomer.OrderId);
+		}
+	}
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			OrderRef.SelectRow(orderCustomer);
+		}
+	}
+	public void Dispose()
+	{
+		if (Orders != null)
+		{
+			foreach (var product in Orders)
+			{
+				(product as IDisposable)?.Dispose();
+			}
+			Orders = null;
+		}
+	}
+	private async Task UpdateOrderDetails()
+	{
+		if (orderCustomer != null)
+		{
+			orderDetails = await orderService.ListOrderDetailsPerCus(orderCustomer.OrderId);
+		}
+	}
+
+}
